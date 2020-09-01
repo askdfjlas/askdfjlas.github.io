@@ -40,7 +40,7 @@ class MessageList extends Component {
       messageElements.push(
         <p key={i}>
           <b>{ date.toString() } </b>
-          { message.message }
+          <span dangerouslySetInnerHTML={{__html: message.message}} />
         </p>
       );
     });
