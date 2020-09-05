@@ -1,10 +1,14 @@
 import React from 'react';
-import MessageList from './MessageList';
+import Header from './Header';
+import './css/App.css';
+import './fonts/fonts.css';
 
 function App() {
   return (
     <div className="App">
-      <MessageList />
+      <Header />
+      <div className="Module">
+      </div>
     </div>
   );
 }

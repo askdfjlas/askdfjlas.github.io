@@ -1,0 +1,65 @@
+.Header {
+  font-family: 'Mosk Medium 500';
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(30, 30, 100, 0.9);
+  height: 15em;
+}
+
+.Header::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  opacity: 0.6;
+  background-image: url('../img/header_bg.jpg');
+  background-size: 100%;
+  background-position: center;
+  background-color: #000020;
+  height: 15em;
+  z-index: 1;
+}
+
+.Header h1 {
+  font-size: 4em;
+  color: white;
+  margin: 0;
+  padding-bottom: 0.5em;
+  z-index: 2;
+}
+
+.Header h1:hover {
+  cursor: default;
+}
+
+.Header ul {
+  position: absolute;
+  list-style-type: none;
+  bottom: 1.5em;
+  padding: 0;
+  z-index: 2;
+}
+
+.Header ul li {
+  display: inline-block;
+  color: white;
+  transition: 0.25s;
+}
+
+.Header ul li:hover {
+  cursor: pointer;
+  color: #CCCCCC;
+  transition: 0.25s;
+}
+
+.Header span {
+  position: absolute;
+  bottom: 0;
+  background-color: darkgray;
+  height: 0.5em;
+  width: 100%;
+}
