@@ -1,16 +1,23 @@
-const MESSAGE_PATH = 'https://2a0jyll2t9.execute-api.us-east-1.amazonaws.com/poc/messages';
+const API_STORAGE_KEY = 'askdfjlas.github.io';
 
 class Api {
-  static async getMessages() {
-    const response = await fetch(MESSAGE_PATH);
-    return await response.json();
+  static localStorage = window.localStorage;
+  static problems = JSON.parse(Api.localStorage.getItem(API_STORAGE_KEY)) || {};
+
+  static _updateStorage() {
+    Api.localStorage.setItem(API_STORAGE_KEY, JSON.stringify(Api.problems));
   }
 
-  static async postMessage(message) {
-    const response = await fetch(`${MESSAGE_PATH}?message=${message}`, {
-      method: 'POST'
-    });
-    return await response.json();
+  static getProblems() {
+    return Api.problems;
+  }
+
+  static addProblem(problem) {
+    const fakeUuid = '' + (new Date()).getTime();
+    Api.problems[fakeUuid] = problem;
+    Api._updateStorage();
+
+    return fakeUuid;
   }
 }
 

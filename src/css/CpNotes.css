@@ -1,0 +1,20 @@
+.Cp-notes {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.Cp-notes-none {
+  display: table-cell;
+  font-style: italic;
+  width: 75%;
+}
+
+.Cp-notes-add {
+  position: absolute;
+  right: 0.7em;
+  bottom: 0.7em;
+  border-radius: 100%;
+}

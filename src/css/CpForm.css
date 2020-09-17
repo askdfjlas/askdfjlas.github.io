@@ -1,0 +1,34 @@
+.Cp-form {
+  background-color: #222233;
+  display: flex;
+  width: 50%;
+  max-height: 85%;
+  padding: 2em 2em 0;
+  overflow: auto;
+  margin: auto;
+  border-radius: 3px;
+  border: 2px solid white;
+}
+
+.Cp-form label, .Cp-form span {
+  color: #DDDDDD;
+}
+
+.Cp-form input, .Cp-form textarea, .Cp-form select {
+  background-color: #444466;
+  color: #DDDDDD;
+}
+
+.Cp-form textarea {
+  resize: vertical;
+}
+
+.Cp-form input[type="submit"] {
+  margin-bottom: 2em;
+}
+
+.Cp-form-close {
+  position: absolute;
+  top: 1em;
+  right: 1.5em;
+}

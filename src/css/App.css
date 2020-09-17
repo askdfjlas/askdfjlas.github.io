@@ -1,5 +1,22 @@
 html, body {
-  background-color: rgba(20, 20, 20, 0.8);
+  background-color: #151525;
   margin: 0;
-  padding: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.App, #root {
+  height: 100%;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* MathJax, why is there a tiny white square
+in the bottom-left corner if I don't do this? */
+.MJX_HoverRegion, .MJX_ToolTip, .MJX_LiveRegion {
+  display: none !important;
 }

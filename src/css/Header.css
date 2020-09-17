@@ -6,7 +6,8 @@
   align-items: center;
   justify-content: center;
   background-color: rgba(30, 30, 100, 0.9);
-  height: 15em;
+  flex: 0 0 12em;
+  width: 100%;
 }
 
 .Header::after {
@@ -19,8 +20,9 @@
   background-image: url('../img/header_bg.jpg');
   background-size: 100%;
   background-position: center;
+  background-repeat: no-repeat;
   background-color: #000020;
-  height: 15em;
+  height: 12em;
   z-index: 1;
 }
 
@@ -60,6 +62,6 @@
   position: absolute;
   bottom: 0;
   background-color: darkgray;
-  height: 0.5em;
+  height: 0.3em;
   width: 100%;
 }

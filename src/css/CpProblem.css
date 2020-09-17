@@ -1,0 +1,78 @@
+.Cp-problem {
+  position: relative;
+  width: 90%;
+  color: white;
+  background-color: #333365;
+  font-family: 'Arial';
+  border-radius: 3px;
+  margin: 0.7em;
+  padding: 1em;
+  overflow-wrap: anywhere;
+}
+
+.Cp-problem h4 {
+  margin-top: 0.5em;
+  margin-bottom: 0.8em;
+}
+
+.Cp-problem p:not(.Cp-problem-notes-show) {
+  margin-top: 0.6em;
+  margin-bottom: 0;
+}
+
+.Cp-problem a {
+  color: lightblue;
+}
+
+.Cp-problem::after {
+  font-weight: bold;
+  position: absolute;
+  top: 0.6em;
+  right: 0.6em;
+}
+
+.Cp-unsolved::after {
+  color: #EE5588;
+  content: 'Unsolved';
+}
+
+.Cp-solved::after {
+  color: #55EE88;
+  content: 'Solved!';
+}
+
+.Cp-solved-help::after {
+  color: #CC55FF;
+  content: 'lmao dumbass';
+}
+
+.Cp-problem-toggle {
+  display: inline-block;
+  margin-top: 0;
+  transition: 0.2s;
+}
+
+.Cp-problem-toggle:hover {
+  cursor: pointer;
+  color: #CCCCCC;
+  transition: 0.2s;
+}
+
+.Cp-problem-notes-hide {
+  background-color: #DDDDDD;
+  font-family: Times;
+  color: black;
+  box-sizing: border-box;
+  padding: 1em;
+  margin-top: 0;
+  border-radius: 3px;
+  height: auto;
+  transition: 0.5s all;
+}
+
+.Cp-problem-notes-show {
+  overflow: hidden;
+  height: 0;
+  margin: 0;
+  transition: 0.5s all;
+}
