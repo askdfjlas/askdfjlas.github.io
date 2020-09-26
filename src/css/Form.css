@@ -23,6 +23,14 @@
   padding: 0.5em;
 }
 
+.Askd-form .Search-select {
+  position: relative;
+}
+
+.Askd-form .Search-select-options {
+  width: 100%;
+}
+
 .Askd-form input:not([type="submit"]):not([name="link"]),
 .Askd-form textarea,
 .Askd-form select {
