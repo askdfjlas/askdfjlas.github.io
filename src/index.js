@@ -1,7 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Amplify from 'aws-amplify';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import amplify_config from './amplify_config';
+
+Amplify.configure(amplify_config);
 
 ReactDOM.render(
   <App />,

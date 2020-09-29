@@ -1,0 +1,15 @@
+.Register-form {
+  width: 50%;
+  max-width: 25em;
+  max-height: 85%;
+}
+
+.Register-form h2, .Register-form p {
+  color: #DDDDDD;
+  margin-top: 0;
+  font-family: Arial;
+}
+
+.Register-form input[type="submit"] {
+  margin-top: 2em;
+}

@@ -18,8 +18,8 @@ class CpNotes extends Component {
     this.addProblem = this.addProblem.bind(this);
   }
 
-  toggleForm() {
-    Utils.setStatePromise(this, {
+  async toggleForm() {
+    await Utils.setStatePromise(this, {
       showForm: !this.state.showForm
     });
   }

@@ -58,8 +58,8 @@ class CpForm extends Component {
     return (
       <div className="Module-blocker">
         <button onClick={this.close}
-                className="Cp-form-close Askd-button Askd-button-circular">X</button>
-        <div className="Cp-form">
+                className="Askd-form-close Askd-button Askd-button-circular">X</button>
+        <div className="Cp-form Module-popup">
           <form className="Askd-form" onSubmit={this.addProblem}>
             <label htmlFor="cp-platform">Platform</label>
             <select defaultValue="" onChange={this.handlePlatformChange} name="platform" id="cp-platform">
@@ -95,7 +95,8 @@ class CpForm extends Component {
             <textarea autoComplete="off" name="notes" id="cp-math-notes"
                       disabled={disableForm} />
 
-            <input className="Askd-button" type="submit" value="Add" />
+            <input className="Askd-button Module-popup-last" type="submit"
+                   value="Add" />
           </form>
         </div>
       </div>

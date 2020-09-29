@@ -10,7 +10,7 @@
   width: 100%;
 }
 
-.Header::after {
+.Header::before {
   content: '';
   position: absolute;
   top: 0;
@@ -23,15 +23,14 @@
   background-repeat: no-repeat;
   background-color: #000020;
   height: 12em;
-  z-index: 1;
 }
 
 .Header h1 {
-  font-size: 4em;
+  font-size: 3em;
   color: white;
   margin: 0;
   padding-bottom: 0.5em;
-  z-index: 2;
+  z-index: 1;
 }
 
 .Header h1:hover {
@@ -43,7 +42,6 @@
   list-style-type: none;
   bottom: 1.5em;
   padding: 0;
-  z-index: 2;
 }
 
 .Header ul li {
@@ -52,13 +50,31 @@
   transition: 0.25s;
 }
 
-.Header ul li:hover {
+.Header ul li:hover, .Header-top-right span:hover {
   cursor: pointer;
   color: #CCCCCC;
   transition: 0.25s;
 }
 
-.Header span {
+.Header-divider::after {
+  margin: 0.4em;
+  color: #CC2277;
+  content: '|';
+}
+
+.Header-top-right span {
+  display: inline-block;
+  color: white;
+  transition: 0.25s;
+}
+
+.Header-top-right {
+  position: absolute;
+  top: 1em;
+  right: 1em;
+}
+
+.Header-bottom {
   position: absolute;
   bottom: 0;
   background-color: darkgray;

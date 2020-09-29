@@ -31,6 +31,21 @@
   color: white;
 }
 
+.Module-popup {
+  background-color: #222233;
+  display: flex;
+  flex-direction: column;
+  padding: 2em 2em 0;
+  overflow: auto;
+  margin: auto;
+  border-radius: 3px;
+  border: 2px solid white;
+}
+
+.Module-popup-last {
+  margin-bottom: 2em;
+}
+
 .Module-blocker {
   display: flex;
   align-items: center;

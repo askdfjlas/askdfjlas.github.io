@@ -14,13 +14,28 @@
   border: none;
 }
 
+.Askd-form label, .Askd-form span {
+  color: #DDDDDD;
+}
+
 .Askd-form textarea {
   min-height: 10em;
+  resize: vertical;
 }
 
 .Askd-form input, .Askd-form textarea, .Askd-form select {
   box-sizing: border-box;
   padding: 0.5em;
+  background-color: #444466;
+  color: #DDDDDD;
+}
+
+.Askd-form input[type="submit"] {
+  background-color: #666688;
+}
+
+.Askd-form input[type="submit"]:hover {
+  background-color: #777799;
 }
 
 .Askd-form .Search-select {
@@ -83,4 +98,10 @@
   font-size: 0.7em;
   font-style: italic;
   content: ' required';
+}
+
+.Askd-form-close {
+  position: fixed;
+  top: 1em;
+  right: 1.5em;
 }
