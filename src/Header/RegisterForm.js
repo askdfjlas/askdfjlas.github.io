@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import Utils from './Utils';
-import UserProfile from './UserProfile';
-import './css/RegisterForm.css';
-
-const MIN_PASSWORD_LENGTH = 6;
+import Utils from '../Utils';
+import UserProfile from '../UserProfile';
+import HeaderState from './HeaderState';
+import '../css/RegisterForm.css';
 
 class RegisterForm extends Component {
   constructor(props) {
@@ -11,14 +10,15 @@ class RegisterForm extends Component {
 
     this.state = {
       error: '',
+      success: '',
       username: null,
-      registered: false,
-      verified: false
-    }
+      screen: props.screen || HeaderState.REGISTER
+    };
 
     this.close = this.close.bind(this);
     this.register = this.register.bind(this);
     this.verifyEmail = this.verifyEmail.bind(this);
+    this.resendVerificationEmail = this.resendVerificationEmail.bind(this);
   }
 
   close() {
@@ -27,7 +27,15 @@ class RegisterForm extends Component {
 
   async setError(message) {
     await Utils.setStatePromise(this, {
-      error: `Error: ${message}`
+      error: `Error: ${message}`,
+      success: ''
+    });
+  }
+
+  async setSuccess(message) {
+    await Utils.setStatePromise(this, {
+      error: '',
+      success: message
     });
   }
 
@@ -40,21 +48,21 @@ class RegisterForm extends Component {
     const password = form.password.value;
     const confirmPassword = form.confirmPassword.value;
 
-    if(!username || !email || !password)
-      await this.setError("Please fill out all of the fields.")
+    if(!username || !email || !password || !confirmPassword) {
+      await this.setError('Please fill out all of the fields.')
+      return;
+    }
 
-    if(password !== confirmPassword)
-      await this.setError("Your passwords don't match!");
-
-    if(password.length < MIN_PASSWORD_LENGTH)
-      await this.setError("Your password is too short!")
+    const passwordsOk = await Utils.checkPasswords(this, password, confirmPassword);
+    if(!passwordsOk)
+      return;
 
     try {
       await UserProfile.register(username, email, password);
       Utils.setStatePromise(this, {
         error: '',
         username: username,
-        registered: true
+        screen: HeaderState.REGISTER_VERIFY
       });
     }
     catch(err) {
@@ -70,8 +78,19 @@ class RegisterForm extends Component {
       await UserProfile.verifyEmail(this.state.username, code);
       Utils.setStatePromise(this, {
         error: '',
-        verified: true
+        success: '',
+        screen: HeaderState.REGISTER_SUCCESS
       });
+    }
+    catch(err) {
+      await this.setError(err.message);
+    }
+  }
+
+  async resendVerificationEmail(event) {
+    try {
+      await UserProfile.resendVerificationEmail(this.state.username);
+      await this.setSuccess('Another email has been sent!');
     }
     catch(err) {
       await this.setError(err.message);
@@ -82,6 +101,7 @@ class RegisterForm extends Component {
     const createAccountForm = (
       <div className="Register-form Module-popup">
         { this.state.error && <h2>{this.state.error}</h2> }
+        { this.state.success && <h2>{this.state.success}</h2> }
         <h2>Create an account!</h2>
         <form className="Askd-form" onSubmit={this.register}>
           <label htmlFor="register-username">Username</label>
@@ -109,16 +129,22 @@ class RegisterForm extends Component {
     const verifyEmailForm = (
       <div className="Register-form Module-popup">
         { this.state.error && <h2>{this.state.error}</h2> }
+        { this.state.success && <h2>{this.state.success}</h2> }
         <h2>Verify your email!</h2>
         <p>
           You should've received a verification code via email. If it isn't
-          convenient for you to verify your account now, you may do it later
+          convenient for you to verify your account now, you may do so later
           by logging in.
         </p>
         <form className="Askd-form" onSubmit={this.verifyEmail}>
           <label htmlFor="verification-code">Verification code</label>
           <input autoComplete="off" type="text" name="code"
                  key="verification-code" id="verification-code" />
+
+          <div onClick={this.resendVerificationEmail} className="Askd-form-link">
+            Didn't get the email? Click here to resend
+          </div>
+
           <input className="Askd-button Module-popup-last" type="submit"
                  value="Submit" />
         </form>
@@ -136,11 +162,16 @@ class RegisterForm extends Component {
     );
 
     var currentForm;
-    if(this.state.verified) {
-      currentForm = emailVerifiedBox;
-    }
-    else {
-      currentForm = this.state.registered ? verifyEmailForm : createAccountForm;
+    switch(this.state.screen) {
+      case HeaderState.REGISTER:
+        currentForm = createAccountForm;
+        break;
+      case HeaderState.REGISTER_VERIFY:
+        currentForm = verifyEmailForm;
+        break;
+      case HeaderState.REGISTER_SUCCESS:
+        currentForm = emailVerifiedBox;
+        break;
     }
 
     return (

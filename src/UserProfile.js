@@ -3,6 +3,15 @@ import { Auth } from 'aws-amplify';
 class UserProfile {
   static profile = null;
 
+  static async loadProfile() {
+    try {
+      UserProfile.profile = await Auth.currentAuthenticatedUser();
+    }
+    catch(err) {
+      // currentAuthenticatedUser() throws this error if the user is not logged in
+    }
+  }
+
   static async register(username, email, password) {
     await Auth.signUp({
       username,
@@ -17,17 +26,26 @@ class UserProfile {
     await Auth.confirmSignUp(username, code);
   }
 
-  static async loadProfile() {
-    try {
-      UserProfile.profile = await Auth.currentAuthenticatedUser();
-    }
-    catch(err) {
-      // currentAuthenticatedUser() throws this error if the user is not logged in
-    }
+  static async resendVerificationEmail(username) {
+    await Auth.resendSignUp(username);
+  }
+
+  static async forgotPassword(username) {
+    const info = await Auth.forgotPassword(username);
+    return info.CodeDeliveryDetails.Destination;
+  }
+
+  static async resetPassword(username, code, password) {
+    await Auth.forgotPasswordSubmit(username, code, password);
   }
 
   static async login(username, password) {
     await Auth.signIn(username, password);
+  }
+
+  static async logout() {
+    await Auth.signOut();
+    UserProfile.profile = null;
   }
 
   static async getUsername() {

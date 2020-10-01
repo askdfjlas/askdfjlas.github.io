@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import Utils from './Utils';
+import Utils from '../Utils';
 import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
-import UserProfile from './UserProfile';
-import './css/Header.css';
+import UserMenu from './UserMenu';
+import UserProfile from '../UserProfile';
+import '../css/Header.css';
 
 class Header extends Component {
   constructor(props) {
@@ -12,18 +13,23 @@ class Header extends Component {
     this.state = {
       username: null,
       showRegisterForm: false,
-      showLoginForm: false
+      showLoginForm: false,
+      showUserMenu: false
     };
 
+    this.refreshUsername = this.refreshUsername.bind(this);
     this.toggleRegisterForm = this.toggleRegisterForm.bind(this);
     this.toggleLoginForm = this.toggleLoginForm.bind(this);
+    this.toggleUserMenu = this.toggleUserMenu.bind(this);
     this.afterLogin = this.afterLogin.bind(this);
   }
 
   async refreshUsername() {
     const username = await UserProfile.getUsername();
-    Utils.setStatePromise(this, {
-      username: username
+
+    await Utils.setStatePromise(this, {
+      username: username,
+      showUserMenu: false
     });
   }
 
@@ -40,6 +46,12 @@ class Header extends Component {
   async toggleLoginForm() {
     await Utils.setStatePromise(this, {
       showLoginForm: !this.state.showLoginForm
+    });
+  }
+
+  async toggleUserMenu() {
+    await Utils.setStatePromise(this, {
+      showUserMenu: !this.state.showUserMenu
     });
   }
 
@@ -60,8 +72,17 @@ class Header extends Component {
     );
 
     const loggedInButton = (
-      <div className="Header-top-right">
-        <span>{ this.state.username }</span>
+      <div className="Header-logged-in" tabIndex="-1"
+           onBlur={this.toggleUserMenu}>
+        <div className="Header-top-right">
+          <span onClick={this.toggleUserMenu}>{ this.state.username }</span>
+        </div>
+        <div className="Header-user-menu">
+          {
+            this.state.showUserMenu &&
+            <UserMenu logoutCallback={this.refreshUsername} />
+          }
+        </div>
       </div>
     );
 

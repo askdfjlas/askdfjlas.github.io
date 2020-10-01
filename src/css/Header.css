@@ -74,6 +74,13 @@
   right: 1em;
 }
 
+.Header-user-menu {
+  position: absolute;
+  top: 3em;
+  right: 1em;
+  z-index: 2;
+}
+
 .Header-bottom {
   position: absolute;
   bottom: 0;

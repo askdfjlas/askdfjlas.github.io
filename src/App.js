@@ -1,5 +1,5 @@
 import React from 'react';
-import Header from './Header';
+import Header from './Header/Header';
 import CpNotes from './CpNotes';
 import './css/App.css';
 import './css/Module.css';
