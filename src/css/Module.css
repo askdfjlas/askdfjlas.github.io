@@ -4,7 +4,7 @@
   background-color: #222235;
   margin: auto;
   width: 85%;
-  flex-grow: 1;
+  flex: 1 0 auto;
 }
 
 .Module-description {
@@ -21,8 +21,9 @@
 .Module-space {
   background-color: #252545;
   font-family: 'Verdana';
-  flex-grow: 1;
+  flex: 1 0 auto;
   box-sizing: border-box;
+  overflow-wrap: anywhere;
   margin: 0.75em auto 2em;
   padding: 1em;
   width: 85%;
@@ -54,7 +55,7 @@
   position: fixed;
   top: 0;
   left: 0;
-  height: 100vh;
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   z-index: 2;
 }

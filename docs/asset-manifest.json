@@ -1,6 +1,6 @@
 {
   "files": {
-    "main.css": "/static/css/main.55b14d06.chunk.css",
+    "main.css": "/static/css/main.39ef09a0.chunk.css",
     "main.js": "/static/js/main.1e0c07e4.chunk.js",
     "main.js.map": "/static/js/main.1e0c07e4.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.c8d90abf.js",
@@ -8,9 +8,9 @@
     "static/js/2.684918de.chunk.js": "/static/js/2.684918de.chunk.js",
     "static/js/2.684918de.chunk.js.map": "/static/js/2.684918de.chunk.js.map",
     "index.html": "/index.html",
-    "precache-manifest.3b056e551b2e6999f07126f44308d22c.js": "/precache-manifest.3b056e551b2e6999f07126f44308d22c.js",
+    "precache-manifest.1c8cf70b7e6519cdfe28c2f6cbd8e99a.js": "/precache-manifest.1c8cf70b7e6519cdfe28c2f6cbd8e99a.js",
     "service-worker.js": "/service-worker.js",
-    "static/css/main.55b14d06.chunk.css.map": "/static/css/main.55b14d06.chunk.css.map",
+    "static/css/main.39ef09a0.chunk.css.map": "/static/css/main.39ef09a0.chunk.css.map",
     "static/js/2.684918de.chunk.js.LICENSE.txt": "/static/js/2.684918de.chunk.js.LICENSE.txt",
     "static/media/fonts.css": "/static/media/Mosk Ultra-Bold 900.192f4fe6.woff",
     "static/media/Header.css": "/static/media/header_bg.c70410c8.jpg"
@@ -18,7 +18,7 @@
   "entrypoints": [
     "static/js/runtime-main.c8d90abf.js",
     "static/js/2.684918de.chunk.js",
-    "static/css/main.55b14d06.chunk.css",
+    "static/css/main.39ef09a0.chunk.css",
     "static/js/main.1e0c07e4.chunk.js"
   ]
 }
