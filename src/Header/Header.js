@@ -14,7 +14,9 @@ class Header extends Component {
       username: null,
       showRegisterForm: false,
       showLoginForm: false,
-      showUserMenu: false
+      showUserMenu: false,
+      unverifiedAccountUsername: null,
+      unverifiedAccountDestination: null
     };
 
     this.refreshUsername = this.refreshUsername.bind(this);
@@ -22,6 +24,7 @@ class Header extends Component {
     this.toggleLoginForm = this.toggleLoginForm.bind(this);
     this.toggleUserMenu = this.toggleUserMenu.bind(this);
     this.afterLogin = this.afterLogin.bind(this);
+    this.unverifiedAccount = this.unverifiedAccount.bind(this);
   }
 
   async refreshUsername() {
@@ -29,7 +32,8 @@ class Header extends Component {
 
     await Utils.setStatePromise(this, {
       username: username,
-      showUserMenu: false
+      showUserMenu: false,
+      unverifiedAccountUsername: null
     });
   }
 
@@ -62,6 +66,15 @@ class Header extends Component {
       await this.refreshUsername();
   }
 
+  async unverifiedAccount(username, destination) {
+    await Utils.setStatePromise(this, {
+      showLoginForm: false,
+      showRegisterForm: true,
+      unverifiedAccountUsername: username,
+      unverifiedAccountDestination: destination
+    });
+  }
+
   render() {
     const loginButtons = (
       <div className="Header-top-right">
@@ -92,11 +105,16 @@ class Header extends Component {
       <div className="Header">
         {
           this.state.showRegisterForm &&
-          <RegisterForm callback={this.toggleRegisterForm} />
+          <RegisterForm exitCallback={this.toggleRegisterForm}
+                        unverifiedAccountUsername=
+                        {this.state.unverifiedAccountUsername}
+                        unverifiedAccountDestination=
+                        {this.state.unverifiedAccountDestination} />
         }
         {
           this.state.showLoginForm &&
-          <LoginForm callback={this.afterLogin} />
+          <LoginForm exitCallback={this.afterLogin}
+                     emailVerificationCallback={this.unverifiedAccount} />
         }
         <h1>cp-notes beta</h1>
         <ul>

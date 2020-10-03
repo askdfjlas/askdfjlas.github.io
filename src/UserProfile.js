@@ -13,13 +13,16 @@ class UserProfile {
   }
 
   static async register(username, email, password) {
-    await Auth.signUp({
+    const info = await Auth.signUp({
       username,
       password,
       attributes: {
         email: email
       }
     });
+
+    // I like how Amplify makes this one inconsistently lowercase... lol
+    return info.codeDeliveryDetails.Destination;
   }
 
   static async verifyEmail(username, code) {
@@ -27,7 +30,8 @@ class UserProfile {
   }
 
   static async resendVerificationEmail(username) {
-    await Auth.resendSignUp(username);
+    const info = await Auth.resendSignUp(username);
+    return info.CodeDeliveryDetails.Destination;
   }
 
   static async forgotPassword(username) {

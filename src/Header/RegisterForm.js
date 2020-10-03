@@ -8,11 +8,14 @@ class RegisterForm extends Component {
   constructor(props) {
     super(props);
 
+    const screen = props.unverifiedAccountUsername ?
+                   HeaderState.REGISTER_VERIFY : HeaderState.REGISTER;
     this.state = {
       error: '',
       success: '',
-      username: null,
-      screen: props.screen || HeaderState.REGISTER
+      username: props.unverifiedAccountUsername,
+      destination: props.unverifiedAccountDestination,
+      screen: screen
     };
 
     this.close = this.close.bind(this);
@@ -22,7 +25,7 @@ class RegisterForm extends Component {
   }
 
   close() {
-    this.props.callback(this.state.registered);
+    this.props.exitCallback();
   }
 
   async setError(message) {
@@ -58,10 +61,11 @@ class RegisterForm extends Component {
       return;
 
     try {
-      await UserProfile.register(username, email, password);
+      const destination = await UserProfile.register(username, email, password);
       Utils.setStatePromise(this, {
         error: '',
         username: username,
+        destination: destination,
         screen: HeaderState.REGISTER_VERIFY
       });
     }
@@ -101,7 +105,6 @@ class RegisterForm extends Component {
     const createAccountForm = (
       <div className="Register-form Module-popup">
         { this.state.error && <h2>{this.state.error}</h2> }
-        { this.state.success && <h2>{this.state.success}</h2> }
         <h2>Create an account!</h2>
         <form className="Askd-form" onSubmit={this.register}>
           <label htmlFor="register-username">Username</label>
@@ -132,9 +135,9 @@ class RegisterForm extends Component {
         { this.state.success && <h2>{this.state.success}</h2> }
         <h2>Verify your email!</h2>
         <p>
-          You should've received a verification code via email. If it isn't
-          convenient for you to verify your account now, you may do so later
-          by logging in.
+          You should've received an email at {this.state.destination} with a
+          verification code. If it isn't convenient for you to verify your
+          account now, you may do so later by logging in.
         </p>
         <form className="Askd-form" onSubmit={this.verifyEmail}>
           <label htmlFor="verification-code">Verification code</label>
@@ -172,6 +175,7 @@ class RegisterForm extends Component {
       case HeaderState.REGISTER_SUCCESS:
         currentForm = emailVerifiedBox;
         break;
+      default:
     }
 
     return (

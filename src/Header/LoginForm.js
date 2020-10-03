@@ -19,15 +19,23 @@ class LoginForm extends Component {
     this.enablePasswordRecovery = this.enablePasswordRecovery.bind(this);
     this.forgotPassword = this.forgotPassword.bind(this);
     this.resetPassword = this.resetPassword.bind(this);
+    this.resendVerificationEmail = this.resendVerificationEmail.bind(this);
   }
 
   close() {
-    this.props.callback(false);
+    this.props.exitCallback(false);
   }
 
   async setError(message) {
     await Utils.setStatePromise(this, {
       error: `Error: ${message}`
+    });
+  }
+
+  async setSuccess(message) {
+    await Utils.setStatePromise(this, {
+      error: '',
+      success: message
     });
   }
 
@@ -42,8 +50,19 @@ class LoginForm extends Component {
       await this.setError("Please fill out all of the fields.")
 
     try {
-      await UserProfile.login(username, password);
-      this.props.callback(true);
+      try {
+        await UserProfile.login(username, password);
+        this.props.exitCallback(true);
+      }
+      catch(err) {
+        if(err.code === 'UserNotConfirmedException') {
+          const destination = await UserProfile.resendVerificationEmail(username);
+          await this.props.emailVerificationCallback(username, destination);
+        }
+        else {
+          throw err;
+        }
+      }
     }
     catch(err) {
       await this.setError(err.message);
@@ -101,8 +120,19 @@ class LoginForm extends Component {
       await UserProfile.resetPassword(this.state.username, code, password);
       await Utils.setStatePromise(this, {
         error: '',
+        success: '',
         screen: HeaderState.RECOVERY_SUCCESS
       });
+    }
+    catch(err) {
+      await this.setError(err.message);
+    }
+  }
+
+  async resendVerificationEmail(event) {
+    try {
+      await UserProfile.forgotPassword(this.state.username);
+      await this.setSuccess('Another email has been sent!');
     }
     catch(err) {
       await this.setError(err.message);
@@ -155,6 +185,7 @@ class LoginForm extends Component {
     const recoveryPasswordForm = (
       <div className="Register-form Module-popup">
         { this.state.error && <h2>{this.state.error}</h2> }
+        { this.state.success && <h2>{this.state.success}</h2> }
         <h2>Reset your password</h2>
         <p>
           You should've received an email at { this.state.destination } with a
@@ -172,6 +203,10 @@ class LoginForm extends Component {
           <label htmlFor="reset-confirm-password">Confirm password</label>
           <input autoComplete="off" type="password" name="confirmPassword"
                  key="reset-confirm-password" id="reset-confirm-password" />
+
+          <div onClick={this.resendVerificationEmail} className="Askd-form-link">
+            Didn't get the email? Click here to resend
+          </div>
 
           <input className="Askd-button Module-popup-last" type="submit"
                  value="Submit" />
@@ -203,6 +238,7 @@ class LoginForm extends Component {
       case HeaderState.RECOVERY_SUCCESS:
         currentForm = recoveryPasswordSuccess;
         break;
+      default:
     }
 
     return (
