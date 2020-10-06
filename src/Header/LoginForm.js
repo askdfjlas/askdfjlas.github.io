@@ -145,7 +145,7 @@ class LoginForm extends Component {
         { this.state.error && <h2>{this.state.error}</h2> }
         <h2>Login to your account!</h2>
         <form className="Askd-form" onSubmit={this.login}>
-          <label htmlFor="login-username">Username</label>
+          <label htmlFor="login-username">Username or email</label>
           <input autoComplete="off" type="text" name="username"
                  key="login-username" id="login-username" />
 
@@ -168,11 +168,11 @@ class LoginForm extends Component {
         { this.state.error && <h2>{this.state.error}</h2> }
         <h2>Reset your password</h2>
         <p>
-          Please provide your username, so that you can reset your password via
-          an emailed confirmation code.
+          Please provide your username or email, so that you can reset your
+          password via an emailed confirmation code.
         </p>
         <form className="Askd-form" onSubmit={this.forgotPassword}>
-          <label htmlFor="reset-username">Username</label>
+          <label htmlFor="reset-username">Username or email</label>
           <input autoComplete="off" type="text" name="username"
                  key="reset-username" id="reset-username" />
 

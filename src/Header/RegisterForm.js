@@ -4,6 +4,10 @@ import UserProfile from '../UserProfile';
 import HeaderState from './HeaderState';
 import '../css/RegisterForm.css';
 
+const USERNAME_MIN_LENGTH = 3;
+const USERNAME_MAX_LENGTH = 20;
+const ERROR_TRIGGER_PREFIX = 'PreSignUp failed with error';
+
 class RegisterForm extends Component {
   constructor(props) {
     super(props);
@@ -29,6 +33,12 @@ class RegisterForm extends Component {
   }
 
   async setError(message) {
+    if(message.startsWith(ERROR_TRIGGER_PREFIX)) {
+      message = message.substring(
+        ERROR_TRIGGER_PREFIX.length, message.length - 1
+      );
+    }
+
     await Utils.setStatePromise(this, {
       error: `Error: ${message}`,
       success: ''
@@ -53,6 +63,14 @@ class RegisterForm extends Component {
 
     if(!username || !email || !password || !confirmPassword) {
       await this.setError('Please fill out all of the fields.')
+      return;
+    }
+
+    if(username.length < USERNAME_MIN_LENGTH || username.length > USERNAME_MAX_LENGTH) {
+      await this.setError(
+        `Your username must be between ${USERNAME_MIN_LENGTH} ` +
+        `and ${USERNAME_MAX_LENGTH} characters!`
+      );
       return;
     }
 
