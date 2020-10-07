@@ -85,10 +85,13 @@
 
 .Askd-button-circular {
   background-color: #DDDDDD;
+  text-align: center;
   color: black;
   font-size: 1.5em;
   width: 2em;
   height: 2em;
+  padding: 0;
+  margin: 0;
   border-radius: 100%;
 }
 
