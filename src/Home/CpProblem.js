@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Utils from './Utils';
-import './css/CpProblem.css';
+import Utils from '../Utils';
+import '../css/CpProblem.css';
 
 const SOLVED_CLASS = [
   'Cp-unsolved',

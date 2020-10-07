@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import Utils from './Utils';
-import SearchSelect from './SearchSelect';
-import Api from './Api';
-import './css/CpForm.css';
+import Utils from '../Utils';
+import SearchSelect from '../SearchSelect';
+import Api from '../Api';
+import '../css/CpForm.css';
 
 class CpForm extends Component {
   constructor(props) {

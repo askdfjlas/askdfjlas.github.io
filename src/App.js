@@ -1,6 +1,7 @@
 import React from 'react';
-import Header from './Header/Header';
-import CpNotes from './CpNotes';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import Home from './pages/Home';
+
 import './css/App.css';
 import './css/Module.css';
 import './css/Form.css';
@@ -8,10 +9,14 @@ import './fonts/fonts.css';
 
 function App() {
   return (
-    <div className="App">
-      <Header />
-      <CpNotes />
-    </div>
+    <BrowserRouter>
+      <div className="App">
+        <Switch>
+          <Route exact path="/" component={Home} />
+          <Route exact path="/home" component={Home} />
+        </Switch>
+      </div>
+    </BrowserRouter>
   );
 }
 

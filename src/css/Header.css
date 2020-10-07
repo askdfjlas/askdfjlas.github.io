@@ -44,13 +44,14 @@
   z-index: 1;
 }
 
-.Header ul li {
+.Header ul li a {
   display: inline-block;
   color: white;
   transition: 0.25s;
+  text-decoration: none;
 }
 
-.Header ul li:hover, .Header-top-right span:hover {
+.Header ul li a:hover, .Header-top-right span:hover {
   cursor: pointer;
   color: #CCCCCC;
   transition: 0.25s;

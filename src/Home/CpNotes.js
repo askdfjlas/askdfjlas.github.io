@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import Api from './Api';
+import Api from '../Api';
 import CpProblem from './CpProblem';
 import CpForm from './CpForm';
-import Utils from './Utils';
-import './css/CpNotes.css';
+import Utils from '../Utils';
+import '../css/CpNotes.css';
 
 class CpNotes extends Component {
   constructor(props) {
