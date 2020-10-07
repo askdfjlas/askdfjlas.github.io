@@ -38,10 +38,10 @@
 }
 
 .Header ul {
-  position: absolute;
   list-style-type: none;
-  bottom: 1.5em;
   padding: 0;
+  margin: 0;
+  z-index: 1;
 }
 
 .Header ul li {
