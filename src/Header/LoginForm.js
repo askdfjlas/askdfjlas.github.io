@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Utils from '../Utils';
-import UserProfile from '../UserProfile';
+import HeaderUtils from './HeaderUtils';
+import UserApi from '../Api/UserApi';
 import HeaderState from './HeaderState';
 
 class LoginForm extends Component {
@@ -51,12 +52,12 @@ class LoginForm extends Component {
 
     try {
       try {
-        await UserProfile.login(username, password);
+        await UserApi.login(username, password);
         this.props.exitCallback(true);
       }
       catch(err) {
         if(err.code === 'UserNotConfirmedException') {
-          const destination = await UserProfile.resendVerificationEmail(username);
+          const destination = await UserApi.resendVerificationEmail(username);
           await this.props.emailVerificationCallback(username, destination);
         }
         else {
@@ -86,7 +87,7 @@ class LoginForm extends Component {
     }
 
     try {
-      const destination = await UserProfile.forgotPassword(username);
+      const destination = await UserApi.forgotPassword(username);
       Utils.setStatePromise(this, {
         error: '',
         username: username,
@@ -112,12 +113,12 @@ class LoginForm extends Component {
       return;
     }
 
-    const passwordsOk = await Utils.checkPasswords(this, password, confirmPassword);
+    const passwordsOk = await HeaderUtils.checkPasswords(this, password, confirmPassword);
     if(!passwordsOk)
       return;
 
     try {
-      await UserProfile.resetPassword(this.state.username, code, password);
+      await UserApi.resetPassword(this.state.username, code, password);
       await Utils.setStatePromise(this, {
         error: '',
         success: '',
@@ -131,7 +132,7 @@ class LoginForm extends Component {
 
   async resendVerificationEmail(event) {
     try {
-      await UserProfile.forgotPassword(this.state.username);
+      await UserApi.forgotPassword(this.state.username);
       await this.setSuccess('Another email has been sent!');
     }
     catch(err) {

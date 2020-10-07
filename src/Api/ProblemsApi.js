@@ -3,12 +3,12 @@ import queryString from 'query-string';
 const API_STORAGE_KEY = 'askdfjlas.github.io';
 const API_ENDPOINT = 'https://qqmeusmrfk.execute-api.us-east-1.amazonaws.com/prod/';
 
-class Api {
+class ProblemsApi {
   static localStorage = window.localStorage;
-  static problems = JSON.parse(Api.localStorage.getItem(API_STORAGE_KEY)) || {};
+  static problems = JSON.parse(ProblemsApi.localStorage.getItem(API_STORAGE_KEY)) || {};
 
   static _updateStorage() {
-    Api.localStorage.setItem(API_STORAGE_KEY, JSON.stringify(Api.problems));
+    ProblemsApi.localStorage.setItem(API_STORAGE_KEY, JSON.stringify(ProblemsApi.problems));
   }
 
   static async _getJson(path) {
@@ -28,16 +28,16 @@ class Api {
     return fakeResponse;
 
     const path = `problems?${queryString.stringify(options)}`;
-    return await Api._getJson(path);
+    return await ProblemsApi._getJson(path);
   }
 
   static addProblem(problem) {
     const fakeUuid = '' + (new Date()).getTime();
-    Api.problems[fakeUuid] = problem;
-    Api._updateStorage();
+    ProblemsApi.problems[fakeUuid] = problem;
+    ProblemsApi._updateStorage();
 
     return fakeUuid;
   }
 }
 
-export default Api;
+export default ProblemsApi;

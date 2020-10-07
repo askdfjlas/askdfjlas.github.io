@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Api from '../Api';
+import ProblemsApi from '../Api/ProblemsApi';
 import CpProblem from './CpProblem';
 import CpForm from './CpForm';
 import Utils from '../Utils';
@@ -10,7 +10,7 @@ class CpNotes extends Component {
     super(props);
 
     this.state = {
-      problems: Api.getProblems(),
+      problems: ProblemsApi.getProblems(),
       showForm: false
     };
 
@@ -30,7 +30,7 @@ class CpNotes extends Component {
     if(!problem)
       return;
 
-    const uuid = Api.addProblem(problem);
+    const uuid = ProblemsApi.addProblem(problem);
     var updatedProblems = this.state.problems;
     updatedProblems[uuid] = problem;
 

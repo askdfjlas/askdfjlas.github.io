@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Utils from '../Utils';
-import SearchSelect from '../SearchSelect';
-import Api from '../Api';
+import SearchSelect from '../SearchSelect/SearchSelect';
+import ProblemsApi from '../Api/ProblemsApi';
 import '../css/CpForm.css';
 
 class CpForm extends Component {
@@ -69,7 +69,7 @@ class CpForm extends Component {
             </select>
 
             <label htmlFor="cp-title">Problem title</label>
-            <SearchSelect name='title' id='cp-title' search={Api.getProblems}
+            <SearchSelect name='title' id='cp-title' search={ProblemsApi.getProblems}
                           searchKey={this.state.platform} keys={['code', 'title']}
                           callback={this.updateProblemSortKey} />
 

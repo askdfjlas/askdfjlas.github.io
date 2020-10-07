@@ -5,7 +5,6 @@ import Home from './pages/Home';
 import './css/App.css';
 import './css/Module.css';
 import './css/Form.css';
-import './fonts/fonts.css';
 
 function App() {
   return (

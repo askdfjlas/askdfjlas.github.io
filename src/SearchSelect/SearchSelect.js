@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import Utils from './Utils';
-import './css/SearchSelect.css';
+import Utils from '../Utils';
+import '../css/SearchSelect.css';
 
 const MAX_OPTIONS = 10;
 const GLOBAL_SORT_KEY = 'sk';

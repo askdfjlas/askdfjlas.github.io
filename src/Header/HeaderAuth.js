@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import Utils from '../Utils';
 import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
 import UserMenu from './UserMenu';
-import UserProfile from '../UserProfile';
+import UserApi from '../Api/UserApi';
 
 class HeaderAuth extends Component {
   constructor(props) {
@@ -28,7 +27,7 @@ class HeaderAuth extends Component {
   }
 
   async refreshUsername() {
-    const username = await UserProfile.getUsername();
+    const username = await UserApi.getUsername();
 
     await Utils.setStatePromise(this, {
       username: username,

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import UserProfile from '../UserProfile';
+import UserApi from '../Api/UserApi';
 import '../css/UserMenu.css'
 
 class UserMenu extends Component {
@@ -10,7 +10,7 @@ class UserMenu extends Component {
   }
 
   async logout() {
-    await UserProfile.logout();
+    await UserApi.logout();
     await this.props.logoutCallback();
   }
 

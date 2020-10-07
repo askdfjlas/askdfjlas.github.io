@@ -1,11 +1,11 @@
 import { Auth } from 'aws-amplify';
 
-class UserProfile {
+class UserApi {
   static profile = null;
 
   static async loadProfile() {
     try {
-      UserProfile.profile = await Auth.currentAuthenticatedUser();
+      UserApi.profile = await Auth.currentAuthenticatedUser();
     }
     catch(err) {
       // currentAuthenticatedUser() throws this error if the user is not logged in
@@ -49,18 +49,18 @@ class UserProfile {
 
   static async logout() {
     await Auth.signOut();
-    UserProfile.profile = null;
+    UserApi.profile = null;
   }
 
   static async getUsername() {
-    if(!UserProfile.profile)
-      await UserProfile.loadProfile();
+    if(!UserApi.profile)
+      await UserApi.loadProfile();
 
-    if(!UserProfile.profile)
+    if(!UserApi.profile)
       return null;
 
-    return UserProfile.profile.username;
+    return UserApi.profile.username;
   }
 }
 
-export default UserProfile;
+export default UserApi;
