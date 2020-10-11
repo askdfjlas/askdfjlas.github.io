@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import Home from './pages/Home';
+import Home from './Home/Home';
+import UserProfile from './UserProfile/UserProfile';
 
 import './css/App.css';
 import './css/Module.css';
@@ -13,6 +14,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/home" component={Home} />
+          <Route exact path="/users/:username" component={UserProfile} />
         </Switch>
       </div>
     </BrowserRouter>

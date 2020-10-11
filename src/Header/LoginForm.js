@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Utils from '../Utils';
 import HeaderUtils from './HeaderUtils';
-import UserApi from '../Api/UserApi';
+import UserAuthApi from '../Api/UserAuthApi';
 import HeaderState from './HeaderState';
 
 class LoginForm extends Component {
@@ -52,12 +52,12 @@ class LoginForm extends Component {
 
     try {
       try {
-        await UserApi.login(username, password);
+        await UserAuthApi.login(username, password);
         this.props.exitCallback(true);
       }
       catch(err) {
         if(err.code === 'UserNotConfirmedException') {
-          const destination = await UserApi.resendVerificationEmail(username);
+          const destination = await UserAuthApi.resendVerificationEmail(username);
           await this.props.emailVerificationCallback(username, destination);
         }
         else {
@@ -87,7 +87,7 @@ class LoginForm extends Component {
     }
 
     try {
-      const destination = await UserApi.forgotPassword(username);
+      const destination = await UserAuthApi.forgotPassword(username);
       Utils.setStatePromise(this, {
         error: '',
         username: username,
@@ -118,7 +118,7 @@ class LoginForm extends Component {
       return;
 
     try {
-      await UserApi.resetPassword(this.state.username, code, password);
+      await UserAuthApi.resetPassword(this.state.username, code, password);
       await Utils.setStatePromise(this, {
         error: '',
         success: '',
@@ -132,7 +132,7 @@ class LoginForm extends Component {
 
   async resendVerificationEmail(event) {
     try {
-      await UserApi.forgotPassword(this.state.username);
+      await UserAuthApi.forgotPassword(this.state.username);
       await this.setSuccess('Another email has been sent!');
     }
     catch(err) {

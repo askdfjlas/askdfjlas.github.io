@@ -3,7 +3,7 @@ import Utils from '../Utils';
 import RegisterForm from './RegisterForm';
 import LoginForm from './LoginForm';
 import UserMenu from './UserMenu';
-import UserApi from '../Api/UserApi';
+import UserAuthApi from '../Api/UserAuthApi';
 
 class HeaderAuth extends Component {
   constructor(props) {
@@ -27,7 +27,7 @@ class HeaderAuth extends Component {
   }
 
   async refreshUsername() {
-    const username = await UserApi.getUsername();
+    const username = await UserAuthApi.getUsername();
 
     await Utils.setStatePromise(this, {
       username: username,
@@ -40,19 +40,30 @@ class HeaderAuth extends Component {
     await this.refreshUsername();
   }
 
-  async toggleRegisterForm() {
+  async toggleRegisterForm(event) {
+    if(this.state.showRegisterForm) {
+      await Utils.setStatePromise(this, {
+        unverifiedAccountUsername: null,
+        unverifiedAccountDestination: null
+      });
+    }
+
     await Utils.setStatePromise(this, {
       showRegisterForm: !this.state.showRegisterForm
     });
   }
 
-  async toggleLoginForm() {
+  async toggleLoginForm(event) {
     await Utils.setStatePromise(this, {
       showLoginForm: !this.state.showLoginForm
     });
   }
 
-  async toggleUserMenu() {
+  async toggleUserMenu(event) {
+    const focusedElement = event.relatedTarget;
+    if(focusedElement && focusedElement.nodeName === 'A')
+      return;
+
     await Utils.setStatePromise(this, {
       showUserMenu: !this.state.showUserMenu
     });
@@ -92,7 +103,8 @@ class HeaderAuth extends Component {
         <div className="Header-user-menu">
           {
             this.state.showUserMenu &&
-            <UserMenu logoutCallback={this.refreshUsername} />
+            <UserMenu username={this.state.username}
+                      logoutCallback={this.refreshUsername} />
           }
         </div>
       </div>

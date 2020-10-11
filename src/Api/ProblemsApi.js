@@ -1,7 +1,4 @@
-import queryString from 'query-string';
-
 const API_STORAGE_KEY = 'askdfjlas.github.io';
-const API_ENDPOINT = 'https://qqmeusmrfk.execute-api.us-east-1.amazonaws.com/prod/';
 
 class ProblemsApi {
   static localStorage = window.localStorage;
@@ -11,15 +8,12 @@ class ProblemsApi {
     ProblemsApi.localStorage.setItem(API_STORAGE_KEY, JSON.stringify(ProblemsApi.problems));
   }
 
-  static async _getJson(path) {
-    const response = await fetch(API_ENDPOINT + path);
-    return await response.json();
-  }
-
   static async getProblems(platform) {
+    /*
     const options = {
       'platform': platform
     };
+    */
 
     var fakeResponse = [];
     for(var i = 0; i < 10000; i++) {
@@ -27,8 +21,10 @@ class ProblemsApi {
     }
     return fakeResponse;
 
+    /*
     const path = `problems?${queryString.stringify(options)}`;
     return await ProblemsApi._getJson(path);
+    */
   }
 
   static addProblem(problem) {

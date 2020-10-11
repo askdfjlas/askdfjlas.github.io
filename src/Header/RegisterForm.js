@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Utils from '../Utils';
 import HeaderUtils from './HeaderUtils';
-import UserApi from '../Api/UserApi';
+import UserAuthApi from '../Api/UserAuthApi';
 import HeaderState from './HeaderState';
 import '../css/RegisterForm.css';
 
@@ -80,7 +80,7 @@ class RegisterForm extends Component {
       return;
 
     try {
-      const destination = await UserApi.register(username, email, password);
+      const destination = await UserAuthApi.register(username, email, password);
       Utils.setStatePromise(this, {
         error: '',
         username: username,
@@ -98,7 +98,7 @@ class RegisterForm extends Component {
 
     const code = event.target.code.value;
     try {
-      await UserApi.verifyEmail(this.state.username, code);
+      await UserAuthApi.verifyEmail(this.state.username, code);
       Utils.setStatePromise(this, {
         error: '',
         success: '',
@@ -112,7 +112,7 @@ class RegisterForm extends Component {
 
   async resendVerificationEmail(event) {
     try {
-      await UserApi.resendVerificationEmail(this.state.username);
+      await UserAuthApi.resendVerificationEmail(this.state.username);
       await this.setSuccess('Another email has been sent!');
     }
     catch(err) {

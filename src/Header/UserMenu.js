@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import UserApi from '../Api/UserApi';
+import { Link } from 'react-router-dom';
+import UserAuthApi from '../Api/UserAuthApi';
 import '../css/UserMenu.css'
 
 class UserMenu extends Component {
@@ -10,7 +11,7 @@ class UserMenu extends Component {
   }
 
   async logout() {
-    await UserApi.logout();
+    await UserAuthApi.logout();
     await this.props.logoutCallback();
   }
 
@@ -18,10 +19,12 @@ class UserMenu extends Component {
     return (
       <div className="User-menu">
         <ol>
-          <li>Your profile</li>
+          <li>
+            <Link to={`/users/${this.props.username}`}>Your profile</Link>
+          </li>
           <div className="User-menu-divider"></div>
-          <li>Settings</li>
-          <li onClick={this.logout}>Logout</li>
+          <li className="User-menu-not-link">Settings</li>
+          <li className="User-menu-not-link" onClick={this.logout}>Logout</li>
         </ol>
       </div>
     );
