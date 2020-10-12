@@ -7,6 +7,16 @@ import amplify_config from './amplify_config';
 
 Amplify.configure(amplify_config);
 
+document.body.addEventListener('mousedown', (event) => {
+  document.body.classList.add('Global-mouse-click');
+});
+
+document.body.addEventListener('keydown', (event) => {
+  if(event.keyCode === 9) {
+    document.body.classList.remove('Global-mouse-click');
+  }
+});
+
 ReactDOM.render(
   <App />,
   document.getElementById('root')

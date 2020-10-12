@@ -12,11 +12,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  flex: 0 0 auto;
 }
 
 .Header-small {
   height: 3em;
   transition: ease-out 0.5s;
+  flex: 0 0 auto;
 }
 
 .Header::before, .Header-small::before {
@@ -78,7 +80,7 @@
 
 .Header-small ul li a:hover,
 .Header ul li a:hover,
-.Header-top-right span:hover {
+.Header-top-right button:hover {
   cursor: pointer;
   color: #CCCCCC;
   transition: 0.25s;
@@ -90,10 +92,11 @@
   content: '|';
 }
 
-.Header-top-right span {
+.Header-top-right button {
   display: inline-block;
-  color: white;
   transition: 0.25s;
+  padding: 0;
+  margin: 0;
 }
 
 .Header-top-right {
@@ -125,4 +128,16 @@
 .Header-small .Header-bottom {
   opacity: 0;
   transition: 0.5s;
+}
+
+button.Header-menu-button {
+  color: white;
+  background: none;
+  border: none;
+  font-family: 'Mosk Medium 500';
+  font-size: 1em;
+}
+
+button.Header-menu-button:hover {
+  cursor: pointer;
 }

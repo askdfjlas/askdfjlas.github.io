@@ -68,9 +68,10 @@ class HeaderAuth extends Component {
 
   async hideUserMenu(event) {
     const focusedElement = event.relatedTarget;
-    if(focusedElement && focusedElement.nodeName === 'A')
+    console.log(focusedElement);
+    if(focusedElement && focusedElement.classList.contains('Header-menu-button'))
       return;
-      
+
     await Utils.setStatePromise(this, {
       showUserMenu: false
     });
@@ -95,9 +96,13 @@ class HeaderAuth extends Component {
   render() {
     const loginButtons = (
       <div className="Header-top-right">
-        <span onClick={this.toggleLoginForm}>Login</span>
+        <button className="Header-menu-button" onClick={this.toggleLoginForm}>
+          Login
+        </button>
         <span className="Header-divider"></span>
-        <span onClick={this.toggleRegisterForm}>Create an account</span>
+        <button className="Header-menu-button" onClick={this.toggleRegisterForm}>
+          Create an account
+        </button>
       </div>
     );
 
@@ -105,7 +110,9 @@ class HeaderAuth extends Component {
       <div className="Header-logged-in" tabIndex="-1"
            onBlur={this.hideUserMenu}>
         <div className="Header-top-right">
-          <span onClick={this.toggleUserMenu}>{ this.state.username }</span>
+          <button className="Header-menu-button" onClick={this.toggleUserMenu}>
+            { this.state.username }
+          </button>
         </div>
         <div className="Header-user-menu">
           {

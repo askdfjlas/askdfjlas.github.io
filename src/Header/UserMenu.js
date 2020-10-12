@@ -20,14 +20,22 @@ class UserMenu extends Component {
       <div className="User-menu">
         <ol>
           <li>
-            <Link onClick={this.props.closeCallback}
+            <Link className="Header-menu-button" onClick={this.props.closeCallback}
                   to={`/users/${this.props.username}`}>
                   Your profile
             </Link>
           </li>
           <div className="User-menu-divider"></div>
-          <li className="User-menu-not-link">Settings</li>
-          <li className="User-menu-not-link" onClick={this.logout}>Logout</li>
+          <li className="User-menu-not-link">
+            <button className="Header-menu-button">
+              Settings
+            </button>
+          </li>
+          <li className="User-menu-not-link">
+            <button className="Header-menu-button" onClick={this.logout}>
+              Logout
+            </button>
+          </li>
         </ol>
       </div>
     );

@@ -5,6 +5,10 @@ html, body {
   height: 100%;
 }
 
+body.Global-mouse-click *:focus {
+  outline: none;
+}
+
 .App, #root {
   height: 100%;
 }
