@@ -22,6 +22,7 @@ class HeaderAuth extends Component {
     this.toggleRegisterForm = this.toggleRegisterForm.bind(this);
     this.toggleLoginForm = this.toggleLoginForm.bind(this);
     this.toggleUserMenu = this.toggleUserMenu.bind(this);
+    this.hideUserMenu = this.hideUserMenu.bind(this);
     this.afterLogin = this.afterLogin.bind(this);
     this.unverifiedAccount = this.unverifiedAccount.bind(this);
   }
@@ -60,12 +61,18 @@ class HeaderAuth extends Component {
   }
 
   async toggleUserMenu(event) {
+    await Utils.setStatePromise(this, {
+      showUserMenu: !this.state.showUserMenu
+    });
+  }
+
+  async hideUserMenu(event) {
     const focusedElement = event.relatedTarget;
     if(focusedElement && focusedElement.nodeName === 'A')
       return;
-
+      
     await Utils.setStatePromise(this, {
-      showUserMenu: !this.state.showUserMenu
+      showUserMenu: false
     });
   }
 
@@ -96,7 +103,7 @@ class HeaderAuth extends Component {
 
     const loggedInButton = (
       <div className="Header-logged-in" tabIndex="-1"
-           onBlur={this.toggleUserMenu}>
+           onBlur={this.hideUserMenu}>
         <div className="Header-top-right">
           <span onClick={this.toggleUserMenu}>{ this.state.username }</span>
         </div>
@@ -104,6 +111,7 @@ class HeaderAuth extends Component {
           {
             this.state.showUserMenu &&
             <UserMenu username={this.state.username}
+                      closeCallback={this.toggleUserMenu}
                       logoutCallback={this.refreshUsername} />
           }
         </div>

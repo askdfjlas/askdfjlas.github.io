@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Header from '../Header/Header';
 import UserInfo from './UserInfo';
 import UserApi from '../Api/UserApi';
 import UserInfoState from './UserInfoState';
@@ -80,7 +79,6 @@ class UserProfile extends Component {
 
     return (
       <>
-        <Header />
         <div className="Module-wrapper">
           { content }
         </div>

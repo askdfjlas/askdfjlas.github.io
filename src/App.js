@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import Header from './Header/Header';
 import Home from './Home/Home';
 import UserProfile from './UserProfile/UserProfile';
 
@@ -11,6 +12,7 @@ function App() {
   return (
     <BrowserRouter>
       <div className="App">
+        <Header />
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/home" component={Home} />

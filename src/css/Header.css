@@ -1,16 +1,25 @@
-.Header {
-  font-family: 'Mosk Medium 500';
-  position: relative;
+.Header, .Header-small {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+  position: relative;
+  font-family: 'Mosk Medium 500';
   background-color: rgba(30, 30, 100, 0.9);
-  flex: 0 0 12em;
   width: 100%;
 }
 
-.Header::before {
+.Header {
+  height: 12em;
+  transition: ease-out 0.5s;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.Header-small {
+  height: 3em;
+  transition: ease-out 0.5s;
+}
+
+.Header::before, .Header-small::before {
   content: '';
   position: absolute;
   top: 0;
@@ -22,7 +31,15 @@
   background-position: center;
   background-repeat: no-repeat;
   background-color: #000020;
+  transition: ease-out 0.5s;
+}
+
+.Header::before {
   height: 12em;
+}
+
+.Header-small::before {
+  height: 3em;
 }
 
 .Header h1 {
@@ -44,14 +61,24 @@
   z-index: 1;
 }
 
-.Header ul li a {
+.Header-small ul {
+  list-style-type: none;
+  z-index: 1;
+  margin: 0;
+  font-size: 1em;
+  padding: 1em;
+}
+
+.Header-small ul li a, .Header ul li a {
   display: inline-block;
   color: white;
   transition: 0.25s;
   text-decoration: none;
 }
 
-.Header ul li a:hover, .Header-top-right span:hover {
+.Header-small ul li a:hover,
+.Header ul li a:hover,
+.Header-top-right span:hover {
   cursor: pointer;
   color: #CCCCCC;
   transition: 0.25s;
@@ -86,6 +113,16 @@
   position: absolute;
   bottom: 0;
   background-color: darkgray;
-  height: 0.3em;
   width: 100%;
+  height: 0.2em;
+}
+
+.Header .Header-bottom {
+  opacity: 1;
+  transition: 0.5s;
+}
+
+.Header-small .Header-bottom {
+  opacity: 0;
+  transition: 0.5s;
 }
