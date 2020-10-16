@@ -1,4 +1,5 @@
 .Register-form {
-  width: 50%;
-  max-width: 25em;
+  box-sizing: border-box;
+  width: 80%;
+  max-width: 35em;
 }

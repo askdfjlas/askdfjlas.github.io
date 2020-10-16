@@ -10,9 +10,10 @@ class SearchSelect extends Component {
     super(props);
 
     this.state = {
+      loading: false,
       searchTerm: '',
       previousValidSearchTerm: '',
-      showOptions: true,
+      showOptions: false,
       options: [],
       filteredOptions: []
     };
@@ -31,35 +32,22 @@ class SearchSelect extends Component {
     return optionStringArray.join(' - ');
   }
 
-  async componentDidUpdate(prevProps) {
-    if(!this.props.staticKey || this.props.staticKey === prevProps.staticKey)
-      return;
-
-    const options = await this.props.search();
-    await Utils.setStatePromise(this, {
-      searchTerm: '',
-      previousValidSearchTerm: '',
-      options: options,
-      filteredOptions: []
-    });
-  }
-
-  async handleChange(event) {
-    const newSearchTerm = event.target.value.toLowerCase();
-
+  async filterOptions() {
     var filteredOptions = [];
+    const searchTerm = this.state.searchTerm.toLowerCase();
+
     for(const option of this.state.options) {
       if(filteredOptions.length === MAX_OPTIONS)
         break;
 
       const optionString = this.getOptionString(option);
-      if(optionString.toLowerCase().includes(newSearchTerm)) {
+      if(optionString.toLowerCase().includes(searchTerm)) {
         filteredOptions.push(option);
         continue;
       }
 
       for(const key of this.props.keys) {
-        if(option[key].toLowerCase().includes(newSearchTerm)) {
+        if(option[key].toLowerCase().includes(searchTerm)) {
           filteredOptions.push(option);
           break;
         }
@@ -67,9 +55,43 @@ class SearchSelect extends Component {
     }
 
     await Utils.setStatePromise(this, {
-      searchTerm: event.target.value,
       filteredOptions: filteredOptions
     });
+  }
+
+  async componentDidUpdate(prevProps) {
+    if(prevProps.staticKey && !this.props.staticKey) {
+      await Utils.setStatePromise(this, {
+        searchTerm: ''
+      });
+      return;
+    }
+
+    if(this.props.staticKey === prevProps.staticKey)
+      return;
+
+    await Utils.setStatePromise(this, {
+      searchTerm: '',
+      loading: true
+    });
+    const options = await this.props.search();
+
+    await Utils.setStatePromise(this, {
+      loading: false,
+      previousValidSearchTerm: '',
+      options: options,
+      showOptions: false
+    });
+
+    await this.filterOptions();
+  }
+
+  async handleChange(event) {
+    await Utils.setStatePromise(this, {
+      searchTerm: event.target.value,
+    });
+
+    await this.filterOptions();
   }
 
   async handleBlur(event) {
@@ -79,8 +101,7 @@ class SearchSelect extends Component {
 
     await Utils.setStatePromise(this, {
       showOptions: false,
-      searchTerm: this.state.previousValidSearchTerm,
-      filteredOptions: []
+      searchTerm: this.state.previousValidSearchTerm
     });
   }
 
@@ -94,10 +115,10 @@ class SearchSelect extends Component {
     await Utils.setStatePromise(this, {
       searchTerm: optionString,
       previousValidSearchTerm: optionString,
-      showOptions: false,
-      filteredOptions: []
+      showOptions: false
     });
 
+    await this.filterOptions();
     this.props.callback(sortKey);
   }
 
@@ -105,9 +126,10 @@ class SearchSelect extends Component {
     var optionElements = [];
     for(const option of this.state.filteredOptions) {
       const optionString = this.getOptionString(option);
+      const displayString = option[this.props.displayKey];
       const sortKey = option[GLOBAL_SORT_KEY];
       optionElements.push(
-        <li onClick={() => this.handleOptionSelect(sortKey, optionString)}
+        <li onClick={() => this.handleOptionSelect(sortKey, displayString)}
             key={sortKey}>
             {optionString}
         </li>
@@ -116,10 +138,11 @@ class SearchSelect extends Component {
 
     return (
       <div onBlur={this.handleBlur} className="Search-select">
-        <input onChange={this.handleChange} autoComplete="off" type="text"
+        <input className={this.state.loading ? "Askd-form-loading" : ""}
+               onChange={this.handleChange} autoComplete="off" type="text"
                value={this.state.searchTerm} onFocus={this.handleFocus}
                name={this.props.name} id={this.props.id}
-               disabled={!this.props.search} />
+               disabled={!this.props.search || this.state.loading} />
         {
           optionElements.length > 0 && this.state.showOptions &&
           <ol id={`Select-options-${this.props.name}`} tabIndex="-1"

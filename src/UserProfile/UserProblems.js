@@ -11,19 +11,29 @@ class UserProblems extends Component {
     };
 
     this.toggleAddProblemForm = this.toggleAddProblemForm.bind(this);
+    this.addProblem = this.addProblem.bind(this);
   }
 
   async toggleAddProblemForm() {
     Utils.setStatePromise(this, {
-      showAddProblemForm: true
+      showAddProblemForm: !this.state.showAddProblemForm
     });
+  }
+
+  async addProblem(problemKey) {
+    await this.toggleAddProblemForm();
+    if(!problemKey)
+      return;
   }
 
   render() {
     return (
       <>
         <h2 className="Module-heading">Problems</h2>
-        { this.state.showAddProblemForm && <AddProblemForm /> }
+        {
+          this.state.showAddProblemForm &&
+          <AddProblemForm callback={this.addProblem} />
+        }
         <div className="Cp-notes Module-space">
           <p>There's nothing to see here yet!</p>
           {

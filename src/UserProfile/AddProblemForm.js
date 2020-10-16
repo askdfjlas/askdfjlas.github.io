@@ -11,11 +11,13 @@ class AddProblemForm extends Component {
     this.state = {
       platform: null,
       contestSortKey: null,
-      problemSortKey: null
+      problemSortKey: null,
+      skipContestSearch: false
     };
 
     this.close = this.close.bind(this);
     this.handlePlatformChange = this.handlePlatformChange.bind(this);
+    this.toggleSkipContestSearch = this.toggleSkipContestSearch.bind(this);
     this.updateProblemSortKey = this.updateProblemSortKey.bind(this);
     this.updateContestSortKey = this.updateContestSortKey.bind(this);
   }
@@ -27,6 +29,14 @@ class AddProblemForm extends Component {
   async handlePlatformChange(event) {
     await Utils.setStatePromise(this, {
       platform: event.target.value
+    });
+  }
+
+  async toggleSkipContestSearch(event) {
+    await Utils.setStatePromise(this, {
+      skipContestSearch: !this.state.skipContestSearch,
+      contestSortKey: null,
+      problemSortKey: null
     });
   }
 
@@ -45,7 +55,7 @@ class AddProblemForm extends Component {
   render() {
     var searchContestFunction = null;
     var searchContestKey = null;
-    if(this.state.platform) {
+    if(this.state.platform && !this.state.skipContestSearch) {
       searchContestFunction = () => ProblemsApi.getContests(this.state.platform);
       searchContestKey = this.state.platform;
     }
@@ -57,6 +67,14 @@ class AddProblemForm extends Component {
         ProblemsApi.getProblems(this.state.platform, this.state.contestSortKey);
       searchProblemKey = this.state.platform + this.state.contestSortKey;
     }
+    else if(this.state.platform && this.state.skipContestSearch) {
+      searchProblemFunction = () => ProblemsApi.getProblems(this.state.platform);
+      searchProblemKey = this.state.platform;
+    }
+
+    var skipButtonText = this.state.skipContestSearch ?
+                         'Want to filter by contest?' :
+                         'Want to skip filtering by contest?';
 
     return (
       <div className="Module-blocker">
@@ -68,7 +86,8 @@ class AddProblemForm extends Component {
           <h2>Add a problem!</h2>
           <form className="Askd-form" onSubmit={this.addProblem}>
             <label htmlFor="cp-platform">Platform</label>
-            <select defaultValue="" onChange={this.handlePlatformChange} name="platform" id="cp-platform">
+            <select defaultValue="" onChange={this.handlePlatformChange}
+                    name="platform" id="cp-platform">
               <option disabled value=""></option>
               <option value="CodeForces">CodeForces</option>
               <option value="CodeChef">CodeChef</option>
@@ -77,16 +96,17 @@ class AddProblemForm extends Component {
             <label htmlFor="cp-contest">Contest</label>
             <SearchSelect name='contest' id='cp-contest' search={searchContestFunction}
                           keys={['sk', 'name']} callback={this.updateContestSortKey}
-                          staticKey={searchContestKey} />
+                          displayKey='name' staticKey={searchContestKey} />
 
-            <button type="button" className="Askd-form-link Askd-form-link-separator">
-              Want to skip filtering by contest?
+            <button onClick={this.toggleSkipContestSearch}
+                    type="button" className="Askd-form-link Askd-form-link-separator">
+              { skipButtonText }
             </button>
 
-            <label htmlFor="cp-title">Problem name</label>
+            <label htmlFor="cp-title">Problem</label>
             <SearchSelect name='title' id='cp-title' search={searchProblemFunction}
                           keys={['sk', 'name']} callback={this.updateProblemSortKey}
-                          staticKey={searchProblemKey} />
+                          displayKey='name' staticKey={searchProblemKey} />
 
             <input className="Askd-button Module-popup-last" type="submit"
                    value="Add Problem" />

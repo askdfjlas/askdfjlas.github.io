@@ -1,5 +1,7 @@
 .Add-problem-form {
-  width: 50%;
+  box-sizing: border-box;
+  width: 80%;
+  max-width: 40em;
 }
 
 .Add-problem-form h2 {

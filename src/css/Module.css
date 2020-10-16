@@ -47,10 +47,13 @@
   margin: auto;
   border-radius: 3px;
   border: 2px solid white;
+  box-shadow: 5px 5px rgba(40, 50, 100, 0.7),
+              10px 10px rgba(40, 50, 100, 0.5),
+              15px 15px rgba(40, 50, 100, 0.3);
 }
 
 .Module-popup-last {
-  margin-bottom: 2em;
+  margin-bottom: 3em;
 }
 
 .Module-popup h2, .Module-popup p {

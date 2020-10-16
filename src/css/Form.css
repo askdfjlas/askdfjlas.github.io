@@ -24,11 +24,23 @@
   resize: vertical;
 }
 
+.Askd-form select {
+  background-image: url('../img/dropdown.png');
+  background-size: auto 70%;
+  background-repeat: no-repeat;
+  background-position: right 0.5em bottom 50%;
+}
+
 .Askd-form input, .Askd-form textarea, .Askd-form select {
   box-sizing: border-box;
   padding: 0.5em;
   background-color: #444466;
   color: #DDDDDD;
+  appearance: none;
+}
+
+.Askd-form :disabled {
+  background-color: #303060;
 }
 
 .Askd-form input[type="submit"] {
@@ -46,14 +58,6 @@
 .Askd-form .Search-select-options {
   width: 100%;
 }
-
-/*
-.Askd-form input:not([type="submit"]):not([name="link"]),
-.Askd-form textarea,
-.Askd-form select {
-  margin-bottom: 1em;
-}
-*/
 
 .Askd-form-inline {
   display: flex;
@@ -74,6 +78,7 @@
   font-weight: normal;
   font-size: 0.8em;
   color: #77AAFF;
+  text-align: left;
 }
 
 button.Askd-form-link {
@@ -115,6 +120,13 @@ button.Askd-form-link {
 .Askd-button:hover {
   cursor: pointer;
   transition: 0.5s;
+}
+
+.Askd-form-loading {
+  background-image: url('../img/spinner.gif');
+  background-size: auto 60%;
+  background-position: right 0.5em bottom 50%;
+  background-repeat: no-repeat;
 }
 
 .Askd-form-required::after {

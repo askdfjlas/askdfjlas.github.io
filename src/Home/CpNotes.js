@@ -3,6 +3,9 @@ import '../css/CpNotes.css';
 
 class CpNotes extends Component {
   async componentDidMount() {
+    if(!window.MathJax)
+      return;
+
     await window.MathJax.typesetPromise();
   }
 
