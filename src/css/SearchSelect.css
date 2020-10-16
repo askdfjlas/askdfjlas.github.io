@@ -6,9 +6,13 @@
   border: 2px solid white;
   padding: 0;
   margin: 0;
+  max-height: 8em;
+  overflow: auto;
+  z-index: 1;
 }
 
 .Search-select-options li {
+  color: #DDDDDD;
   padding: 0.3em;
   border: 1px solid rgba(0, 0, 0, 0);
 }

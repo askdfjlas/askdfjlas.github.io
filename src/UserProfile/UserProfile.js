@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import UserInfo from './UserInfo';
+import UserProblems from './UserProblems';
 import UserApi from '../Api/UserApi';
 import UserInfoState from './UserInfoState';
 import Utils from '../Utils';
@@ -53,8 +54,7 @@ class UserProfile extends Component {
         <div className="Module-description">
           <UserInfo info={this.state.info} />
         </div>
-        <div className="Module-space">
-        </div>
+        <UserProblems info={this.state.info} />
       </>
     );
     const userNotFoundContent = (

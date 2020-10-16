@@ -7,6 +7,13 @@
   flex: 1 0 auto;
 }
 
+.Module-wrapper .Module-heading {
+  font-family: 'Verdana';
+  color: white;
+  margin: 0.7em auto 0.4em auto;
+  text-align: center;
+}
+
 .Module-description {
   font-family: 'Verdana';
   color: white;
@@ -14,7 +21,7 @@
   width: 85%;
 }
 
-.Module-description h2 {
+.Module-description-centered {
   text-align: center;
 }
 
@@ -37,7 +44,6 @@
   display: flex;
   flex-direction: column;
   padding: 2em 2em 0;
-  overflow: auto;
   margin: auto;
   border-radius: 3px;
   border: 2px solid white;
@@ -47,12 +53,23 @@
   margin-bottom: 2em;
 }
 
+.Module-popup h2, .Module-popup p {
+  color: #DDDDDD;
+  margin: 0;
+  font-family: Arial;
+}
+
+.Module-popup input[type="submit"] {
+  margin-top: 2em;
+}
+
 .Module-blocker {
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.8);
   position: fixed;
+  overflow: auto;
   top: 0;
   left: 0;
   height: 100%;

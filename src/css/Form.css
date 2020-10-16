@@ -14,8 +14,9 @@
   border: none;
 }
 
-.Askd-form label, .Askd-form span {
+.Askd-form label {
   color: #DDDDDD;
+  margin-top: 1em;
 }
 
 .Askd-form textarea {
@@ -46,11 +47,13 @@
   width: 100%;
 }
 
+/*
 .Askd-form input:not([type="submit"]):not([name="link"]),
 .Askd-form textarea,
 .Askd-form select {
   margin-bottom: 1em;
 }
+*/
 
 .Askd-form-inline {
   display: flex;
@@ -73,9 +76,19 @@
   color: #77AAFF;
 }
 
+button.Askd-form-link {
+  background: none;
+  border: none;
+  padding: 0;
+}
+
 .Askd-form-link:hover {
   cursor: pointer;
   text-decoration: underline;
+}
+
+.Askd-form-link-bottom {
+  margin-top: 1em;
 }
 
 .Askd-button {

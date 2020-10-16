@@ -163,9 +163,10 @@ class RegisterForm extends Component {
           <input autoComplete="off" type="text" name="code"
                  key="verification-code" id="verification-code" />
 
-          <div onClick={this.resendVerificationEmail} className="Askd-form-link">
+          <button type="button" onClick={this.resendVerificationEmail}
+                  className="Askd-form-link Askd-form-link-bottom">
             Didn't get the email? Click here to resend
-          </div>
+          </button>
 
           <input className="Askd-button Module-popup-last" type="submit"
                  value="Submit" />

@@ -32,11 +32,13 @@ class SearchSelect extends Component {
   }
 
   async componentDidUpdate(prevProps) {
-    if(!this.props.searchKey || this.props.searchKey === prevProps.searchKey)
+    if(!this.props.staticKey || this.props.staticKey === prevProps.staticKey)
       return;
 
-    const options = await this.props.search(this.props.searchKey);
+    const options = await this.props.search();
     await Utils.setStatePromise(this, {
+      searchTerm: '',
+      previousValidSearchTerm: '',
       options: options,
       filteredOptions: []
     });
@@ -51,13 +53,13 @@ class SearchSelect extends Component {
         break;
 
       const optionString = this.getOptionString(option);
-      if(optionString.toLowerCase().startsWith(newSearchTerm)) {
+      if(optionString.toLowerCase().includes(newSearchTerm)) {
         filteredOptions.push(option);
         continue;
       }
 
       for(const key of this.props.keys) {
-        if(option[key].toLowerCase().startsWith(newSearchTerm)) {
+        if(option[key].toLowerCase().includes(newSearchTerm)) {
           filteredOptions.push(option);
           break;
         }
@@ -65,7 +67,7 @@ class SearchSelect extends Component {
     }
 
     await Utils.setStatePromise(this, {
-      searchTerm: newSearchTerm,
+      searchTerm: event.target.value,
       filteredOptions: filteredOptions
     });
   }
@@ -106,7 +108,9 @@ class SearchSelect extends Component {
       const sortKey = option[GLOBAL_SORT_KEY];
       optionElements.push(
         <li onClick={() => this.handleOptionSelect(sortKey, optionString)}
-            key={sortKey}>{optionString}</li>
+            key={sortKey}>
+            {optionString}
+        </li>
       );
     }
 
@@ -114,7 +118,8 @@ class SearchSelect extends Component {
       <div onBlur={this.handleBlur} className="Search-select">
         <input onChange={this.handleChange} autoComplete="off" type="text"
                value={this.state.searchTerm} onFocus={this.handleFocus}
-               name={this.props.name} id={this.props.id} disabled={!this.props.searchKey} />
+               name={this.props.name} id={this.props.id}
+               disabled={!this.props.search} />
         {
           optionElements.length > 0 && this.state.showOptions &&
           <ol id={`Select-options-${this.props.name}`} tabIndex="-1"

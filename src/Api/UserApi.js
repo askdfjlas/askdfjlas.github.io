@@ -1,4 +1,3 @@
-import queryString from 'query-string';
 import Api from './Api';
 
 class UserApi {
@@ -7,8 +6,7 @@ class UserApi {
       'username': username
     };
 
-    const path = `profile?${queryString.stringify(options)}`;
-    return await Api.getJson(path);
+    return await Api.getJson('profile', options);
   }
 }
 

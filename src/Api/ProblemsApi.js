@@ -1,3 +1,5 @@
+import Api from './Api';
+
 const API_STORAGE_KEY = 'askdfjlas.github.io';
 
 class ProblemsApi {
@@ -8,23 +10,21 @@ class ProblemsApi {
     ProblemsApi.localStorage.setItem(API_STORAGE_KEY, JSON.stringify(ProblemsApi.problems));
   }
 
-  static async getProblems(platform) {
-    /*
+  static async getContests(platform) {
     const options = {
       'platform': platform
     };
-    */
 
-    var fakeResponse = [];
-    for(var i = 0; i < 10000; i++) {
-      fakeResponse.push({'sk': '' + Math.random(), 'code': '' + Math.random(), 'title': '' + Math.random()});
-    }
-    return fakeResponse;
+    return await Api.getJson('contests', options);
+  }
 
-    /*
-    const path = `problems?${queryString.stringify(options)}`;
-    return await ProblemsApi._getJson(path);
-    */
+  static async getProblems(platform, contestId) {
+    const options = {
+      'platform': platform,
+      'contestId': contestId
+    };
+
+    return await Api.getJson('problems', options);
   }
 
   static addProblem(problem) {

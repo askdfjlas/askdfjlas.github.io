@@ -154,9 +154,10 @@ class LoginForm extends Component {
           <input autoComplete="off" type="password" name="password"
                  key="login-password" id="login-password" />
 
-          <div onClick={this.enablePasswordRecovery} className="Askd-form-link">
+          <button type="button" onClick={this.enablePasswordRecovery}
+                  className="Askd-form-link Askd-form-link-bottom">
             Forgot your password?
-          </div>
+          </button>
 
           <input className="Askd-button Module-popup-last" type="submit"
                  value="Login" />
@@ -205,9 +206,10 @@ class LoginForm extends Component {
           <input autoComplete="off" type="password" name="confirmPassword"
                  key="reset-confirm-password" id="reset-confirm-password" />
 
-          <div onClick={this.resendVerificationEmail} className="Askd-form-link">
+          <button type="button" onClick={this.resendVerificationEmail}
+                  className="Askd-form-link Askd-form-link-bottom">
             Didn't get the email? Click here to resend
-          </div>
+          </button>
 
           <input className="Askd-button Module-popup-last" type="submit"
                  value="Submit" />
