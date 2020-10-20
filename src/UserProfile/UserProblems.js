@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import AddProblemForm from './AddProblemForm';
+import NotesApi from '../Api/NotesApi';
 import Utils from '../Utils';
 
 class UserProblems extends Component {
@@ -20,10 +21,22 @@ class UserProblems extends Component {
     });
   }
 
-  async addProblem(problemKey) {
-    await this.toggleAddProblemForm();
-    if(!problemKey)
+  async addProblem(problemSortKey, platform, formComponent) {
+    if(!problemSortKey) {
+      await this.toggleAddProblemForm();
       return;
+    }
+
+    try {
+      const username = this.props.info.username;
+      await NotesApi.addNote(username, platform, problemSortKey);
+
+      const problemUrl = problemSortKey.replace('#', '/');
+      this.props.history.push(`/notes/edit/${platform}/${problemUrl}`);
+    }
+    catch(err) {
+      await Utils.componentSetError(formComponent, err.message);
+    }
   }
 
   render() {

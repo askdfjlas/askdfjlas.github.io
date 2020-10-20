@@ -54,7 +54,7 @@ class UserProfile extends Component {
         <div className="Module-description">
           <UserInfo info={this.state.info} />
         </div>
-        <UserProblems info={this.state.info} />
+        <UserProblems info={this.state.info} history={this.props.history} />
       </>
     );
     const userNotFoundContent = (

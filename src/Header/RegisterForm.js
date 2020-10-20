@@ -46,13 +46,6 @@ class RegisterForm extends Component {
     });
   }
 
-  async setSuccess(message) {
-    await Utils.setStatePromise(this, {
-      error: '',
-      success: message
-    });
-  }
-
   async register(event) {
     event.preventDefault();
 
@@ -113,7 +106,7 @@ class RegisterForm extends Component {
   async resendVerificationEmail(event) {
     try {
       await UserAuthApi.resendVerificationEmail(this.state.username);
-      await this.setSuccess('Another email has been sent!');
+      await Utils.componentSetSuccess(this, 'Another email has been sent!');
     }
     catch(err) {
       await this.setError(err.message);

@@ -1,13 +1,10 @@
 import Api from './Api';
 
-const API_STORAGE_KEY = 'askdfjlas.github.io';
-
 class ProblemsApi {
-  static localStorage = window.localStorage;
-  static problems = JSON.parse(ProblemsApi.localStorage.getItem(API_STORAGE_KEY)) || {};
-
-  static _updateStorage() {
-    ProblemsApi.localStorage.setItem(API_STORAGE_KEY, JSON.stringify(ProblemsApi.problems));
+  static _prettifyProblems(problems) {
+    for(let i = 0; i < problems.length; i++) {
+      problems[i].prettySk = problems[i].sk.replaceAll('#', '');
+    }
   }
 
   static async getContests(platform) {
@@ -24,15 +21,10 @@ class ProblemsApi {
       'contestId': contestId
     };
 
-    return await Api.getJson('problems', options);
-  }
+    let problems = await Api.getJson('problems', options);
+    ProblemsApi._prettifyProblems(problems);
 
-  static addProblem(problem) {
-    const fakeUuid = '' + (new Date()).getTime();
-    ProblemsApi.problems[fakeUuid] = problem;
-    ProblemsApi._updateStorage();
-
-    return fakeUuid;
+    return problems;
   }
 }
 

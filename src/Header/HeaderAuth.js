@@ -68,7 +68,6 @@ class HeaderAuth extends Component {
 
   async hideUserMenu(event) {
     const focusedElement = event.relatedTarget;
-    console.log(focusedElement);
     if(focusedElement && focusedElement.classList.contains('Header-menu-button'))
       return;
 

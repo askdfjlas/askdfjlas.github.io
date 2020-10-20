@@ -9,6 +9,7 @@ class AddProblemForm extends Component {
     super(props);
 
     this.state = {
+      error: '',
       platform: null,
       contestSortKey: null,
       problemSortKey: null,
@@ -20,10 +21,11 @@ class AddProblemForm extends Component {
     this.toggleSkipContestSearch = this.toggleSkipContestSearch.bind(this);
     this.updateProblemSortKey = this.updateProblemSortKey.bind(this);
     this.updateContestSortKey = this.updateContestSortKey.bind(this);
+    this.addProblem = this.addProblem.bind(this);
   }
 
   close() {
-    this.props.callback(null);
+    this.props.callback(null, null, null);
   }
 
   async handlePlatformChange(event) {
@@ -42,7 +44,8 @@ class AddProblemForm extends Component {
 
   async updateContestSortKey(sortKey) {
     await Utils.setStatePromise(this, {
-      contestSortKey: sortKey
+      contestSortKey: sortKey,
+      problemSortKey: null
     });
   }
 
@@ -50,6 +53,17 @@ class AddProblemForm extends Component {
     await Utils.setStatePromise(this, {
       problemSortKey: sortKey
     });
+  }
+
+  async addProblem(event) {
+    event.preventDefault();
+
+    if(!this.state.problemSortKey) {
+      await Utils.componentSetError('Please search and select a problem.');
+      return;
+    }
+
+    this.props.callback(this.state.problemSortKey, this.state.platform, this);
   }
 
   render() {
@@ -83,6 +97,7 @@ class AddProblemForm extends Component {
                 X
         </button>
         <div className="Add-problem-form Module-popup">
+          { this.state.error && <h2>{this.state.error}</h2> }
           <h2>Add a problem!</h2>
           <form className="Askd-form" onSubmit={this.addProblem}>
             <label htmlFor="cp-platform">Platform</label>
@@ -105,7 +120,7 @@ class AddProblemForm extends Component {
 
             <label htmlFor="cp-title">Problem</label>
             <SearchSelect name='title' id='cp-title' search={searchProblemFunction}
-                          keys={['sk', 'name']} callback={this.updateProblemSortKey}
+                          keys={['prettySk', 'name']} callback={this.updateProblemSortKey}
                           displayKey='name' staticKey={searchProblemKey} />
 
             <input className="Askd-button Module-popup-last" type="submit"

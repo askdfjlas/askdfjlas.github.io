@@ -14,6 +14,29 @@ class Utils {
     }
     return true;
   }
+
+  static async componentSetError(component, message) {
+    if(component.setError) {
+      await component.setError(message);
+    }
+    else {
+      await Utils.setStatePromise(component, {
+        error: `Error: ${message}`
+      });
+    }
+  }
+
+  static async componentSetSuccess(component, message) {
+    if(component.setSuccess) {
+      await component.setSuccess(message);
+    }
+    else {
+      await Utils.setStatePromise(component, {
+        error: '',
+        success: message
+      });
+    }
+  }
 }
 
 export default Utils;

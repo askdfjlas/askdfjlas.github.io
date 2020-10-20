@@ -27,19 +27,6 @@ class LoginForm extends Component {
     this.props.exitCallback(false);
   }
 
-  async setError(message) {
-    await Utils.setStatePromise(this, {
-      error: `Error: ${message}`
-    });
-  }
-
-  async setSuccess(message) {
-    await Utils.setStatePromise(this, {
-      error: '',
-      success: message
-    });
-  }
-
   async login(event) {
     event.preventDefault();
 
@@ -47,8 +34,10 @@ class LoginForm extends Component {
     const username = form.username.value;
     const password = form.password.value;
 
-    if(!username || !password)
-      await this.setError("Please fill out all of the fields.")
+    if(!username || !password) {
+      await Utils.componentSetError(this, "Please fill out all of the fields.");
+      return;
+    }
 
     try {
       try {
@@ -66,7 +55,7 @@ class LoginForm extends Component {
       }
     }
     catch(err) {
-      await this.setError(err.message);
+      await Utils.componentSetError(this, err.message);
     }
   }
 
@@ -82,7 +71,7 @@ class LoginForm extends Component {
 
     const username = event.target.username.value;
     if(!username) {
-      this.setError('Please input your username.');
+      Utils.componentsSetError(this, 'Please input your username.');
       return;
     }
 
@@ -96,7 +85,7 @@ class LoginForm extends Component {
       });
     }
     catch(err) {
-      await this.setError(err.message);
+      await Utils.componentSetError(this, err.message);
     }
   }
 
@@ -109,7 +98,7 @@ class LoginForm extends Component {
     const confirmPassword = form.confirmPassword.value;
 
     if(!code || !password || !confirmPassword) {
-      this.setError('Please fill out all of the fields.');
+      Utils.componentSetError(this, 'Please fill out all of the fields.');
       return;
     }
 
@@ -126,17 +115,17 @@ class LoginForm extends Component {
       });
     }
     catch(err) {
-      await this.setError(err.message);
+      await Utils.componentSetError(this, err.message);
     }
   }
 
   async resendVerificationEmail(event) {
     try {
       await UserAuthApi.forgotPassword(this.state.username);
-      await this.setSuccess('Another email has been sent!');
+      await Utils.componentSetSuccess(this, 'Another email has been sent!');
     }
     catch(err) {
-      await this.setError(err.message);
+      await Utils.componentSetError(this, err.message);
     }
   }
 
@@ -159,8 +148,7 @@ class LoginForm extends Component {
             Forgot your password?
           </button>
 
-          <input className="Askd-button Module-popup-last" type="submit"
-                 value="Login" />
+          <input className="Askd-button" type="submit" value="Login" />
         </form>
       </div>
     );
@@ -178,8 +166,7 @@ class LoginForm extends Component {
           <input autoComplete="off" type="text" name="username"
                  key="reset-username" id="reset-username" />
 
-          <input className="Askd-button Module-popup-last" type="submit"
-                 value="Submit" />
+          <input className="Askd-button" type="submit" value="Submit" />
         </form>
       </div>
     );
@@ -211,8 +198,7 @@ class LoginForm extends Component {
             Didn't get the email? Click here to resend
           </button>
 
-          <input className="Askd-button Module-popup-last" type="submit"
-                 value="Submit" />
+          <input className="Askd-button" type="submit" value="Submit" />
         </form>
       </div>
     );
@@ -220,7 +206,7 @@ class LoginForm extends Component {
     const recoveryPasswordSuccess= (
       <div className="Register-form Module-popup">
         <h2>Password reset success!</h2>
-        <p className="Module-popup-last">
+        <p>
           Your password has been reset successfully. You'll now be able to
           login again.
         </p>
