@@ -9,7 +9,7 @@ class ProblemsApi {
 
   static async getContests(platform) {
     const options = {
-      'platform': platform
+      platform: platform
     };
 
     return await Api.getJson('contests', options);
@@ -17,14 +17,23 @@ class ProblemsApi {
 
   static async getProblems(platform, contestId) {
     const options = {
-      'platform': platform,
-      'contestId': contestId
+      platform: platform,
+      contestId: contestId
     };
 
     let problems = await Api.getJson('problems', options);
     ProblemsApi._prettifyProblems(problems);
 
     return problems;
+  }
+
+  static async getProblemInfo(platform, problemId) {
+    const options = {
+      platform: platform,
+      problemId: problemId
+    };
+
+    return await Api.getJson('problems', options);
   }
 }
 

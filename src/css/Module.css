@@ -3,7 +3,8 @@
   flex-direction: column;
   background-color: #222235;
   margin: auto;
-  width: 85%;
+  width: 90%;
+  padding: 1em;
   flex: 1 0 auto;
 }
 
@@ -37,6 +38,28 @@
   border-radius: 3px;
   border: 2px solid white;
   color: white;
+}
+
+.Module-info-box {
+  background-color: #005566;
+  font-family: 'Arial';
+  width: 100%;
+  padding: 0.8em 1em;
+  box-sizing: border-box;
+  color: white;
+  border-radius: 3px;
+}
+
+.Module-info-box h4 {
+  margin: 0.3em 0 0.6em 0;
+}
+
+.Module-info-box p, .Module-info-box a  {
+  margin: 0.6em 0;
+}
+
+.Module-info-box a {
+  font-weight: bold;
 }
 
 .Module-popup {

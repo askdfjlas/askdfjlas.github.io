@@ -37,6 +37,12 @@ class Utils {
       });
     }
   }
+
+  static async renderMathJax() {
+    if(window.MathJax) {
+      await window.MathJax.typesetPromise();
+    }
+  }
 }
 
 export default Utils;

@@ -87,6 +87,10 @@ button.Askd-form-link {
   padding: 0;
 }
 
+.Askd-form-link {
+  text-decoration: none;
+}
+
 .Askd-form-link:hover {
   cursor: pointer;
   text-decoration: underline;
@@ -120,6 +124,23 @@ button.Askd-form-link {
 .Askd-button:hover {
   cursor: pointer;
   transition: 0.5s;
+}
+
+.Askd-button-generic {
+  display: inline-flex;
+  width: auto;
+  border: none;
+  transition: 0.5s;
+  background: none;
+  font-family: 'Mosk Medium 500';
+  color: white;
+  font-size: 1em;
+}
+
+.Askd-button-generic:hover {
+  cursor: pointer;
+  transition: 0.5s;
+  color: #DDDDDD;
 }
 
 .Askd-form-loading {

@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
+import Utils from '../Utils';
 import '../css/CpNotes.css';
 
 class CpNotes extends Component {
   async componentDidMount() {
-    if(!window.MathJax)
-      return;
-
-    await window.MathJax.typesetPromise();
+    await Utils.renderMathJax();
   }
 
   render() {

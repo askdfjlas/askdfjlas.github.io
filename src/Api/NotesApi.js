@@ -1,11 +1,11 @@
 import Api from './Api';
 
 class NotesApi {
-  static async addNote(username, platform, problemSortKey) {
+  static async addNote(username, platform, problemId) {
     const options = {
       username: username,
       platform: platform,
-      problemId: problemSortKey
+      problemId: problemId
     };
 
     return await Api.postJson('notes', options);
