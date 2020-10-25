@@ -59,7 +59,7 @@ class AddProblemForm extends Component {
     event.preventDefault();
 
     if(!this.state.problemSortKey) {
-      await Utils.componentSetError('Please search and select a problem.');
+      await Utils.componentSetError(this, 'Please search and select a problem.');
       return;
     }
 

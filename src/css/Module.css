@@ -4,7 +4,8 @@
   background-color: #222235;
   margin: auto;
   width: 90%;
-  padding: 1em;
+  padding: 1.4em 2em 2em 2em;
+  box-sizing: border-box;
   flex: 1 0 auto;
 }
 
@@ -34,14 +35,14 @@
   overflow-wrap: anywhere;
   margin: 0.75em auto 2em;
   padding: 1em;
-  width: 85%;
+  width: 90%;
   border-radius: 3px;
   border: 2px solid white;
   color: white;
 }
 
 .Module-info-box {
-  background-color: #005566;
+  background-color: #335577;
   font-family: 'Arial';
   width: 100%;
   padding: 0.8em 1em;

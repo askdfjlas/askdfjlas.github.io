@@ -1,0 +1,45 @@
+.Askd-text-editor {
+  background-color: #EEEEEE;
+  margin: 0.5em 0;
+  box-sizing: border-box;
+  font-family: Times;
+  font-weight: normal;
+  border-radius: 3px;
+  border: 2px solid #888888;
+}
+
+.Askd-text-editor-toolbar {
+  display: flex;
+  align-items: center;
+  background-color: #CCCCCC;
+  height: 2em;
+  width: 100%;
+  border-bottom: 2px solid #AAAAAA;
+  box-sizing: border-box;
+}
+
+.Askd-text-editor-toolbar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.Askd-text-editor-toolbar li {
+  display: inline-block;
+  margin: auto 0 auto 0.3em;
+}
+
+.Askd-text-editor-toolbar li button {
+  height: 1.5em;
+  box-sizing: border-box;
+}
+
+.Askd-text-editor-text {
+  height: 100%;
+  padding: 0.7em;
+  min-height: 20em;
+}
+
+.Askd-text-editor-text div {
+  display: inline;
+  white-space: pre-wrap;
+}

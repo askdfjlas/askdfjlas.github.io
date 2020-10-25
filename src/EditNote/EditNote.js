@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import EditNoteState from './EditNoteState';
+import EditNoteForm from './EditNoteForm';
 import ProblemInfo from './ProblemInfo';
 import ProblemsApi from '../Api/ProblemsApi'
 import Utils from '../Utils';
@@ -43,6 +44,7 @@ class EditNote extends Component {
       <div className="Module-wrapper">
         <ProblemInfo info={this.state.problemInfo}
                      platform={this.props.match.params.platform} />
+        <EditNoteForm />
       </div>
     );
   }
