@@ -12,6 +12,10 @@ class TextEditor extends Component {
     this.virtualTextEditor = new VirtualTextEditor();
     this.caret = new Caret(this.id);
 
+    this.composing = false;
+    this.compositionIndex = null;
+    this.compositionPosition = null;
+
     this.state = {
       content: this.virtualTextEditor.getContent()
     };
@@ -49,42 +53,78 @@ class TextEditor extends Component {
     this.caret.updatePosition(newCaretIndex, newCaretPosition);
   }
 
+  async compositionInsert(newString) {
+    let [ newCaretIndex, newCaretPosition ] = this.virtualTextEditor.insert(
+      this.compositionIndex, this.compositionPosition, newString
+    );
+
+    await this.updateText();
+    this.caret.updatePosition(newCaretIndex, newCaretPosition);
+  }
+
+  async updateText() {
+    if(this.textEditor.childNodes[0].nodeType === Node.TEXT_NODE) {
+      this.textEditor.removeChild(this.textEditor.childNodes[0]);
+    }
+
+    await Utils.setStatePromise(this, {
+      content: this.virtualTextEditor.getContent()
+    });
+  }
+
   componentDidMount() {
     this.textEditor = document.getElementById(this.id);
 
-    this.textEditor.addEventListener('keydown', async (event) => {
-      if(event.key === 'Backspace') {
-        await this.delete();
-
-        event.preventDefault();
-      }
-    });
-
     this.textEditor.addEventListener('keypress', async (event) => {
-      const newChar = event.key;
-      const caretInfo = this.caret.getInfo();
+      const character = event.key;
 
-      if(newChar === 'Enter') {
+      if(character === 'Enter' || this.composing) {
         // TBD
         event.preventDefault();
         return;
       }
+    });
 
-      if(!caretInfo.rangeSelect) {
-        await this.insert(newChar);
-      }
-      else {
-        await this.delete();
-        await this.insert(newChar);
+    this.textEditor.addEventListener('beforeinput', async (event) => {
+      if(event.isComposing) {
+        return;
       }
 
       event.preventDefault();
-    });
-  }
 
-  async updateText() {
-    await Utils.setStatePromise(this, {
-      content: this.virtualTextEditor.getContent()
+      if(event.inputType === 'deleteContentBackward') {
+        await this.delete();
+      }
+      else {
+        const newChar = event.data;
+        const caretInfo = this.caret.getInfo();
+
+        if(!caretInfo.rangeSelect) {
+          await this.insert(newChar);
+        }
+        else {
+          await this.delete();
+          await this.insert(newChar);
+        }
+      }
+    });
+
+    this.textEditor.addEventListener('compositionstart', async (event) => {
+      let caretInfo = this.caret.getInfo();
+
+      if(caretInfo.rangeSelect) {
+        await this.delete();
+        caretInfo = this.caret.getInfo();
+      }
+
+      this.composing = true;
+      this.compositionIndex = caretInfo.index;
+      this.compositionPosition = caretInfo.position;
+    });
+
+    this.textEditor.addEventListener('compositionend', async (event) => {
+      this.composing = false;
+      await this.compositionInsert(event.data);
     });
   }
 

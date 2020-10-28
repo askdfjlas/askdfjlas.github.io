@@ -43,10 +43,12 @@ class Caret {
 
   updatePosition(index, position) {
     const blockElement = document.getElementById(this.id + index);
-    const textNode = blockElement.childNodes[0];
+    let textNode = blockElement.childNodes[0];
 
-    if(!textNode)
-      return;
+    if(!textNode) {
+      textNode = document.createTextNode('');
+      blockElement.appendChild(textNode);
+    }
 
     let range = document.createRange();
     range.setStart(textNode, position);
