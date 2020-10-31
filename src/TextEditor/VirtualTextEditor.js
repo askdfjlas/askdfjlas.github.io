@@ -127,6 +127,10 @@ class VirtualTextEditor {
       c: buffer
     });
     this.blockStarts.push(this.characters.length - bufferLength);
+
+    /* Strange hack - extra newline character sets correct caret positioning;
+       this extra character also somehow can't be selected */
+    this.blocks[this.blocks.length - 1].c += String.fromCharCode(10);
   }
 
   getContent() {

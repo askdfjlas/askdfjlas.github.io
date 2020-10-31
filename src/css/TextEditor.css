@@ -1,4 +1,5 @@
 .Askd-text-editor {
+  width: 100%;
   background-color: #EEEEEE;
   margin: 0.5em 0;
   box-sizing: border-box;
@@ -34,9 +35,10 @@
 }
 
 .Askd-text-editor-text {
-  height: 100%;
   padding: 0.7em;
+  width: 100%;
   min-height: 20em;
+  box-sizing: border-box;
 }
 
 .Askd-text-editor-text div {
