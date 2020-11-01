@@ -79,21 +79,18 @@ class TextEditor extends Component {
   componentDidMount() {
     this.textEditor = document.getElementById(this.id);
 
-    // Unsupported keys and browser anomalies
     this.textEditor.addEventListener('keydown', async (event) => {
-      // TBD, bro who even uses this button lol
+      /* TBD, bro who even uses this button lol */
       if(event.key === 'Delete') {
         event.preventDefault();
       }
-
-      /* ios/mobile anomaly: pressing delete at the beginning of the textbox
-         doesn't fire a beforeinput event */
-      if(event.key === 'Backspace' && !this.composing) {
-        const caretInfo = this.caret.getInfo();
-        if(!caretInfo.rangeSelect &&
-            caretInfo.index === 0 && caretInfo.position === 0) {
-          event.preventDefault();
-        }
+      else if(event.key === 'Backspace' && !this.composing) {
+        await this.delete();
+        event.preventDefault();
+      }
+      else if(event.key === 'Enter' && !this.composing) {
+        await this.insert(String.fromCharCode(10));
+        event.preventDefault();
       }
     });
 
@@ -104,23 +101,23 @@ class TextEditor extends Component {
 
       event.preventDefault();
 
-      if(event.inputType === 'deleteContentBackward') {
-        await this.delete();
+      /* Mobile autocorrect and word selection from a menu */
+      if(event.inputType === 'insertReplacementText') {
+        const insertedString = event.dataTransfer.getData('text');
+        await this.insert(insertedString);
       }
-      else if(event.inputType === 'insertParagraph') {
-        await this.insert(String.fromCharCode(10));
-      }
-      else {
-        const newChar = event.data;
-        await this.insert(newChar);
+      /* Generic event with a valid 'data'; things like undo/redo operations and
+         drag and drop are TBD */
+      else if(event.data) {
+        await this.insert(event.data);
       }
     });
 
     this.textEditor.addEventListener('paste', async (event) => {
-      const pasteText = event.clipboardData.getData('Text');
-
-      await this.insert(pasteText);
       event.preventDefault();
+
+      const pasteText = event.clipboardData.getData('Text');
+      await this.insert(pasteText);
     });
 
     this.textEditor.addEventListener('compositionstart', async (event) => {
@@ -135,8 +132,7 @@ class TextEditor extends Component {
       this.compositionIndex = caretInfo.index;
       this.compositionPosition = caretInfo.position;
 
-      /* Better prevent my braindamaged browser from overwriting the next block
-         with a fucking span tag LOL */
+      /* Prevent browser from overwriting the next block */
       let nextBlockElement = document.getElementById(this.id +
         (this.compositionIndex + 1));
       if(nextBlockElement) {
@@ -149,6 +145,7 @@ class TextEditor extends Component {
         return;
       }
 
+      /* Composition has ended; set the next block to be editable again */
       let nextBlockElement = document.getElementById(this.id +
         (this.compositionIndex + 1));
       if(nextBlockElement) {
@@ -161,9 +158,8 @@ class TextEditor extends Component {
   }
 
   componentDidUpdate() {
-    /* All of this code is necessary because there is no way to
-      preventDefault a compositionend event in some browsers... This project
-      really makes me want to just fucking hang myself. */
+    /* The rendered text must be manually sanitized since there's no way to
+       preventDefault a compositionend event in some browsers... */
     let junkNodes = [];
     for(const node of this.textEditor.childNodes) {
       if(node.nodeType === Node.TEXT_NODE || node.nodeName === 'BR' ||

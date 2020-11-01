@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import TextEditor from '../TextEditor/TextEditor';
 import Utils from '../Utils';
 import '../css/CpNotes.css';
 
@@ -14,6 +15,7 @@ class CpNotes extends Component {
           <p>A work-in-progress web application for storing publicly
           accessible competitive programming notes! \[\LaTeX\]</p>
         </div>
+        <TextEditor />
       </div>
     );
   }
