@@ -41,7 +41,7 @@ class Caret {
     };
   }
 
-  updatePosition(index, position) {
+  setPosition(index, position) {
     const blockElement = document.getElementById(this.id + index);
     let textNode = blockElement.childNodes[0];
 
@@ -53,6 +53,21 @@ class Caret {
     let range = document.createRange();
     range.setStart(textNode, position);
     range.collapse(true);
+
+    let selection = window.getSelection();
+    selection.removeAllRanges();
+    selection.addRange(range);
+  }
+
+  setRangePosition(leftIndex, leftPosition, rightIndex, rightPosition) {
+    const leftBlockElement = document.getElementById(this.id + leftIndex);
+    const rightBlockElement = document.getElementById(this.id + rightIndex);
+    const leftTextNode = leftBlockElement.childNodes[0];
+    const rightTextNode = rightBlockElement.childNodes[0];
+
+    let range = document.createRange();
+    range.setStart(leftTextNode, leftPosition);
+    range.setEnd(rightTextNode, rightPosition);
 
     let selection = window.getSelection();
     selection.removeAllRanges();

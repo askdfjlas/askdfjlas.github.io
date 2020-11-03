@@ -3,7 +3,7 @@
   background-color: #EEEEEE;
   margin: 0.5em 0;
   box-sizing: border-box;
-  font-family: Times;
+  font-family: Arial;
   font-weight: normal;
   border-radius: 3px;
   border: 2px solid #888888;
@@ -34,6 +34,10 @@
   box-sizing: border-box;
 }
 
+li.Askd-tb-selected-true button {
+  color: #5577FF;
+}
+
 .Askd-text-editor-text {
   padding: 0.7em;
   width: 100%;
@@ -44,4 +48,9 @@
 .Askd-text-editor-text div {
   display: inline;
   white-space: pre-wrap;
+}
+
+/* User-inputted text styles */
+div.Askd-te-BOLD {
+  font-weight: bold;
 }

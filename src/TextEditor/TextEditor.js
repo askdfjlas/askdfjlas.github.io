@@ -1,163 +1,164 @@
 import React, { Component } from 'react';
 import Caret from './Caret';
+import Toolbar from './Toolbar';
 import VirtualTextEditor from './VirtualTextEditor';
 import Block from './Block';
 import Utils from '../Utils';
+import registerEventHandlers from './registerEventHandlers';
 import '../css/TextEditor.css';
 
 class TextEditor extends Component {
   constructor(props) {
     super(props);
 
-    this.id = `Askd-text-editor${this.props.uniqueKey}`;
+    this.id = this.props.uniqueKey ?
+                `Askd-text-editor${this.props.uniqueKey}` : 'Askd-text-editor';
     this.virtualTextEditor = new VirtualTextEditor();
     this.caret = new Caret(this.id);
 
-    this.caretIndex = 0;
-    this.caretPosition = 0;
+    this.contentChanged = false;
+    this.caretInfo = {
+      rangeSelect: false,
+      index: 0,
+      position: 0
+    };
 
     this.composing = false;
     this.compositionIndex = null;
     this.compositionPosition = null;
 
     this.state = {
-      content: this.virtualTextEditor.getContent()
+      content: this.virtualTextEditor.getContent(),
+      editorMask: 0
     };
+
+    this.toolbarUpdate = this.toolbarUpdate.bind(this);
   }
 
   async delete() {
-    const caretInfo = this.caret.getInfo();
-
-    if(!caretInfo.rangeSelect) {
-      [ this.caretIndex, this.caretPosition ] = this.virtualTextEditor.delete(
-        caretInfo.index, caretInfo.position - 1,
-        caretInfo.index, caretInfo.position
+    if(!this.caretInfo.rangeSelect) {
+      [ this.caretInfo.index, this.caretInfo.position ] = this.virtualTextEditor.delete(
+        this.caretInfo.index, this.caretInfo.position - 1,
+        this.caretInfo.index, this.caretInfo.position
       );
     }
     else {
-      [ this.caretIndex, this.caretPosition ]  = this.virtualTextEditor.delete(
-        caretInfo.leftIndex, caretInfo.leftPosition,
-        caretInfo.rightIndex, caretInfo.rightPosition
+      [ this.caretInfo.index, this.caretInfo.position ] = this.virtualTextEditor.delete(
+        this.caretInfo.leftIndex, this.caretInfo.leftPosition,
+        this.caretInfo.rightIndex, this.caretInfo.rightPosition
       );
     }
 
+    this.caretInfo.rangeSelect = false;
     await this.updateText();
   }
 
   async insert(newString) {
-    const caretInfo = this.caret.getInfo();
+    this.updateCaretInfo();
 
-    if(caretInfo.rangeSelect) {
+    if(this.caretInfo.rangeSelect) {
       await this.delete();
     }
-    else {
-      this.caretIndex = caretInfo.index;
-      this.caretPosition = caretInfo.position;
-    }
 
-    [ this.caretIndex, this.caretPosition ] = this.virtualTextEditor.insert(
-      this.caretIndex, this.caretPosition, newString
+    [ this.caretInfo.index, this.caretInfo.position ] = this.virtualTextEditor.insert(
+      this.caretInfo.index, this.caretInfo.position, newString,
+      this.state.editorMask
     );
 
+    this.caretInfo.rangeSelect = false;
     await this.updateText();
   }
 
   async compositionInsert(newString) {
-    [ this.caretIndex, this.caretPosition ] = this.virtualTextEditor.insert(
-      this.compositionIndex, this.compositionPosition, newString
+    [ this.caretInfo.index, this.caretInfo.position ] = this.virtualTextEditor.insert(
+      this.compositionIndex, this.compositionPosition, newString,
+      this.state.editorMask
+    );
+
+    this.caretInfo.rangeSelect = false;
+    await this.updateText();
+  }
+
+  async rangeMaskUpdate(bit, on) {
+    if(!this.caretInfo.rangeSelect) {
+      return;
+    }
+
+    [ this.caretInfo.leftIndex, this.caretInfo.leftPosition,
+      this.caretInfo.rightIndex, this.caretInfo.rightPosition ] =
+    this.virtualTextEditor.rangeMaskUpdate(
+      this.caretInfo.leftIndex, this.caretInfo.leftPosition,
+      this.caretInfo.rightIndex, this.caretInfo.rightPosition, bit, on
     );
 
     await this.updateText();
   }
 
   async updateText() {
+    this.contentChanged = true;
     await Utils.setStatePromise(this, {
       content: this.virtualTextEditor.getContent()
     });
   }
 
-  componentDidMount() {
-    this.textEditor = document.getElementById(this.id);
-
-    this.textEditor.addEventListener('keydown', async (event) => {
-      /* TBD, bro who even uses this button lol */
-      if(event.key === 'Delete') {
-        event.preventDefault();
-      }
-      else if(event.key === 'Backspace' && !this.composing) {
-        await this.delete();
-        event.preventDefault();
-      }
-      else if(event.key === 'Enter' && !this.composing) {
-        await this.insert(String.fromCharCode(10));
-        event.preventDefault();
-      }
-    });
-
-    this.textEditor.addEventListener('beforeinput', async (event) => {
-      if(event.isComposing || this.composing) {
-        return;
-      }
-
-      event.preventDefault();
-
-      /* Mobile autocorrect and word selection from a menu */
-      if(event.inputType === 'insertReplacementText') {
-        const insertedString = event.dataTransfer.getData('text');
-        await this.insert(insertedString);
-      }
-      /* Generic event with a valid 'data'; things like undo/redo operations and
-         drag and drop are TBD */
-      else if(event.data) {
-        await this.insert(event.data);
-      }
-    });
-
-    this.textEditor.addEventListener('paste', async (event) => {
-      event.preventDefault();
-
-      const pasteText = event.clipboardData.getData('Text');
-      await this.insert(pasteText);
-    });
-
-    this.textEditor.addEventListener('compositionstart', async (event) => {
-      let caretInfo = this.caret.getInfo();
-
-      if(caretInfo.rangeSelect) {
-        await this.delete();
-        caretInfo = this.caret.getInfo();
-      }
-
-      this.composing = true;
-      this.compositionIndex = caretInfo.index;
-      this.compositionPosition = caretInfo.position;
-
-      /* Prevent browser from overwriting the next block */
-      let nextBlockElement = document.getElementById(this.id +
-        (this.compositionIndex + 1));
-      if(nextBlockElement) {
-        nextBlockElement.setAttribute('contenteditable', 'false');
-      }
-    });
-
-    this.textEditor.addEventListener('compositionend', async (event) => {
-      if(!this.composing) {
-        return;
-      }
-
-      /* Composition has ended; set the next block to be editable again */
-      let nextBlockElement = document.getElementById(this.id +
-        (this.compositionIndex + 1));
-      if(nextBlockElement) {
-        nextBlockElement.setAttribute('contenteditable', 'true');
-      }
-
-      this.composing = false;
-      await this.compositionInsert(event.data);
+  async updateMask(newMask) {
+    await Utils.setStatePromise(this, {
+      editorMask: newMask
     });
   }
 
+  async toolbarUpdate(bit, on) {
+    this.textEditor.focus();
+    await this.updateMask(this.state.editorMask ^ bit);
+    await this.rangeMaskUpdate(bit, on);
+  }
+
+  updateCaretInfo() {
+    const newCaretInfo = this.caret.getInfo();
+
+    /* Maintain previous info for the other selection type */
+    if(newCaretInfo.rangeSelect) {
+      this.caretInfo.leftIndex = newCaretInfo.leftIndex;
+      this.caretInfo.leftPosition = newCaretInfo.leftPosition;
+      this.caretInfo.rightIndex = newCaretInfo.rightIndex;
+      this.caretInfo.rightPosition = newCaretInfo.rightPosition;
+      this.caretInfo.rangeSelect = true;
+    }
+    else {
+      this.caretInfo.index = newCaretInfo.index;
+      this.caretInfo.position = newCaretInfo.position;
+      this.caretInfo.rangeSelect = false;
+    }
+  }
+
+  async selectionChanged() {
+    this.updateCaretInfo();
+
+    let leftCharacterMask;
+    if(this.caretInfo.rangeSelect) {
+      leftCharacterMask = this.virtualTextEditor.getCharacterMask(
+        this.caretInfo.leftIndex, this.caretInfo.leftPosition, true
+      );
+    }
+    else {
+      leftCharacterMask = this.virtualTextEditor.getCharacterMask(
+        this.caretInfo.index, this.caretInfo.position, false
+      );
+    }
+
+    await this.updateMask(leftCharacterMask);
+  }
+
+  componentDidMount() {
+    this.textEditor = document.getElementById(this.id);
+    registerEventHandlers(this);
+  }
+
   componentDidUpdate() {
+    if(!this.contentChanged) {
+      return;
+    }
+
     /* The rendered text must be manually sanitized since there's no way to
        preventDefault a compositionend event in some browsers... */
     let junkNodes = [];
@@ -179,7 +180,18 @@ class TextEditor extends Component {
       }
     }
 
-    this.caret.updatePosition(this.caretIndex, this.caretPosition);
+    if(this.caretInfo.rangeSelect) {
+      this.caret.setRangePosition(
+        this.caretInfo.leftIndex, this.caretInfo.leftPosition,
+        this.caretInfo.rightIndex, this.caretInfo.rightPosition
+      );
+    }
+    else {
+      this.caret.setPosition(this.caretInfo.index, this.caretInfo.position);
+    }
+
+    this.contentChanged = false;
+    this.updateCaretInfo();
   }
 
   render() {
@@ -191,12 +203,8 @@ class TextEditor extends Component {
     });
 
     return (
-      <div className="Askd-text-editor">
-        <div className="Askd-text-editor-toolbar">
-          <ul>
-            <li><button type="button">Bold</button></li>
-          </ul>
-        </div>
+      <div className="Askd-text-editor" id={this.id + '!'}>
+        <Toolbar mask={this.state.editorMask} callback={this.toolbarUpdate} />
         <div className="Askd-text-editor-text" id={this.id} tabIndex="0"
              contentEditable="true" suppressContentEditableWarning="true"
              spellCheck="false">

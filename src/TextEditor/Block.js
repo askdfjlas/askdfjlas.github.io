@@ -5,7 +5,7 @@ function getClassName(mask) {
   let className = '';
   for(const style in ContentType) {
     if(mask & ContentType[style]) {
-      className += style + ' ';
+      className += `Askd-te-${style} `;
     }
   }
   return className;

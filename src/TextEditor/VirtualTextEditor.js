@@ -15,17 +15,17 @@ class VirtualTextEditor {
     this.updateBlocks();
   }
 
-  getVirtualCaretIndex() {
+  getIndexAndPosition(globalIndex) {
     let charactersScanned = 0;
     for(let i = 0; i < this.blocks.length; i++) {
       const block = this.blocks[i];
       const blockLength = countCharacters(block.c);
       const blockEndIndex = charactersScanned + blockLength;
 
-      if(this.globalCaretPosition <= blockEndIndex) {
+      if(globalIndex <= blockEndIndex) {
         let position = 0;
         for(let j = charactersScanned; j <= blockEndIndex; j++) {
-          if(this.globalCaretPosition === j) {
+          if(globalIndex === j) {
             return [ i, position ];
           }
           position += this.characters[j].c.length;
@@ -37,7 +37,7 @@ class VirtualTextEditor {
     return [ null, null ];
   }
 
-  getGlobalCaretIndex(index, position) {
+  getGlobalIndex(index, position) {
     let globalIndex = this.blockStarts[index];
     let characterCounter = 0;
     while(characterCounter < position) {
@@ -51,30 +51,41 @@ class VirtualTextEditor {
     return globalIndex - 1;
   }
 
-  insert(index, position, insertedString, mask) {
-    const globalCharacterIndex = this.getGlobalCaretIndex(index, position);
-    const characterMask = mask || this.blocks[index].m;
+  getCharacterMask(index, position, rangeSelect) {
+    const globalIndex = this.getGlobalIndex(index, position);
 
-    const rightBuffer = this.characters.splice(globalCharacterIndex);
+    if(globalIndex === 0) {
+      return this.characters[0].m;
+    }
+    else if(rangeSelect) {
+      return this.characters[globalIndex].m;
+    }
+    return this.characters[globalIndex - 1].m;
+  }
+
+  insert(index, position, insertedString, mask) {
+    const globalIndex = this.getGlobalIndex(index, position);
+    const rightBuffer = this.characters.splice(globalIndex);
+
     for(const char of insertedString) {
       this.characters.push({
-        m: characterMask,
+        m: mask,
         c: char
       });
     }
 
-    this.globalCaretPosition = this.characters.length;
+    const globalCaretPosition = this.characters.length;
     for(const character of rightBuffer) {
       this.characters.push(character);
     }
 
     this.updateBlocks();
-    return this.getVirtualCaretIndex();
+    return this.getIndexAndPosition(globalCaretPosition);
   }
 
   delete(leftIndex, leftPosition, rightIndex, rightPosition) {
-    const globalLeftIndex = this.getGlobalCaretIndex(leftIndex, leftPosition);
-    const globalRightIndex = this.getGlobalCaretIndex(rightIndex, rightPosition);
+    const globalLeftIndex = this.getGlobalIndex(leftIndex, leftPosition);
+    const globalRightIndex = this.getGlobalIndex(rightIndex, rightPosition);
     const deleteLength = globalRightIndex - globalLeftIndex;
 
     if(globalLeftIndex < 0) {
@@ -82,10 +93,32 @@ class VirtualTextEditor {
     }
 
     this.characters.splice(globalLeftIndex, deleteLength);
-    this.globalCaretPosition = globalLeftIndex;
+    const globalCaretPosition = globalLeftIndex;
 
     this.updateBlocks();
-    return this.getVirtualCaretIndex();
+    return this.getIndexAndPosition(globalCaretPosition);
+  }
+
+  rangeMaskUpdate(leftIndex, leftPosition, rightIndex, rightPosition, bit, on) {
+    const globalLeftIndex = this.getGlobalIndex(leftIndex, leftPosition);
+    const globalRightIndex = this.getGlobalIndex(rightIndex, rightPosition);
+
+    for(let i = globalLeftIndex; i < globalRightIndex; i++) {
+      if((on && !(this.characters[i].m & bit)) ||
+         (!on && (this.characters[i].m & bit))) {
+        this.characters[i].m = this.characters[i].m ^ bit;
+      }
+    }
+
+    this.updateBlocks();
+
+    const [ newLeftIndex, newLeftPosition ] = this.getIndexAndPosition(
+      globalLeftIndex
+    );
+    const [ newRightIndex, newRightPosition ] = this.getIndexAndPosition(
+      globalRightIndex
+    );
+    return [ newLeftIndex, newLeftPosition, newRightIndex, newRightPosition ];
   }
 
   updateBlocks() {
