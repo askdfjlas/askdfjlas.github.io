@@ -42,16 +42,13 @@ const registerEventHandlers = (that) => {
   });
 
   that.textEditor.addEventListener('compositionstart', async (event) => {
-    let caretInfo = that.caret.getInfo();
-
-    if(caretInfo.rangeSelect) {
+    if(that.caretInfo.rangeSelect) {
       await that.delete();
-      caretInfo = that.caret.getInfo();
     }
 
     that.composing = true;
-    that.compositionIndex = caretInfo.index;
-    that.compositionPosition = caretInfo.position;
+    that.compositionIndex = that.caretInfo.index;
+    that.compositionPosition = that.caretInfo.position;
 
     /* Prevent browser from overwriting the next block */
     let nextBlockElement = document.getElementById(that.id +

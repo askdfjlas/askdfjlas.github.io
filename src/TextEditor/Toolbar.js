@@ -39,15 +39,23 @@ class Toolbar extends Component {
 
   render() {
     const boldSelected = (this.state.mask & ContentType.BOLD) > 0;
+    const italicSelected = (this.state.mask & ContentType.ITALIC) > 0;
+    const underlineSelected = (this.state.mask & ContentType.UNDERLINE) > 0;
 
     return (
       <div className="Askd-text-editor-toolbar">
         <ul>
           <li className={`Askd-tb-selected-${boldSelected}`}>
-            <button type="button"
-                    onClick={() => this.updateMask(ContentType.BOLD)}>
-                    Bold
-            </button>
+            <button type="button" className="Askd-tb-icon Askd-tb-BOLD"
+                    onClick={() => this.updateMask(ContentType.BOLD)} />
+          </li>
+          <li className={`Askd-tb-selected-${italicSelected}`}>
+            <button type="button" className="Askd-tb-icon Askd-tb-ITALIC"
+                    onClick={() => this.updateMask(ContentType.ITALIC)} />
+          </li>
+          <li className={`Askd-tb-selected-${underlineSelected}`}>
+            <button type="button" className="Askd-tb-icon Askd-tb-UNDERLINE"
+                    onClick={() => this.updateMask(ContentType.UNDERLINE)} />
           </li>
         </ul>
       </div>

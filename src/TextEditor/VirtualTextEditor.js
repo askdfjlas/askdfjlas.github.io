@@ -112,12 +112,8 @@ class VirtualTextEditor {
 
     this.updateBlocks();
 
-    const [ newLeftIndex, newLeftPosition ] = this.getIndexAndPosition(
-      globalLeftIndex
-    );
-    const [ newRightIndex, newRightPosition ] = this.getIndexAndPosition(
-      globalRightIndex
-    );
+    const [ newLeftIndex, newLeftPosition ] = this.getIndexAndPosition(globalLeftIndex);
+    const [ newRightIndex, newRightPosition ] = this.getIndexAndPosition(globalRightIndex);
     return [ newLeftIndex, newLeftPosition, newRightIndex, newRightPosition ];
   }
 

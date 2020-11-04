@@ -10,32 +10,27 @@
 }
 
 .Askd-text-editor-toolbar {
-  display: flex;
-  align-items: center;
   background-color: #CCCCCC;
-  height: 2em;
+  height: 2.1em;
   width: 100%;
   border-bottom: 2px solid #AAAAAA;
   box-sizing: border-box;
 }
 
 .Askd-text-editor-toolbar ul {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
   list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 
 .Askd-text-editor-toolbar li {
-  display: inline-block;
-  margin: auto 0 auto 0.3em;
-}
-
-.Askd-text-editor-toolbar li button {
-  height: 1.5em;
-  box-sizing: border-box;
-}
-
-li.Askd-tb-selected-true button {
-  color: #5577FF;
+  height: 1.6em;
+  width: 1.6em;
+  margin: 0 0 0 0.4em;
 }
 
 .Askd-text-editor-text {
@@ -50,7 +45,57 @@ li.Askd-tb-selected-true button {
   white-space: pre-wrap;
 }
 
+/* Toolbar icon styles */
+.Askd-tb-selected-true button {
+  color: #5577FF;
+  background-color: #BBBBCC;
+  border-radius: 3px;
+}
+
+.Askd-tb-icon {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1em;
+  border: none;
+  background: none;
+}
+
+.Askd-tb-icon:hover {
+  border-radius: 3px;
+  background-color: #BBBBBB;
+  cursor: pointer;
+}
+
+.Askd-tb-BOLD::after {
+  content: 'B';
+  font-weight: bold;
+}
+
+.Askd-tb-ITALIC::after {
+  text-align: left;
+  content: 'I';
+  font-style: italic;
+  font-weight: bold;
+  padding-right: 1px;
+}
+
+.Askd-tb-UNDERLINE::after {
+  content: 'U';
+  text-decoration: underline;
+}
+
 /* User-inputted text styles */
 div.Askd-te-BOLD {
   font-weight: bold;
+}
+
+div.Askd-te-ITALIC {
+  font-style: italic;
+}
+
+div.Askd-te-UNDERLINE {
+  text-decoration: underline;
 }
