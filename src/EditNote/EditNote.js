@@ -22,7 +22,9 @@ class EditNote extends Component {
     const problemCode = this.props.match.params.problemCode;
     const problemId = `${contestId}#${problemCode}`;
 
-    const problemInfo = await ProblemsApi.getProblemInfo(platform, problemId);
+    let problemInfo = await ProblemsApi.getProblemInfo(platform, problemId);
+    problemInfo.problemId = problemId;
+
     await Utils.setStatePromise(this, {
       problemInfo: problemInfo
     });
@@ -36,15 +38,21 @@ class EditNote extends Component {
   }
 
   async componentDidMount() {
-    await this.loadProblemInfo();
+    await this.loadInfo();
   }
 
   render() {
+    const platform = this.props.match.params.platform;
+
     return (
       <div className="Module-wrapper">
-        <ProblemInfo info={this.state.problemInfo}
-                     platform={this.props.match.params.platform} />
-        <EditNoteForm />
+        {
+          this.state.screen === EditNoteState.DONE &&
+          <>
+            <ProblemInfo info={this.state.problemInfo} platform={platform} />
+            <EditNoteForm problemInfo={this.state.problemInfo} platform={platform} />
+          </>
+        }
       </div>
     );
   }

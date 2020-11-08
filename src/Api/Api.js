@@ -34,11 +34,11 @@ class Api {
     return await response.json();
   }
 
-  static async postJson(resource, options) {
+  static async sendRequestBody(resource, options, method) {
     const accessToken = await UserAuthApi.getAccessToken();
 
     const response = await fetch(ApiConstants.API_ENDPOINT + resource, {
-      method: 'POST',
+      method: method,
       body: JSON.stringify(options),
       headers: {
         Authorization: accessToken
@@ -47,6 +47,14 @@ class Api {
 
     await Api.manageResponseError(response);
     return await response.json();
+  }
+
+  static async postJson(resource, options) {
+    return await Api.sendRequestBody(resource, options, 'POST');
+  }
+
+  static async putJson(resource, options) {
+    return await Api.sendRequestBody(resource, options, 'PUT');
   }
 }
 

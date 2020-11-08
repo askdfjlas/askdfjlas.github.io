@@ -9,9 +9,19 @@
 .Askd-form label,
 .Askd-form select {
   display: block;
-  width: 100%;
   border-radius: 3px;
   border: none;
+}
+
+.Askd-form input:not(.Askd-not-fullwidth),
+.Askd-form textarea,
+.Askd-form label,
+.Askd-form select {
+  width: 100%;
+}
+
+input.Askd-not-fullwidth {
+  display: inline-block;
 }
 
 .Askd-form label {
@@ -43,12 +53,13 @@
   background-color: #303060;
 }
 
-.Askd-form input[type="submit"] {
-  background-color: #666688;
+.Askd-form input[type="submit"], input[type="button"] {
+  background-color: #606080;
 }
 
-.Askd-form input[type="submit"]:hover {
-  background-color: #777799;
+.Askd-form input[type="submit"]:hover,
+.Askd-form input[type="button"]:hover {
+  background-color: #707090;
 }
 
 .Askd-form .Search-select {

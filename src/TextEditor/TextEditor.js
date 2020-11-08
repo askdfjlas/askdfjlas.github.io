@@ -192,6 +192,11 @@ class TextEditor extends Component {
 
     this.contentChanged = false;
     this.updateCaretInfo();
+
+    /* Callback with new content */
+    if(this.props.onChange) {
+      this.props.onChange(this.state.content);
+    }
   }
 
   render() {

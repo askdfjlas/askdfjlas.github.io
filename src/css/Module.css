@@ -9,6 +9,12 @@
   flex: 1 0 auto;
 }
 
+@media screen and (max-width: 750px) {
+  .Module-wrapper {
+    width: 100%;
+  }
+}
+
 .Module-wrapper .Module-heading {
   font-family: 'Verdana';
   color: white;
