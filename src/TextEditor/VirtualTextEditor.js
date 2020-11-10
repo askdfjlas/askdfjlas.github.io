@@ -9,9 +9,25 @@ function countCharacters(str) {
 }
 
 class VirtualTextEditor {
-  constructor() {
+  constructor(initialContent) {
     this.characters = [];
     this.globalCaretPosition = 0;
+
+    if(initialContent) {
+      for(const block of initialContent) {
+        const mask = block.m;
+        for(const char of block.c) {
+          this.characters.push({
+            m: mask,
+            c: char
+          });
+        }
+      }
+
+      /* Remove extra newline character */
+      this.characters.splice(this.characters.length - 1);
+    }
+
     this.updateBlocks();
   }
 

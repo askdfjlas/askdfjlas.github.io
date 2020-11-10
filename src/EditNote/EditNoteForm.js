@@ -3,17 +3,25 @@ import TextEditor from '../TextEditor/TextEditor';
 import SolvedState from './SolvedState';
 import UserAuthApi from '../Api/UserAuthApi';
 import NotesApi from '../Api/NotesApi';
+import Utils from '../Utils';
 
 class EditNoteForm extends Component {
   constructor(props) {
     super(props);
 
-    this.title = `Notes for ${this.props.problemInfo.problemName}`;
-    this.solved = '' + SolvedState.SOLVED;
-    this.content = [];
+    const noteInfo = this.props.noteInfo;
+    const problemInfo = this.props.problemInfo;
+
+    this.title = noteInfo.title || `Notes for ${problemInfo.problemName}`;
+    this.solved = noteInfo.solved;
+    this.content = JSON.parse(noteInfo.content);
+
+    this.state = {
+      published: noteInfo.published
+    };
 
     this.saveNote = this.saveNote.bind(this);
-    this.publishNote = this.publishNote.bind(this);
+    this.togglePublishNote = this.togglePublishNote.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
     this.handleSolvedChange = this.handleSolvedChange.bind(this);
     this.handleContentChange = this.handleContentChange.bind(this);
@@ -29,14 +37,17 @@ class EditNoteForm extends Component {
 
     await NotesApi.editNote(username, platform, problemId, title, solved,
                             content, published);
+    await Utils.setStatePromise(this, {
+      published: published
+    });
   }
 
   async saveNote() {
-    await this.saveOrPublishNote(false);  // Boolean temporary
+    await this.saveOrPublishNote(this.state.published);
   }
 
-  async publishNote() {
-    await this.saveOrPublishNote(true);  // Boolean temporary
+  async togglePublishNote() {
+    await this.saveOrPublishNote(!this.state.published);
   }
 
   handleTitleChange(event) {
@@ -52,25 +63,28 @@ class EditNoteForm extends Component {
   }
 
   render() {
-    const defaultTitle = this.title;
+    const togglePublishText = this.state.published ? 'Unpublish' : 'Publish!';
 
     return (
       <div className="Edit-note-form Askd-form">
         <input className="Edit-note-title" name="title" type="text"
-               defaultValue={defaultTitle} placeholder="Title"
+               defaultValue={this.title} placeholder="Title"
                onChange={this.handleTitleChange} />
-        <select name="solved" id="note-solved" onChange={this.handleSolvedChange}>
+        <select name="solved" id="note-solved" onChange={this.handleSolvedChange}
+                defaultValue={this.solved}>
           <option value={SolvedState.SOLVED}>Solved</option>
           <option value={SolvedState.UPSOLVED}>Upsolved</option>
           <option value={SolvedState.UPSOLVED_HELP}>Upsolved with help</option>
           <option value={SolvedState.UNSOLVED}>Unsolved</option>
         </select>
-        <TextEditor onChange={this.handleContentChange} />
+        <TextEditor initialContent={this.content}
+                    onChange={this.handleContentChange} />
         <div className="Edit-note-bottom-buttons">
           <input className="Askd-button Askd-not-fullwidth"
                  type="button" value="Save" onClick={this.saveNote} />
           <input className="Askd-button Askd-not-fullwidth"
-                 type="button" value="Publish!" onClick={this.publishNote} />
+                 type="button" value={togglePublishText}
+                 onClick={this.togglePublishNote} />
         </div>
       </div>
     );

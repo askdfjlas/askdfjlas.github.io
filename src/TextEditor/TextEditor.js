@@ -13,7 +13,7 @@ class TextEditor extends Component {
 
     this.id = this.props.uniqueKey ?
                 `Askd-text-editor${this.props.uniqueKey}` : 'Askd-text-editor';
-    this.virtualTextEditor = new VirtualTextEditor();
+    this.virtualTextEditor = new VirtualTextEditor(this.props.initialContent);
     this.caret = new Caret(this.id);
 
     this.contentChanged = false;

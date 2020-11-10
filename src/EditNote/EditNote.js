@@ -3,6 +3,8 @@ import EditNoteState from './EditNoteState';
 import EditNoteForm from './EditNoteForm';
 import ProblemInfo from './ProblemInfo';
 import ProblemsApi from '../Api/ProblemsApi'
+import NotesApi from '../Api/NotesApi';
+import UserAuthApi from '../Api/UserAuthApi';
 import Utils from '../Utils';
 import '../css/EditNote.css';
 
@@ -12,7 +14,8 @@ class EditNote extends Component {
 
     this.state = {
       screen: EditNoteState.LOADING,
-      problemInfo: null
+      problemInfo: null,
+      noteInfo: null
     };
   }
 
@@ -25,14 +28,27 @@ class EditNote extends Component {
     let problemInfo = await ProblemsApi.getProblemInfo(platform, problemId);
     problemInfo.problemId = problemId;
 
-    await Utils.setStatePromise(this, {
-      problemInfo: problemInfo
-    });
+    return problemInfo;
+  }
+
+  async loadNoteInfo() {
+    const username = await UserAuthApi.getUsername();
+    const platform = this.props.match.params.platform;
+    const contestId = this.props.match.params.contestId;
+    const problemCode = this.props.match.params.problemCode;
+    const problemId = `${contestId}#${problemCode}`;
+
+    const noteInfo = await NotesApi.getNoteInfo(username, platform, problemId);
+
+    return noteInfo;
   }
 
   async loadInfo() {
-    await this.loadProblemInfo();
+    const problemInfo = await this.loadProblemInfo();
+    const noteInfo = await this.loadNoteInfo();
     await Utils.setStatePromise(this, {
+      problemInfo: problemInfo,
+      noteInfo: noteInfo,
       screen: EditNoteState.DONE
     });
   }
@@ -50,7 +66,8 @@ class EditNote extends Component {
           this.state.screen === EditNoteState.DONE &&
           <>
             <ProblemInfo info={this.state.problemInfo} platform={platform} />
-            <EditNoteForm problemInfo={this.state.problemInfo} platform={platform} />
+            <EditNoteForm problemInfo={this.state.problemInfo}
+                          noteInfo={this.state.noteInfo} platform={platform} />
           </>
         }
       </div>
