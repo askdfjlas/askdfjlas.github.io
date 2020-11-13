@@ -36,7 +36,7 @@
 .Askd-text-editor-text {
   padding: 0.7em;
   width: 100%;
-  min-height: 18em;
+  min-height: 20em;
   box-sizing: border-box;
 }
 
@@ -90,14 +90,14 @@
 }
 
 /* User-inputted text styles */
-div.Askd-te-BOLD {
+.Askd-te-BOLD {
   font-weight: bold;
 }
 
-div.Askd-te-ITALIC {
+.Askd-te-ITALIC {
   font-style: italic;
 }
 
-div.Askd-te-UNDERLINE {
+.Askd-te-UNDERLINE {
   text-decoration: underline;
 }

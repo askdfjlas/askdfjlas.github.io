@@ -1,9 +1,12 @@
 class Utils {
   static async setStatePromise(component, stateObject) {
     return new Promise((resolve, reject) => {
-      component.setState(stateObject, () => {
-        resolve();
-      });
+      if(component.mounted !== false) {
+        component.setState(stateObject, () => {
+          resolve();
+        });
+      }
+      resolve();
     });
   }
 

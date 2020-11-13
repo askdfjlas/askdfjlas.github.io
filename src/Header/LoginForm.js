@@ -71,13 +71,13 @@ class LoginForm extends Component {
 
     const username = event.target.username.value;
     if(!username) {
-      Utils.componentsSetError(this, 'Please input your username.');
+      await Utils.componentsSetError(this, 'Please input your username.');
       return;
     }
 
     try {
       const destination = await UserAuthApi.forgotPassword(username);
-      Utils.setStatePromise(this, {
+      await Utils.setStatePromise(this, {
         error: '',
         username: username,
         destination: destination,
@@ -127,6 +127,10 @@ class LoginForm extends Component {
     catch(err) {
       await Utils.componentSetError(this, err.message);
     }
+  }
+
+  componentWillUnmount() {
+    this.mounted = false;
   }
 
   render() {

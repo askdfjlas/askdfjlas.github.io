@@ -122,6 +122,10 @@ class SearchSelect extends Component {
     this.props.callback(sortKey);
   }
 
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
   render() {
     var optionElements = [];
     for(const option of this.state.filteredOptions) {

@@ -47,6 +47,10 @@ class UserProfile extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
   render() {
     const loadingContent = null;
     const loadedContent = (

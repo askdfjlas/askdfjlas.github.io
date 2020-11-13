@@ -199,6 +199,10 @@ class TextEditor extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
   render() {
     let contentElements = [];
     this.state.content.forEach((block, i) => {

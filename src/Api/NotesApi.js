@@ -35,6 +35,16 @@ class NotesApi {
 
     return await Api.putJson('notes', options);
   }
+
+  static async deleteNote(username, platform, problemId) {
+    const options = {
+      username: username,
+      platform: platform,
+      problemId: problemId
+    };
+
+    return await Api.deleteJson('notes', options);
+  }
 }
 
 export default NotesApi;

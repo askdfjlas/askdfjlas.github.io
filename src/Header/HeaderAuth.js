@@ -92,6 +92,10 @@ class HeaderAuth extends Component {
     });
   }
 
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
   render() {
     const loginButtons = (
       <div className="Header-top-right">

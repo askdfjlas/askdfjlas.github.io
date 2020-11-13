@@ -57,6 +57,10 @@ class EditNote extends Component {
     await this.loadInfo();
   }
 
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
   render() {
     const platform = this.props.match.params.platform;
 
@@ -67,7 +71,8 @@ class EditNote extends Component {
           <>
             <ProblemInfo info={this.state.problemInfo} platform={platform} />
             <EditNoteForm problemInfo={this.state.problemInfo}
-                          noteInfo={this.state.noteInfo} platform={platform} />
+                          noteInfo={this.state.noteInfo} platform={platform}
+                          history={this.props.history} />
           </>
         }
       </div>

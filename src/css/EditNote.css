@@ -28,6 +28,16 @@
 
 .Edit-note-bottom-buttons input {
   margin-right: 1em;
-  width: 8em;
+  width: 10em;
   height: 2.2em;
+}
+
+.Edit-note-delete-menu {
+  width: 80%;
+  box-sizing: border-box;
+  max-width: 35em;
+}
+
+.Edit-note-delete-menu label {
+  user-select: none;
 }

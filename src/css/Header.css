@@ -50,10 +50,7 @@
   margin: 0;
   padding-bottom: 0.5em;
   z-index: 1;
-}
-
-.Header h1:hover {
-  cursor: default;
+  user-select: none;
 }
 
 .Header ul {

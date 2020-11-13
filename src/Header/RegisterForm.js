@@ -113,6 +113,10 @@ class RegisterForm extends Component {
     }
   }
 
+  componentWillUnmount() {
+    this.mounted = false;
+  }
+
   render() {
     const createAccountForm = (
       <div className="Register-form Module-popup">

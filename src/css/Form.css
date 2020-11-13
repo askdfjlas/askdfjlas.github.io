@@ -57,8 +57,8 @@ input.Askd-not-fullwidth {
   background-color: #606080;
 }
 
-.Askd-form input[type="submit"]:hover,
-.Askd-form input[type="button"]:hover {
+.Askd-form input[type="submit"]:hover:enabled,
+.Askd-form input[type="button"]:hover:enabled {
   background-color: #707090;
 }
 
@@ -113,7 +113,7 @@ button.Askd-form-link {
 
 .Askd-button {
   border: none;
-  transition: 0.5s;
+  transition: background-color 0.5s;
 }
 
 .Askd-button-circular {
@@ -132,9 +132,9 @@ button.Askd-form-link {
   background-color: #BBBBBB;
 }
 
-.Askd-button:hover {
+.Askd-button:hover:enabled {
   cursor: pointer;
-  transition: 0.5s;
+  transition: background-color 0.5s;
 }
 
 .Askd-button-generic {
