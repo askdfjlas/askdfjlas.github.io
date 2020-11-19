@@ -11,9 +11,7 @@ class EditNoteForm extends Component {
     super(props);
 
     const noteInfo = this.props.noteInfo;
-    const problemInfo = this.props.problemInfo;
-
-    this.title = noteInfo.title || `Notes for ${problemInfo.problemName}`;
+    this.title = noteInfo.title;
     this.solved = noteInfo.solved;
     this.content = JSON.parse(noteInfo.content);
 

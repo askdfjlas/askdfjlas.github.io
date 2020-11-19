@@ -1,0 +1,117 @@
+.User-notes {
+  overflow: auto;
+  position: relative;
+}
+
+.User-notes-add {
+  position: absolute;
+  right: 0.4em;
+  bottom: 0.4em;
+}
+
+.User-notes-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 0.3em;
+}
+
+.User-note-info {
+  position: relative;
+  border: 1px solid white;
+  padding: 0.5em;
+  margin: 0.5em;
+  box-sizing: border-box;
+  border-radius: 2px;
+  background-color: #353555;
+}
+
+.User-note-info h5 {
+  margin: 0;
+}
+
+.User-note-info h6 {
+  margin: 0.15em 0;
+}
+
+.User-note-info-title {
+  color: #DDDDDD;
+  font-weight: normal;
+  font-style: italic;
+}
+
+.User-note-info-edit {
+  position: absolute;
+  top: 0.2em;
+  right: 0.6em;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.User-note-info:hover .User-note-info-edit {
+  opacity: 1;
+  transition: opacity 0.25s;
+}
+
+.User-note-info-tags {
+  display: inline-block;
+  list-style-type: none;
+  padding: 0;
+  margin-top: 0.2em;
+}
+
+.User-note-info-tags li {
+  display: inline-block;
+  font-size: 0.6em;
+  padding: 0.5em;
+  margin-right: 1em;
+  border-radius: 4px;
+  vertical-align: middle;
+}
+
+.User-note-tag-published {
+  background-color: #5555E5;
+}
+
+.User-note-tag-published::before {
+  content: 'Published!'
+}
+
+.User-note-tag-unpublished {
+  background-color: #E53555;
+}
+
+.User-note-tag-unpublished::before {
+  content: 'Unpublished'
+}
+
+.User-note-info-solved .User-note-solved-indicator {
+  background-color: #359575;
+}
+
+.User-note-info-solved .User-note-solved-indicator::before {
+  content: 'Solved!';
+}
+
+.User-note-info-upsolved .User-note-solved-indicator {
+  background-color: #6525C5;
+}
+
+.User-note-info-upsolved .User-note-solved-indicator::before {
+  content: 'Upsolved';
+}
+
+.User-note-info-upsolved-help .User-note-solved-indicator {
+  background-color: #D59565;
+}
+
+.User-note-info-upsolved-help .User-note-solved-indicator::before {
+  content: 'Upsolved with help';
+}
+
+.User-note-info-unsolved .User-note-solved-indicator {
+  background-color: #D51530;
+}
+
+.User-note-info-unsolved .User-note-solved-indicator::before {
+  content: 'Unsolved';
+}

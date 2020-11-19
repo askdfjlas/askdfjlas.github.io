@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import TextEditor from '../TextEditor/TextEditor';
 import Utils from '../Utils';
-import '../css/CpNotes.css';
 
 class CpNotes extends Component {
   async componentDidMount() {

@@ -1,6 +1,14 @@
 import Api from './Api';
 
 class NotesApi {
+  static async getNotes(username) {
+    const options = {
+      username: username
+    };
+
+    return await Api.getJson('notes', options);
+  }
+
   static async getNoteInfo(username, platform, problemId) {
     const options = {
       username: username,

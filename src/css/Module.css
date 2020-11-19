@@ -12,6 +12,7 @@
 @media screen and (max-width: 750px) {
   .Module-wrapper {
     width: 100%;
+    padding: 1em;
   }
 }
 
@@ -39,9 +40,8 @@
   flex: 1 0 auto;
   box-sizing: border-box;
   overflow-wrap: anywhere;
-  margin: 0.75em auto 2em;
-  padding: 1em;
-  width: 90%;
+  margin: 0.8em auto 0 auto;
+  width: 96%;
   border-radius: 3px;
   border: 2px solid white;
   color: white;

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import UserInfo from './UserInfo';
-import UserProblems from './UserProblems';
+import UserNotes from './UserNotes';
 import UserApi from '../Api/UserApi';
+import NotesApi from '../Api/NotesApi';
 import UserInfoState from './UserInfoState';
 import Utils from '../Utils';
 
@@ -11,17 +12,33 @@ class UserProfile extends Component {
 
     this.state = {
       screen: UserInfoState.LOADING,
-      info: null
+      userInfo: null,
+      notes: null
     };
   }
 
   async loadUserInfo() {
+    const username = this.props.match.params.username;
+    const userInfo = await UserApi.getUserInfo(username);
+    await Utils.setStatePromise(this, {
+      userInfo: userInfo
+    });
+  }
+
+  async loadNotes() {
+    const username = this.props.match.params.username;
+    const notes = await NotesApi.getNotes(username);
+    await Utils.setStatePromise(this, {
+      notes: notes
+    });
+  }
+
+  async loadInfo() {
     try {
-      const username = this.props.match.params.username;
-      const info = await UserApi.getUserInfo(username);
+      await this.loadUserInfo();
+      await this.loadNotes();
       await Utils.setStatePromise(this, {
-        screen: UserInfoState.DONE,
-        info: info
+        screen: UserInfoState.DONE
       });
     }
     catch(err) {
@@ -34,7 +51,7 @@ class UserProfile extends Component {
   }
 
   async componentDidMount() {
-    await this.loadUserInfo();
+    await this.loadInfo();
   }
 
   async componentDidUpdate(prevProps) {
@@ -43,7 +60,7 @@ class UserProfile extends Component {
         screen: UserInfoState.LOADING,
         info: null
       });
-      await this.loadUserInfo();
+      await this.loadInfo();
     }
   }
 
@@ -56,9 +73,10 @@ class UserProfile extends Component {
     const loadedContent = (
       <>
         <div className="Module-description">
-          <UserInfo info={this.state.info} />
+          <UserInfo info={this.state.userInfo} />
         </div>
-        <UserProblems info={this.state.info} history={this.props.history} />
+        <UserNotes userInfo={this.state.userInfo} notes={this.state.notes}
+                   history={this.props.history} />
       </>
     );
     const userNotFoundContent = (

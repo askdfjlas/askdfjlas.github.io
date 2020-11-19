@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
 import AddProblemForm from './AddProblemForm';
 import NotesApi from '../Api/NotesApi';
+import UserNotesList from './UserNotesList';
 import Utils from '../Utils';
+import '../css/UserNotes.css';
 
-class UserProblems extends Component {
+class UserNotes extends Component {
   constructor(props) {
     super(props);
 
@@ -28,7 +30,7 @@ class UserProblems extends Component {
     }
 
     try {
-      const username = this.props.info.username;
+      const username = this.props.userInfo.username;
       await NotesApi.addNote(username, platform, problemSortKey);
 
       const problemUrl = problemSortKey.replace('#', '/');
@@ -47,12 +49,12 @@ class UserProblems extends Component {
           this.state.showAddProblemForm &&
           <AddProblemForm callback={this.addProblem} />
         }
-        <div className="Cp-notes Module-space">
-          <p>There's nothing to see here yet!</p>
+        <div className="User-notes Module-space">
+          <UserNotesList notes={this.props.notes} />
           {
-            this.props.info.email &&
+            this.props.userInfo.email &&
             <button onClick={this.toggleAddProblemForm}
-                    className="Cp-notes-add Askd-button Askd-button-circular">
+                    className="User-notes-add Askd-button Askd-button-circular">
               +
             </button>
           }
@@ -62,4 +64,4 @@ class UserProblems extends Component {
   }
 }
 
-export default UserProblems;
+export default UserNotes;
