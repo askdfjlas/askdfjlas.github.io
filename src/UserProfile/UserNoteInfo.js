@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import SolvedState from '../EditNote/SolvedState';
+import SolvedState from '../Api/SolvedState';
 
 class UserNoteInfo extends Component {
   render() {
@@ -8,13 +8,13 @@ class UserNoteInfo extends Component {
 
     let solvedClass;
     switch(info.solved) {
-      case SolvedState.SOLVED:
+      case SolvedState.SOLVED.value:
         solvedClass = 'solved';
         break;
-      case SolvedState.UPSOLVED:
+      case SolvedState.UPSOLVED.value:
         solvedClass = 'upsolved';
         break;
-      case SolvedState.UPSOLVED_HELP:
+      case SolvedState.UPSOLVED_HELP.value:
         solvedClass = 'upsolved-help';
         break;
       default:
@@ -26,12 +26,10 @@ class UserNoteInfo extends Component {
 
     return (
       <li className={`User-note-info User-note-info-${solvedClass}`}>
-        <span className="User-note-info-edit">
-          <Link className="Askd-form-link"
-                to={`/notes/edit/${info.platform}/${problemUrl}`}>
-            Edit
-          </Link>
-        </span>
+        <Link className="User-note-info-edit Askd-form-link"
+              to={`/notes/edit/${info.platform}/${problemUrl}`}>
+          Edit
+        </Link>
         <h5>
           {info.platform} {info.problemCode} - {info.problemName}
         </h5>

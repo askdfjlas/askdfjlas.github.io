@@ -35,13 +35,16 @@
 }
 
 .Module-space {
+  display: flex;
   background-color: #252545;
   font-family: 'Verdana';
   flex: 1 0 auto;
+  align-items: center;
+  justify-content: center;
   box-sizing: border-box;
   overflow-wrap: anywhere;
   margin: 0.8em auto 0 auto;
-  width: 96%;
+  width: 100%;
   border-radius: 3px;
   border: 2px solid white;
   color: white;
@@ -67,6 +70,7 @@
 
 .Module-info-box a {
   font-weight: bold;
+  font-size: 0.8em;
 }
 
 .Module-popup {

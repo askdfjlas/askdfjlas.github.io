@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import TextEditor from '../TextEditor/TextEditor';
 import DeleteMenu from './DeleteMenu';
-import SolvedState from './SolvedState';
+import SolvedState from '../Api/SolvedState';
 import UserAuthApi from '../Api/UserAuthApi';
 import NotesApi from '../Api/NotesApi';
 import Utils from '../Utils';
@@ -113,10 +113,10 @@ class EditNoteForm extends Component {
 
           <select name="solved" id="note-solved" onChange={this.handleSolvedChange}
                   defaultValue={this.solved}>
-            <option value={SolvedState.SOLVED}>Solved</option>
-            <option value={SolvedState.UPSOLVED}>Upsolved</option>
-            <option value={SolvedState.UPSOLVED_HELP}>Upsolved with help</option>
-            <option value={SolvedState.UNSOLVED}>Unsolved</option>
+            <option value={SolvedState.SOLVED.value}>Solved</option>
+            <option value={SolvedState.UPSOLVED.value}>Upsolved</option>
+            <option value={SolvedState.UPSOLVED_HELP.value}>Upsolved with help</option>
+            <option value={SolvedState.UNSOLVED.value}>Unsolved</option>
           </select>
 
           <TextEditor initialContent={this.content}

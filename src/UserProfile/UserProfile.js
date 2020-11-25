@@ -3,7 +3,7 @@ import UserInfo from './UserInfo';
 import UserNotes from './UserNotes';
 import UserApi from '../Api/UserApi';
 import NotesApi from '../Api/NotesApi';
-import UserInfoState from './UserInfoState';
+import UserProfileState from './UserProfileState';
 import Utils from '../Utils';
 
 class UserProfile extends Component {
@@ -11,40 +11,36 @@ class UserProfile extends Component {
     super(props);
 
     this.state = {
-      screen: UserInfoState.LOADING,
+      screen: UserProfileState.LOADING,
       userInfo: null,
       notes: null
     };
   }
 
-  async loadUserInfo() {
+  async getUserInfo() {
     const username = this.props.match.params.username;
-    const userInfo = await UserApi.getUserInfo(username);
-    await Utils.setStatePromise(this, {
-      userInfo: userInfo
-    });
+    return await UserApi.getUserInfo(username);
   }
 
-  async loadNotes() {
+  async getNotes() {
     const username = this.props.match.params.username;
-    const notes = await NotesApi.getNotes(username);
-    await Utils.setStatePromise(this, {
-      notes: notes
-    });
+    return await NotesApi.getNotes(username);
   }
 
   async loadInfo() {
     try {
-      await this.loadUserInfo();
-      await this.loadNotes();
+      const userInfo = await this.getUserInfo();
+      const notes = await this.getNotes();
       await Utils.setStatePromise(this, {
-        screen: UserInfoState.DONE
+        screen: UserProfileState.DONE,
+        userInfo: userInfo,
+        notes: notes
       });
     }
     catch(err) {
       if(err.name === 'UserNotFound') {
         await Utils.setStatePromise(this, {
-          screen: UserInfoState.NOT_FOUND
+          screen: UserProfileState.NOT_FOUND
         });
       }
     }
@@ -57,7 +53,7 @@ class UserProfile extends Component {
   async componentDidUpdate(prevProps) {
     if(prevProps.match.params.username !== this.props.match.params.username) {
       await Utils.setStatePromise(this, {
-        screen: UserInfoState.LOADING,
+        screen: UserProfileState.LOADING,
         info: null
       });
       await this.loadInfo();
@@ -87,13 +83,13 @@ class UserProfile extends Component {
 
     var content;
     switch(this.state.screen) {
-      case UserInfoState.LOADING:
+      case UserProfileState.LOADING:
         content = loadingContent;
         break;
-      case UserInfoState.DONE:
+      case UserProfileState.DONE:
         content = loadedContent;
         break;
-      case UserInfoState.NOT_FOUND:
+      case UserProfileState.NOT_FOUND:
         content = userNotFoundContent;
         break;
       default:

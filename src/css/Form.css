@@ -85,9 +85,12 @@ input.Askd-not-fullwidth {
   margin-bottom: 0;
 }
 
+.Askd-form .Askd-form-link {
+  font-size: 0.8em;
+}
+
 .Askd-form-link {
   font-weight: normal;
-  font-size: 0.8em;
   color: #77AAFF;
   text-align: left;
 }

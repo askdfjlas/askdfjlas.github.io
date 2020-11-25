@@ -10,16 +10,32 @@ class UserNotes extends Component {
     super(props);
 
     this.state = {
-      showAddProblemForm: false
+      showAddProblemForm: false,
+      organizeBySolved: false,
+      organizeByContest: false
     };
 
     this.toggleAddProblemForm = this.toggleAddProblemForm.bind(this);
+    this.toggleOrganizeBySolved = this.toggleOrganizeBySolved.bind(this);
+    this.toggleOrganizeByContest = this.toggleOrganizeByContest.bind(this);
     this.addProblem = this.addProblem.bind(this);
   }
 
   async toggleAddProblemForm() {
-    Utils.setStatePromise(this, {
+    await Utils.setStatePromise(this, {
       showAddProblemForm: !this.state.showAddProblemForm
+    });
+  }
+
+  async toggleOrganizeBySolved() {
+    await Utils.setStatePromise(this, {
+      organizeBySolved: !this.state.organizeBySolved
+    });
+  }
+
+  async toggleOrganizeByContest() {
+    await Utils.setStatePromise(this, {
+      organizeByContest: !this.state.organizeByContest
     });
   }
 
@@ -49,8 +65,23 @@ class UserNotes extends Component {
           this.state.showAddProblemForm &&
           <AddProblemForm callback={this.addProblem} />
         }
+        <form>
+          <div className="User-notes-organize">
+            <label>
+              <b>Organize by</b>
+            </label>
+            <input type="checkbox" name="solved" value="solved"
+                   onChange={this.toggleOrganizeBySolved} />
+            <label htmlFor="solved">Solved</label>
+            <input type="checkbox" name="contest" value="contest"
+                   onChange={this.toggleOrganizeByContest} />
+            <label htmlFor="contest">Contest</label>
+          </div>
+        </form>
         <div className="User-notes Module-space">
-          <UserNotesList notes={this.props.notes} />
+          <UserNotesList organizeBySolved={this.state.organizeBySolved}
+                         organizeByContest={this.state.organizeByContest}
+                         notes={this.props.notes} />
           {
             this.props.userInfo.email &&
             <button onClick={this.toggleAddProblemForm}

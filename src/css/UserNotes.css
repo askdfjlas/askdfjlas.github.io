@@ -9,10 +9,23 @@
   bottom: 0.4em;
 }
 
+.User-notes-organize {
+  display: inline;
+  vertical-align: middle;
+  font-family: Arial;
+  color: white;
+}
+
+.User-notes-organize label {
+  margin-right: 0.3em;
+}
+
 .User-notes-list {
   list-style-type: none;
+  width: 100%;
+  min-height: 100%;
   padding: 0;
-  margin: 0 0.3em;
+  margin: 0;
 }
 
 .User-note-info {
@@ -41,13 +54,15 @@
 
 .User-note-info-edit {
   position: absolute;
+  font-size: 0.8em;
   top: 0.2em;
   right: 0.6em;
   opacity: 0;
   transition: opacity 0.25s;
 }
 
-.User-note-info:hover .User-note-info-edit {
+.User-note-info:hover .User-note-info-edit,
+.User-note-info-edit:focus {
   opacity: 1;
   transition: opacity 0.25s;
 }
@@ -114,4 +129,86 @@
 
 .User-note-info-unsolved .User-note-solved-indicator::before {
   content: 'Unsolved';
+}
+
+.User-note-contest-notes {
+  display: flex;
+  background-color: #555575;
+  margin-top: 0.2em;
+  padding: 0;
+  border-radius: 2px;
+}
+
+.User-note-contest-notes li {
+  position: relative;
+  display: flex;
+  margin: 0.3em;
+  width: 2.5em;
+  height: 2.5em;
+  border: 1px solid white;
+  justify-content: center;
+  align-items: center;
+}
+
+.User-note-contest-code {
+  font-size: 0.8em;
+}
+
+.User-note-contest-code-small {
+  font-size: 0.5em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.User-note-contest-edit {
+  position: absolute;
+  font-size: 0.6em;
+  top: 0;
+  right: 0.2em;
+  opacity: 0;
+  transition: opacity 0.25s;
+}
+
+.User-note-contest-notes li:hover .User-note-contest-edit,
+.User-note-contest-edit:focus {
+  opacity: 1;
+  transition: opacity 0.25s;
+}
+
+.User-note-contest-solved {
+  background-color: #359575;
+}
+
+.User-note-contest-upsolved {
+  background-color: #6525C5;
+}
+
+.User-note-contest-upsolved-help {
+  background-color: #D59565;
+}
+
+.User-note-contest-unsolved {
+  background-color: #D51530;
+}
+
+.User-notes-title-dropdown {
+  position: relative;
+  margin: 0.7em;
+  margin-bottom: 0.4em;
+  padding: 0.2em;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.User-notes-title-dropdown-showhide {
+  position: absolute;
+  top: 0.5em;
+  right: 1em;
+}
+
+.User-notes-title-dropdown-heading {
+  margin: 0.5em;
+  margin-top: 0.3em;
 }
