@@ -1,4 +1,5 @@
 import Api from './Api';
+import SolvedState from './SolvedState';
 
 class ProblemsApi {
   static _prettifyProblems(problems) {
@@ -34,6 +35,14 @@ class ProblemsApi {
     };
 
     return await Api.getJson('problems', options);
+  }
+
+  static getSolvedStateText(solvedStateValue) {
+    for(const state in SolvedState) {
+      if(SolvedState[state].value === solvedStateValue) {
+        return SolvedState[state].text;
+      }
+    }
   }
 }
 

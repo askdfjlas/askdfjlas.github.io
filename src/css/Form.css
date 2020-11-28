@@ -116,7 +116,7 @@ button.Askd-form-link {
 
 .Askd-button {
   border: none;
-  transition: background-color 0.5s;
+  transition: background-color, opacity 0.5s;
 }
 
 .Askd-button-circular {
@@ -137,7 +137,7 @@ button.Askd-form-link {
 
 .Askd-button:hover:enabled {
   cursor: pointer;
-  transition: background-color 0.5s;
+  transition: background-color, opacity 0.5s;
 }
 
 .Askd-button-generic {

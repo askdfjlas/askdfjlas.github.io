@@ -45,11 +45,16 @@ class UserContestInfo extends Component {
       );
     }
 
+    const timestamp = (new Date(info.editedTime)).toLocaleDateString();
+
     return (
       <li className="User-note-info">
         <h5>
           {info.contestName}
         </h5>
+        <h6 className="User-note-contest-timestamp">
+          {timestamp}
+        </h6>
         <ul className="User-note-contest-notes">
           { noteElements }
         </ul>

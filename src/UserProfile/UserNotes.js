@@ -12,12 +12,16 @@ class UserNotes extends Component {
     this.state = {
       showAddProblemForm: false,
       organizeBySolved: false,
-      organizeByContest: false
+      organizeByPlatform: false,
+      organizeByContest: false,
+      sortByRecent: false
     };
 
     this.toggleAddProblemForm = this.toggleAddProblemForm.bind(this);
     this.toggleOrganizeBySolved = this.toggleOrganizeBySolved.bind(this);
+    this.toggleOrganizeByPlatform = this.toggleOrganizeByPlatform.bind(this);
     this.toggleOrganizeByContest = this.toggleOrganizeByContest.bind(this);
+    this.toggleSortByRecent = this.toggleSortByRecent.bind(this);
     this.addProblem = this.addProblem.bind(this);
   }
 
@@ -33,9 +37,21 @@ class UserNotes extends Component {
     });
   }
 
+  async toggleOrganizeByPlatform() {
+    await Utils.setStatePromise(this, {
+      organizeByPlatform: !this.state.organizeByPlatform
+    });
+  }
+
   async toggleOrganizeByContest() {
     await Utils.setStatePromise(this, {
       organizeByContest: !this.state.organizeByContest
+    });
+  }
+
+  async toggleSortByRecent() {
+    await Utils.setStatePromise(this, {
+      sortByRecent: !this.state.sortByRecent
     });
   }
 
@@ -73,14 +89,29 @@ class UserNotes extends Component {
             <input type="checkbox" name="solved" value="solved"
                    onChange={this.toggleOrganizeBySolved} />
             <label htmlFor="solved">Solved</label>
+            <input type="checkbox" name="platform" value="platform"
+                   onChange={this.toggleOrganizeByPlatform} />
+            <label htmlFor="platform">Platform</label>
             <input type="checkbox" name="contest" value="contest"
                    onChange={this.toggleOrganizeByContest} />
             <label htmlFor="contest">Contest</label>
           </div>
+          <div className="User-notes-organize">
+            <label htmlFor="sort">
+              <b>Sort by</b>
+            </label>
+            <select defaultValue="default" name="sort"
+                    onChange={this.toggleSortByRecent}>
+              <option value="default">Default</option>
+              <option value="recent">Recent</option>
+            </select>
+          </div>
         </form>
         <div className="User-notes Module-space">
           <UserNotesList organizeBySolved={this.state.organizeBySolved}
+                         organizeByPlatform={this.state.organizeByPlatform}
                          organizeByContest={this.state.organizeByContest}
+                         sortByRecent={this.state.sortByRecent}
                          notes={this.props.notes} />
           {
             this.props.userInfo.email &&

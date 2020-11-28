@@ -5,15 +5,22 @@
 
 .User-notes-add {
   position: absolute;
-  right: 0.4em;
-  bottom: 0.4em;
+  right: 0.3em;
+  bottom: 0.3em;
+  opacity: 0.7;
+}
+
+.User-notes-add:hover {
+  opacity: 1;
 }
 
 .User-notes-organize {
-  display: inline;
+  display: inline-block;
+  width: 100%;
   vertical-align: middle;
   font-family: Arial;
   color: white;
+  margin: 0.2em;
 }
 
 .User-notes-organize label {
@@ -42,14 +49,23 @@
   margin: 0;
 }
 
-.User-note-info h6 {
-  margin: 0.15em 0;
-}
-
 .User-note-info-title {
   color: #DDDDDD;
+  margin: 0.15em 0;
   font-weight: normal;
   font-style: italic;
+}
+
+.User-note-info-timestamp {
+  margin: 0;
+}
+
+@media screen and (min-width: 500px) {
+  .User-note-info-timestamp {
+    position: absolute;
+    bottom: 0.5em;
+    right: 0.5em;
+  }
 }
 
 .User-note-info-edit {
@@ -148,6 +164,11 @@
   border: 1px solid white;
   justify-content: center;
   align-items: center;
+}
+
+.User-note-contest-timestamp {
+  margin: 0;
+  color: #EEEEEE;
 }
 
 .User-note-contest-code {

@@ -23,6 +23,7 @@ class UserNoteInfo extends Component {
 
     const problemUrl = info.problemSk.replace('#', '/');
     const publishedClass = info.published ? 'published' : 'unpublished';
+    const timestamp = (new Date(info.editedTime)).toLocaleDateString();
 
     return (
       <li className={`User-note-info User-note-info-${solvedClass}`}>
@@ -35,6 +36,9 @@ class UserNoteInfo extends Component {
         </h5>
         <h6 className="User-note-info-title">
           {info.title}
+        </h6>
+        <h6 className="User-note-info-timestamp">
+          {timestamp}
         </h6>
         <ul className="User-note-info-tags">
           <li className="User-note-solved-indicator" />

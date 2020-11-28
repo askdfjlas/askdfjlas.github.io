@@ -2,17 +2,15 @@ import React, { Component } from 'react';
 import UserNoteInfo from './UserNoteInfo';
 import UserContestInfo from './UserContestInfo';
 import UserNotesTitleDropdown from './UserNotesTitleDropdown';
-import SolvedState from '../Api/SolvedState';
+import ProblemsApi from '../Api/ProblemsApi';
+
+function compareByRecent(note1, note2) {
+  if(note1.editedTime > note2.editedTime)
+    return -1;
+  return 1;
+}
 
 class UserNotesList extends Component {
-  getSolvedStateText(solvedStateValue) {
-    for(const state in SolvedState) {
-      if(SolvedState[state].value === solvedStateValue) {
-        return SolvedState[state].text;
-      }
-    }
-  }
-
   renderIntoNotes(notes) {
     let noteInfoElements = [];
     for(let i = 0; i < notes.length; i++) {
@@ -21,7 +19,11 @@ class UserNotesList extends Component {
       );
     }
 
-    return noteInfoElements;
+    return (
+      <ul className="User-notes-list">
+        { noteInfoElements }
+      </ul>
+    );
   }
 
   renderIntoContests(notes) {
@@ -35,10 +37,14 @@ class UserNotesList extends Component {
           contestCode: note.contestCode,
           contestName: note.contestName,
           platform: note.platform,
+          editedTime: note.editedTime,
           notes: [ note ]
         };
       }
       else {
+        if(note.editedTime > contestGroups[contestString].editedTime) {
+          contestGroups[contestString].editedTime = note.editedTime;
+        }
         contestGroups[contestString].notes.push(note);
       }
     }
@@ -51,7 +57,41 @@ class UserNotesList extends Component {
       );
     }
 
-    return noteInfoElements;
+    return (
+      <ul className="User-notes-list">
+        { noteInfoElements }
+      </ul>
+    );
+  }
+
+  renderIntoPlatforms(notes) {
+    let platformGroups = {};
+    for(const note of notes) {
+      if(!platformGroups.hasOwnProperty(note.platform)) {
+        platformGroups[note.platform] = [ note ];
+      }
+      else {
+        platformGroups[note.platform].push(note);
+      }
+    }
+
+    let noteInfoElements = [];
+    for(const platform in platformGroups) {
+      const innerNotes = platformGroups[platform];
+      let innerContent = this.props.organizeByContest ?
+        this.renderIntoContests(innerNotes) : this.renderIntoNotes(innerNotes);
+
+      noteInfoElements.push(
+        <UserNotesTitleDropdown key={platform} title={platform}
+                                innerContent={innerContent} />
+      );
+    }
+
+    return (
+      <ul className="User-notes-list">
+        { noteInfoElements }
+      </ul>
+    );
   }
 
   renderIntoSolved(notes) {
@@ -67,22 +107,16 @@ class UserNotesList extends Component {
 
     let noteInfoElements = [];
     for(const solvedState in solvedGroups) {
-      const solvedText = this.getSolvedStateText(parseInt(solvedState));
+      const solvedText = ProblemsApi.getSolvedStateText(parseInt(solvedState));
       const innerNotes = solvedGroups[solvedState];
 
       let innerContent;
-      if(this.props.organizeByContest) {
+      if(this.props.organizeByPlatform)
+        innerContent = this.renderIntoPlatforms(innerNotes);
+      else if(this.props.organizeByContest)
         innerContent = this.renderIntoContests(innerNotes);
-      }
-      else {
+      else
         innerContent = this.renderIntoNotes(innerNotes);
-      }
-
-      innerContent = (
-        <ul className="User-notes-list">
-          { innerContent }
-        </ul>
-      );
 
       noteInfoElements.push(
         <UserNotesTitleDropdown key={solvedState} title={solvedText}
@@ -90,7 +124,11 @@ class UserNotesList extends Component {
       );
     }
 
-    return noteInfoElements;
+    return (
+      <ul className="User-notes-list">
+        { noteInfoElements }
+      </ul>
+    );
   }
 
   render() {
@@ -100,22 +138,22 @@ class UserNotesList extends Component {
       );
     }
 
-    let noteInfoElements;
-    if(this.props.organizeBySolved) {
-      noteInfoElements = this.renderIntoSolved(this.props.notes);
-    }
-    else if(this.props.organizeByContest) {
-      noteInfoElements = this.renderIntoContests(this.props.notes);
+    let notesToBeRendered;
+    if(this.props.sortByRecent) {
+      notesToBeRendered = [...this.props.notes].sort(compareByRecent);
     }
     else {
-      noteInfoElements = this.renderIntoNotes(this.props.notes);
+      notesToBeRendered = this.props.notes;
     }
 
-    return (
-      <ul className="User-notes-list">
-        { noteInfoElements }
-      </ul>
-    );
+    if(this.props.organizeBySolved)
+      return this.renderIntoSolved(notesToBeRendered);
+    else if(this.props.organizeByPlatform)
+      return this.renderIntoPlatforms(notesToBeRendered);
+    else if(this.props.organizeByContest)
+      return this.renderIntoContests(notesToBeRendered);
+    else
+      return this.renderIntoNotes(notesToBeRendered);
   }
 }
 
