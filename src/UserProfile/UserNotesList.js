@@ -2,7 +2,17 @@ import React, { Component } from 'react';
 import UserNoteInfo from './UserNoteInfo';
 import UserContestInfo from './UserContestInfo';
 import UserNotesTitleDropdown from './UserNotesTitleDropdown';
+import VirtualPaginator from '../Paginator/VirtualPaginator';
+import Paginator from '../Paginator/Paginator';
 import ProblemsApi from '../Api/ProblemsApi';
+import Utils from '../Utils';
+
+const RecursionLevel = Object.freeze({
+  CONTEST: 1,
+  PLATFORM: 2,
+  SOLVED: 3
+});
+const PAGINATE_SIZE = 15;
 
 function compareByRecent(note1, note2) {
   if(note1.editedTime > note2.editedTime)
@@ -10,51 +20,182 @@ function compareByRecent(note1, note2) {
   return 1;
 }
 
+function groupByAttributes(objectList, attributes) {
+  let attributeGroups = {};
+  for(const obj of objectList) {
+    let attributeValues = [];
+    for(const attribute of attributes) {
+      attributeValues.push(obj[attribute]);
+    }
+
+    const key = attributeValues.join('#');
+    if(attributeGroups.hasOwnProperty(key)) {
+      attributeGroups[key].push(obj);
+    }
+    else {
+      attributeGroups[key] = [ obj ];
+    }
+  }
+
+  return attributeGroups;
+}
+
 class UserNotesList extends Component {
-  renderIntoNotes(notes) {
-    let noteInfoElements = [];
-    for(let i = 0; i < notes.length; i++) {
-      noteInfoElements.push(
-        <UserNoteInfo key={i} info={notes[i]} />
-      );
-    }
+  constructor(props) {
+    super(props);
 
-    return (
-      <ul className="User-notes-list">
-        { noteInfoElements }
-      </ul>
-    );
+    this.state = {
+      page: 1
+    };
+
+    this.sortNoteItems(this.props.notes);
+    this.virtualPaginator = new VirtualPaginator(PAGINATE_SIZE, this.sortedNoteItems);
+
+    this.updatePage = this.updatePage.bind(this);
   }
 
-  renderIntoContests(notes) {
-    let contestGroups = {};
-    for(const note of notes) {
-      const contestString =
-        `${note.platform}#${note.contestCode}#${note.contestName}`;
+  createContestObject(notes) {
+    const firstNote = notes[0];
+    let contestObject = {
+      contestCode: firstNote.contestCode,
+      contestName: firstNote.contestName,
+      platform: firstNote.platform,
+      editedTime: firstNote.editedTime,
+      notes: []
+    };
 
-      if(!contestGroups.hasOwnProperty(contestString)) {
-        contestGroups[contestString] = {
-          contestCode: note.contestCode,
-          contestName: note.contestName,
-          platform: note.platform,
-          editedTime: note.editedTime,
-          notes: [ note ]
-        };
+    if(this.props.organizeBySolved)
+      contestObject.solved = firstNote.solved;
+    if(this.props.organizeByPlatform)
+      contestObject.platform = firstNote.platform;
+
+    for(const note of notes) {
+      contestObject.notes.push(note);
+      if(note.editedTime > contestObject.editedTime) {
+        contestObject.editedTime = note.editedTime;
       }
-      else {
-        if(note.editedTime > contestGroups[contestString].editedTime) {
-          contestGroups[contestString].editedTime = note.editedTime;
+    }
+
+    return contestObject;
+  }
+
+  sortNoteItems(notes, recursionLevel = RecursionLevel.SOLVED, keyString = '') {
+    let paginatorIndices = [];
+    if(recursionLevel === RecursionLevel.CONTEST) {
+      if(this.props.organizeByContest) {
+        const contestGroups = groupByAttributes(notes, ['platform', 'contestCode']);
+        for(const key in contestGroups) {
+          let contestObject = this.createContestObject(contestGroups[key]);
+          contestObject.paginatorIndex = this.sortedNoteItems.length;
+          this.sortedNoteItems.push(contestObject);
+          paginatorIndices.push(contestObject.paginatorIndex);
         }
-        contestGroups[contestString].notes.push(note);
+      }
+      else {
+        for(const note of notes) {
+          note.paginatorIndex = this.sortedNoteItems.length;
+          this.sortedNoteItems.push(note);
+          paginatorIndices.push(note.paginatorIndex);
+        }
+      }
+    }
+    else {
+      let organize, attributeString;
+      if(recursionLevel === RecursionLevel.SOLVED) {
+        this.sortedNoteItems = [];
+        this.dropdownShowing = {};
+        this.dropdownIndices = {};
+        if(this.props.sortByRecent) {
+          notes = [...notes].sort(compareByRecent);
+        }
+
+        organize = this.props.organizeBySolved;
+        attributeString = 'solved';
+      }
+      else {
+        organize = this.props.organizeByPlatform;
+        attributeString = 'platform';
+      }
+
+      if(organize) {
+        const groups = groupByAttributes(notes, [attributeString]);
+        for(const key in groups) {
+          const innerKeyString = `${keyString}#${key}`;
+          const innerIndices =
+            this.sortNoteItems(groups[key], recursionLevel - 1, innerKeyString);
+
+          this.dropdownShowing[innerKeyString] = true;
+          this.dropdownIndices[innerKeyString] = innerIndices;
+
+          for(const index of innerIndices) {
+            paginatorIndices.push(index);
+          }
+        }
+      }
+      else {
+        return this.sortNoteItems(notes, recursionLevel - 1, keyString);
       }
     }
 
+    return paginatorIndices;
+  }
+
+  renderNoteItems(notes, recursionLevel = RecursionLevel.SOLVED, keyString = '') {
     let noteInfoElements = [];
-    for(const contestString in contestGroups) {
-      noteInfoElements.push(
-        <UserContestInfo key={contestString}
-                         info={contestGroups[contestString]} />
-      );
+    if(recursionLevel === RecursionLevel.CONTEST) {
+      let NoteComponent =
+        this.props.organizeByContest ? UserContestInfo : UserNoteInfo;
+
+      for(let i = 0; i < notes.length; i++) {
+        noteInfoElements.push(
+          <NoteComponent key={i} info={notes[i]} />
+        );
+      }
+    }
+    else {
+      let organize, attributeString;
+      if(recursionLevel === RecursionLevel.SOLVED) {
+        organize = this.props.organizeBySolved;
+        attributeString = 'solved';
+      }
+      else {
+        organize = this.props.organizeByPlatform;
+        attributeString = 'platform';
+      }
+
+      if(organize) {
+        const groups = groupByAttributes(notes, [attributeString]);
+        for(const key in groups) {
+          const innerKeyString = `${keyString}#${key}`;
+          const innerContent =
+            this.renderNoteItems(groups[key], recursionLevel - 1, innerKeyString);
+          const title = (recursionLevel === RecursionLevel.SOLVED) ?
+            ProblemsApi.getSolvedStateText(key) : key;
+
+          const showing = this.dropdownShowing[innerKeyString];
+          const innerIndices = this.dropdownIndices[innerKeyString];
+          const toggleCallback = async () => {
+            this.virtualPaginator.toggleActiveItems(innerIndices);
+            this.dropdownShowing[innerKeyString] = !this.dropdownShowing[innerKeyString];
+
+            const totalPages = this.virtualPaginator.getPageCount();
+            if(this.state.page > totalPages) {
+              await this.updatePage(totalPages);
+            }
+
+            this.forceUpdate();
+          };
+
+          noteInfoElements.push(
+            <UserNotesTitleDropdown key={key} title={title}
+                                    innerContent={innerContent} showing={showing}
+                                    toggleCallback={toggleCallback} />
+          );
+        }
+      }
+      else {
+        return this.renderNoteItems(notes, recursionLevel - 1);
+      }
     }
 
     return (
@@ -64,96 +205,58 @@ class UserNotesList extends Component {
     );
   }
 
-  renderIntoPlatforms(notes) {
-    let platformGroups = {};
-    for(const note of notes) {
-      if(!platformGroups.hasOwnProperty(note.platform)) {
-        platformGroups[note.platform] = [ note ];
-      }
-      else {
-        platformGroups[note.platform].push(note);
-      }
-    }
-
-    let noteInfoElements = [];
-    for(const platform in platformGroups) {
-      const innerNotes = platformGroups[platform];
-      let innerContent = this.props.organizeByContest ?
-        this.renderIntoContests(innerNotes) : this.renderIntoNotes(innerNotes);
-
-      noteInfoElements.push(
-        <UserNotesTitleDropdown key={platform} title={platform}
-                                innerContent={innerContent} />
-      );
-    }
-
-    return (
-      <ul className="User-notes-list">
-        { noteInfoElements }
-      </ul>
-    );
+  async updatePage(page) {
+    await Utils.setStatePromise(this, {
+      page: page
+    });
   }
 
-  renderIntoSolved(notes) {
-    let solvedGroups = {};
-    for(const note of notes) {
-      if(!solvedGroups.hasOwnProperty(note.solved)) {
-        solvedGroups[note.solved] = [ note ];
-      }
-      else {
-        solvedGroups[note.solved].push(note);
+  shouldComponentUpdate(nextProps, nextState) {
+    // Only re-sort note items on an (important) props update
+    const importantProps = [
+      'organizeBySolved',
+      'organizeByPlatform',
+      'organizeByContest',
+      'sortByRecent'
+    ];
+    const currentImportantProps = importantProps.map((x) => this.props[x]);
+    const nextImportantProps = importantProps.map((x) => nextProps[x]);
+
+    if(JSON.stringify(currentImportantProps) !== JSON.stringify(nextImportantProps)) {
+      this.props = nextProps;
+      this.sortNoteItems(this.props.notes);
+      this.virtualPaginator.setContent(this.sortedNoteItems);
+
+      if(this.state.page !== 1) {
+        this.updatePage(1);
+        return false;
       }
     }
 
-    let noteInfoElements = [];
-    for(const solvedState in solvedGroups) {
-      const solvedText = ProblemsApi.getSolvedStateText(parseInt(solvedState));
-      const innerNotes = solvedGroups[solvedState];
-
-      let innerContent;
-      if(this.props.organizeByPlatform)
-        innerContent = this.renderIntoPlatforms(innerNotes);
-      else if(this.props.organizeByContest)
-        innerContent = this.renderIntoContests(innerNotes);
-      else
-        innerContent = this.renderIntoNotes(innerNotes);
-
-      noteInfoElements.push(
-        <UserNotesTitleDropdown key={solvedState} title={solvedText}
-                                innerContent={innerContent} />
-      );
-    }
-
-    return (
-      <ul className="User-notes-list">
-        { noteInfoElements }
-      </ul>
-    );
+    return true;
   }
 
   render() {
     if(this.props.notes.length === 0) {
       return (
-        <p>There's nothing to see here yet!</p>
+        <p className="User-notes-nothing">There's nothing to see here yet!</p>
       );
     }
 
-    let notesToBeRendered;
-    if(this.props.sortByRecent) {
-      notesToBeRendered = [...this.props.notes].sort(compareByRecent);
-    }
-    else {
-      notesToBeRendered = this.props.notes;
-    }
+    const noteItems = this.virtualPaginator.getContent(this.state.page);
+    const totalPages = this.virtualPaginator.getPageCount();
+    const paginator = (
+      <Paginator currentPage={this.state.page} totalPages={totalPages}
+                 callback={this.updatePage} />
+    );
 
-    if(this.props.organizeBySolved)
-      return this.renderIntoSolved(notesToBeRendered);
-    else if(this.props.organizeByPlatform)
-      return this.renderIntoPlatforms(notesToBeRendered);
-    else if(this.props.organizeByContest)
-      return this.renderIntoContests(notesToBeRendered);
-    else
-      return this.renderIntoNotes(notesToBeRendered);
+    return (
+      <>
+        { paginator }
+        { this.renderNoteItems(noteItems) }
+        { paginator }
+      </>
+    );
   }
 }
 

@@ -38,6 +38,7 @@ class ProblemsApi {
   }
 
   static getSolvedStateText(solvedStateValue) {
+    solvedStateValue = parseInt(solvedStateValue);
     for(const state in SolvedState) {
       if(SolvedState[state].value === solvedStateValue) {
         return SolvedState[state].text;

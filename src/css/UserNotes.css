@@ -3,6 +3,21 @@
   position: relative;
 }
 
+.User-notes .Paginator:first-child {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+}
+
+.User-notes .Paginator {
+  margin-bottom: 0.5em;
+}
+
+.User-notes-nothing {
+  display: flex;
+  align-items: center;
+  height: 100%;
+}
+
 .User-notes-add {
   position: absolute;
   right: 0.3em;
@@ -29,8 +44,8 @@
 
 .User-notes-list {
   list-style-type: none;
+  flex: 1 0 auto;
   width: 100%;
-  min-height: 100%;
   padding: 0;
   margin: 0;
 }
@@ -215,7 +230,7 @@
 
 .User-notes-title-dropdown {
   position: relative;
-  margin: 0.7em;
+  margin: 0.5em;
   margin-bottom: 0.4em;
   padding: 0.2em;
   box-sizing: border-box;

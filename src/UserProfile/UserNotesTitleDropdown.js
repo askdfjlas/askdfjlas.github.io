@@ -1,19 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-function UserNotesTitleDropdown({ title, innerContent }) {
-  const [ show, setShow ] = useState(true);
-  const showText = show ? 'Hide' : 'Show';
+function UserNotesTitleDropdown({ title, innerContent, showing, toggleCallback }) {
+  const showText = showing ? 'Hide' : 'Show';
 
   return (
     <li className="User-notes-title-dropdown">
       <button className="User-notes-title-dropdown-showhide Askd-form-link"
-              onClick={() => setShow(!show)}>
+              onClick={toggleCallback}>
         { showText }
       </button>
       <h4 className="User-notes-title-dropdown-heading">
         {title}
       </h4>
-      { show && innerContent }
+      { showing && innerContent }
     </li>
   );
 }
