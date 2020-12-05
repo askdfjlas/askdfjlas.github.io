@@ -1,10 +1,16 @@
 import React, { Component } from 'react';
+import { Prompt } from 'react-router';
 import TextEditor from '../TextEditor/TextEditor';
 import DeleteMenu from './DeleteMenu';
 import SolvedState from '../Api/SolvedState';
 import UserAuthApi from '../Api/UserAuthApi';
 import NotesApi from '../Api/NotesApi';
 import Utils from '../Utils';
+
+function remindUserToSave(event) {
+  event.preventDefault();
+  event.returnValue = '';
+}
 
 class EditNoteForm extends Component {
   constructor(props) {
@@ -14,10 +20,12 @@ class EditNoteForm extends Component {
     this.title = noteInfo.title;
     this.solved = noteInfo.solved;
     this.content = JSON.parse(noteInfo.content);
+    this.lastSaved = new Date(noteInfo.editedTime);
 
     this.state = {
       published: noteInfo.published,
       disableEditButtons: false,
+      saved: true,
       loadingSave: false,
       loadingPublish: false,
       showDeleteMenu: false
@@ -42,9 +50,13 @@ class EditNoteForm extends Component {
     await NotesApi.editNote(username, platform, problemId, title, solved,
                             content, published);
 
+    this.lastSaved = new Date();
+    window.onbeforeunload = null;
+
     await Utils.setStatePromise(this, {
       published: published,
       disableEditButtons: false,
+      saved: true,
       loadingSave: false,
       loadingPublish: false
     });
@@ -82,8 +94,16 @@ class EditNoteForm extends Component {
     this.solved = event.target.value;
   }
 
-  handleContentChange(newContent) {
+  async handleContentChange(newContent) {
     this.content = newContent;
+
+    if(this.state.saved) {
+      await Utils.setStatePromise(this, {
+        saved: false
+      });
+
+      window.onbeforeunload = remindUserToSave;
+    }
   }
 
   componentWillUnmount() {
@@ -91,6 +111,9 @@ class EditNoteForm extends Component {
   }
 
   render() {
+    let savedText = this.state.saved ? 'All changes saved! - ' : 'Last saved on ';
+    savedText += this.lastSaved.toLocaleString();
+
     const togglePublishText = this.state.published ? 'Unpublish' : 'Publish!';
     let saveButtonClass = 'Askd-button Askd-not-fullwidth';
     let publishButtonClass = 'Askd-button Askd-not-fullwidth';
@@ -100,6 +123,8 @@ class EditNoteForm extends Component {
 
     return (
       <>
+        <Prompt when={!this.state.saved}
+                message='Are you sure you want to leave? You have unsaved changes.' />
         {
           this.state.showDeleteMenu &&
           <DeleteMenu exitCallback={this.toggleDeleteMenu}
@@ -121,6 +146,7 @@ class EditNoteForm extends Component {
 
           <TextEditor initialContent={this.content}
                       onChange={this.handleContentChange} />
+          <p className="Edit-note-saved-text">{savedText}</p>
           <div className="Edit-note-bottom-buttons">
             <input className={saveButtonClass} type="button" value="Save"
                    onClick={this.saveNote}

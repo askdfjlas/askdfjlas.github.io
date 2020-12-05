@@ -8,9 +8,9 @@ import ProblemsApi from '../Api/ProblemsApi';
 import Utils from '../Utils';
 
 const RecursionLevel = Object.freeze({
-  CONTEST: 1,
-  PLATFORM: 2,
-  SOLVED: 3
+  CONTEST: 0,
+  PLATFORM: 1,
+  SOLVED: 2
 });
 const PAGINATE_SIZE = 15;
 
@@ -86,16 +86,14 @@ class UserNotesList extends Component {
         const contestGroups = groupByAttributes(notes, ['platform', 'contestCode']);
         for(const key in contestGroups) {
           let contestObject = this.createContestObject(contestGroups[key]);
-          contestObject.paginatorIndex = this.sortedNoteItems.length;
+          paginatorIndices.push(this.sortedNoteItems.length);
           this.sortedNoteItems.push(contestObject);
-          paginatorIndices.push(contestObject.paginatorIndex);
         }
       }
       else {
         for(const note of notes) {
-          note.paginatorIndex = this.sortedNoteItems.length;
+          paginatorIndices.push(this.sortedNoteItems.length);
           this.sortedNoteItems.push(note);
-          paginatorIndices.push(note.paginatorIndex);
         }
       }
     }
@@ -105,6 +103,7 @@ class UserNotesList extends Component {
         this.sortedNoteItems = [];
         this.dropdownShowing = {};
         this.dropdownIndices = {};
+
         if(this.props.sortByRecent) {
           notes = [...notes].sort(compareByRecent);
         }

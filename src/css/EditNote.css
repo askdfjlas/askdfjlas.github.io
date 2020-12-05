@@ -22,6 +22,13 @@
   flex: 1 0 auto;
 }
 
+.Edit-note-saved-text {
+  font-size: 0.8em;
+  font-style: italic;
+  margin: 0 0 0.5em 0;
+  color: white;
+}
+
 .Edit-note-bottom-buttons {
   display: inline-block;
 }
