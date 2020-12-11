@@ -5,6 +5,7 @@ import UserNotesTitleDropdown from './UserNotesTitleDropdown';
 import VirtualPaginator from '../Paginator/VirtualPaginator';
 import Paginator from '../Paginator/Paginator';
 import ProblemsApi from '../Api/ProblemsApi';
+import UserAuthApi from '../Api/UserAuthApi';
 import Utils from '../Utils';
 
 const RecursionLevel = Object.freeze({
@@ -45,13 +46,21 @@ class UserNotesList extends Component {
     super(props);
 
     this.state = {
-      page: 1
+      page: 1,
+      loggedInUsername: null
     };
 
     this.sortNoteItems(this.props.notes);
     this.virtualPaginator = new VirtualPaginator(PAGINATE_SIZE, this.sortedNoteItems);
 
     this.updatePage = this.updatePage.bind(this);
+  }
+
+  async componentDidMount() {
+    const loggedInUsername = await UserAuthApi.getUsername();
+    await Utils.setStatePromise(this, {
+      loggedInUsername: loggedInUsername
+    });
   }
 
   createContestObject(notes) {
@@ -147,7 +156,8 @@ class UserNotesList extends Component {
 
       for(let i = 0; i < notes.length; i++) {
         noteInfoElements.push(
-          <NoteComponent key={i} info={notes[i]} />
+          <NoteComponent key={i} info={notes[i]}
+                         loggedInUsername={this.state.loggedInUsername} />
         );
       }
     }

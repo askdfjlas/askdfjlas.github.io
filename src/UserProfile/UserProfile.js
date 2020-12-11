@@ -3,7 +3,7 @@ import UserInfo from './UserInfo';
 import UserNotes from './UserNotes';
 import UserApi from '../Api/UserApi';
 import NotesApi from '../Api/NotesApi';
-import UserProfileState from './UserProfileState';
+import LoadState from '../Enum/LoadState';
 import Utils from '../Utils';
 
 class UserProfile extends Component {
@@ -11,7 +11,7 @@ class UserProfile extends Component {
     super(props);
 
     this.state = {
-      screen: UserProfileState.LOADING,
+      screen: LoadState.LOADING,
       userInfo: null,
       notes: null
     };
@@ -32,7 +32,7 @@ class UserProfile extends Component {
       const userInfo = await this.getUserInfo();
       const notes = await this.getNotes();
       await Utils.setStatePromise(this, {
-        screen: UserProfileState.DONE,
+        screen: LoadState.DONE,
         userInfo: userInfo,
         notes: notes
       });
@@ -40,7 +40,7 @@ class UserProfile extends Component {
     catch(err) {
       if(err.name === 'UserNotFound') {
         await Utils.setStatePromise(this, {
-          screen: UserProfileState.NOT_FOUND
+          screen: LoadState.NOT_FOUND
         });
       }
     }
@@ -53,7 +53,7 @@ class UserProfile extends Component {
   async componentDidUpdate(prevProps) {
     if(prevProps.match.params.username !== this.props.match.params.username) {
       await Utils.setStatePromise(this, {
-        screen: UserProfileState.LOADING,
+        screen: LoadState.LOADING,
         info: null
       });
       await this.loadInfo();
@@ -83,13 +83,13 @@ class UserProfile extends Component {
 
     var content;
     switch(this.state.screen) {
-      case UserProfileState.LOADING:
+      case LoadState.LOADING:
         content = loadingContent;
         break;
-      case UserProfileState.DONE:
+      case LoadState.DONE:
         content = loadedContent;
         break;
-      case UserProfileState.NOT_FOUND:
+      case LoadState.NOT_FOUND:
         content = userNotFoundContent;
         break;
       default:

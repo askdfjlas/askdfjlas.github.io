@@ -15,6 +15,7 @@
 .User-notes-nothing {
   display: flex;
   align-items: center;
+  justify-content: center;
   height: 100%;
 }
 
@@ -83,19 +84,33 @@
   }
 }
 
-.User-note-info-edit {
-  position: absolute;
-  font-size: 0.8em;
-  top: 0.2em;
-  right: 0.6em;
-  opacity: 0;
-  transition: opacity 0.25s;
+@keyframes slowly-enable-pointer {
+  from { pointer-events: none; }
+  to { pointer-events: all; }
 }
 
-.User-note-info:hover .User-note-info-edit,
-.User-note-info-edit:focus {
+.User-note-info-links {
+  position: absolute;
+  padding: 0;
+  top: 0.05em;
+  right: 0.6em;
+  list-style-type: none;
+}
+
+.User-note-info-links li {
+  display: inline;
+  text-align: right;
+  font-size: 0.8em;
+  opacity: 0;
+  transition: opacity 0.25s;
+  margin-left: 1em;
+}
+
+.User-note-info:hover .User-note-info-links li {
   opacity: 1;
   transition: opacity 0.25s;
+  animation-name: slowly-enable-pointer;
+  animation-duration: 0.4s;
 }
 
 .User-note-info-tags {
@@ -106,10 +121,13 @@
 }
 
 .User-note-info-tags li {
+  margin-right: 1em;
+}
+
+.User-note-info-tag {
   display: inline-block;
   font-size: 0.6em;
   padding: 0.5em;
-  margin-right: 1em;
   border-radius: 4px;
   vertical-align: middle;
 }
@@ -170,7 +188,7 @@
   border-radius: 2px;
 }
 
-.User-note-contest-notes li {
+.User-note-contest-note {
   position: relative;
   display: flex;
   margin: 0.3em;
@@ -197,19 +215,26 @@
   text-overflow: ellipsis;
 }
 
-.User-note-contest-edit {
+.User-note-contest-links {
   position: absolute;
-  font-size: 0.6em;
+  padding: 0;
   top: 0;
   right: 0.2em;
-  opacity: 0;
-  transition: opacity 0.25s;
+  list-style-type: none;
 }
 
-.User-note-contest-notes li:hover .User-note-contest-edit,
-.User-note-contest-edit:focus {
+.User-note-contest-links li {
+  font-size: 0.6em;
+  opacity: 0;
+  transition: opacity 0.25s;
+  text-align: right;
+}
+
+.User-note-contest-notes li:hover .User-note-contest-links li {
   opacity: 1;
   transition: opacity 0.25s;
+  animation-name: slowly-enable-pointer;
+  animation-duration: 0.4s
 }
 
 .User-note-contest-solved {

@@ -4,6 +4,7 @@ import Header from './Header/Header';
 import Home from './Home/Home';
 import UserProfile from './UserProfile/UserProfile';
 import EditNote from './EditNote/EditNote';
+import PublicNote from './PublicNote/PublicNote';
 
 import './css/App.css';
 import './css/Module.css';
@@ -20,6 +21,8 @@ function App() {
           <Route exact path="/users/:username" component={UserProfile} />
           <Route exact path="/notes/edit/:platform/:contestId/:problemCode"
                  component={EditNote} />
+          <Route exact path="/notes/:ownerUsername/:platform/:contestId/:problemCode"
+                 component={PublicNote} />
         </Switch>
       </div>
     </BrowserRouter>

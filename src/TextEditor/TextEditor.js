@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Caret from './Caret';
 import Toolbar from './Toolbar';
 import VirtualTextEditor from './VirtualTextEditor';
-import Block from './Block';
+import TextEditorContent from './TextEditorContent';
 import Utils from '../Utils';
 import registerEventHandlers from './registerEventHandlers';
 import '../css/TextEditor.css';
@@ -204,21 +204,11 @@ class TextEditor extends Component {
   }
 
   render() {
-    let contentElements = [];
-    this.state.content.forEach((block, i) => {
-      contentElements.push(
-        <Block block={block} id={this.id} index={i} key={i} />
-      );
-    });
-
     return (
       <div className="Askd-text-editor" id={this.id + '!'}>
         <Toolbar mask={this.state.editorMask} callback={this.toolbarUpdate} />
-        <div className="Askd-text-editor-text" id={this.id} tabIndex="0"
-             contentEditable="true" suppressContentEditableWarning="true"
-             spellCheck="false">
-             { contentElements }
-        </div>
+        <TextEditorContent content={this.state.content} id={this.id}
+                           editable={true} />
       </div>
     );
   }

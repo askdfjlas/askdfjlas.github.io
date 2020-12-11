@@ -9,11 +9,12 @@ class NotesApi {
     return await Api.getJson('notes', options);
   }
 
-  static async getNoteInfo(username, platform, problemId) {
+  static async getNoteInfo(username, platform, problemId, forcePublished) {
     const options = {
       username: username,
       platform: platform,
-      problemId: problemId
+      problemId: problemId,
+      forcePublished: forcePublished
     };
 
     return await Api.getJson('notes', options);

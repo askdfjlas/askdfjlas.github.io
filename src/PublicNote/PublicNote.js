@@ -1,14 +1,12 @@
 import React, { Component } from 'react';
 import LoadState from '../Enum/LoadState';
-import EditNoteForm from './EditNoteForm';
-import ProblemInfo from './ProblemInfo';
-import ProblemsApi from '../Api/ProblemsApi'
+import ProblemInfo from '../EditNote/ProblemInfo';
+import PublicNoteInfo from './PublicNoteInfo';
+import ProblemsApi from '../Api/ProblemsApi';
 import NotesApi from '../Api/NotesApi';
-import UserAuthApi from '../Api/UserAuthApi';
 import Utils from '../Utils';
-import '../css/EditNote.css';
 
-class EditNote extends Component {
+class PublicNote extends Component {
   constructor(props) {
     super(props);
 
@@ -32,20 +30,20 @@ class EditNote extends Component {
   }
 
   async loadNoteInfo() {
-    const username = await UserAuthApi.getUsername();
+    const ownerUsername = this.props.match.params.ownerUsername;
     const platform = this.props.match.params.platform;
     const contestId = this.props.match.params.contestId;
     const problemCode = this.props.match.params.problemCode;
     const problemId = `${contestId}#${problemCode}`;
 
-    const noteInfo = await NotesApi.getNoteInfo(username, platform, problemId);
-
+    const noteInfo = await NotesApi.getNoteInfo(ownerUsername, platform, problemId, true);
     return noteInfo;
   }
 
   async loadInfo() {
     const problemInfo = await this.loadProblemInfo();
     const noteInfo = await this.loadNoteInfo();
+
     await Utils.setStatePromise(this, {
       problemInfo: problemInfo,
       noteInfo: noteInfo,
@@ -68,14 +66,12 @@ class EditNote extends Component {
     const loadedContent = (
       <>
         <ProblemInfo info={this.state.problemInfo} platform={platform} />
-        <EditNoteForm problemInfo={this.state.problemInfo}
-                      noteInfo={this.state.noteInfo} platform={platform}
-                      history={this.props.history} />
+        <PublicNoteInfo info={this.state.noteInfo} />
       </>
     );
     const noteNotFoundContent = (
       <div className="Module-description">
-        <h2>Note does not exist!</h2>
+        <h2>Note is either unpublished or does not exist!</h2>
       </div>
     );
 
@@ -101,4 +97,4 @@ class EditNote extends Component {
   }
 }
 
-export default EditNote;
+export default PublicNote;

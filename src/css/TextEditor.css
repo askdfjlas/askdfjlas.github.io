@@ -1,8 +1,12 @@
 .Askd-text-editor {
-  width: 100%;
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
   background-color: #EEEEEE;
+  width: 100%;
   margin: 1em 0;
   box-sizing: border-box;
+  color: black;
   font-family: Arial;
   font-weight: normal;
   border-radius: 3px;

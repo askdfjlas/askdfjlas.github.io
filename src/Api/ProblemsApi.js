@@ -1,5 +1,5 @@
 import Api from './Api';
-import SolvedState from './SolvedState';
+import SolvedState from '../Enum/SolvedState';
 
 class ProblemsApi {
   static _prettifyProblems(problems) {
@@ -42,6 +42,15 @@ class ProblemsApi {
     for(const state in SolvedState) {
       if(SolvedState[state].value === solvedStateValue) {
         return SolvedState[state].text;
+      }
+    }
+  }
+
+  static getSolvedStateCssClass(solvedStateValue) {
+    solvedStateValue = parseInt(solvedStateValue);
+    for(const state in SolvedState) {
+      if(SolvedState[state].value === solvedStateValue) {
+        return SolvedState[state].css;
       }
     }
   }

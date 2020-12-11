@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Prompt } from 'react-router';
 import TextEditor from '../TextEditor/TextEditor';
 import DeleteMenu from './DeleteMenu';
-import SolvedState from '../Api/SolvedState';
+import SolvedState from '../Enum/SolvedState';
 import UserAuthApi from '../Api/UserAuthApi';
 import NotesApi from '../Api/NotesApi';
 import Utils from '../Utils';

@@ -48,7 +48,6 @@ class UserAuthApi {
 
   static async logout() {
     await Auth.signOut();
-    UserAuthApi.profile = null;
   }
 
   static async getUsername() {

@@ -147,31 +147,28 @@ class VirtualTextEditor {
     this.blockStarts = [];
 
     let currentMask = this.characters[0].m;
-    let buffer = '';
-    let bufferLength = 0;
+    let characterBuffer = [];
     this.characters.forEach((character, i) => {
       if(character.m !== currentMask) {
         this.blocks.push({
           m: currentMask,
-          c: buffer
+          c: characterBuffer.join('')
         });
-        this.blockStarts.push(i - bufferLength);
+        this.blockStarts.push(i - characterBuffer.length);
 
         currentMask = character.m;
-        buffer = character.c;
-        bufferLength = 1;
+        characterBuffer = [ character.c ];
       }
       else {
-        buffer += character.c;
-        bufferLength++;
+        characterBuffer.push(character.c);
       }
     });
 
     this.blocks.push({
       m: currentMask,
-      c: buffer
+      c: characterBuffer.join('')
     });
-    this.blockStarts.push(this.characters.length - bufferLength);
+    this.blockStarts.push(this.characters.length - characterBuffer.length);
 
     /* Strange hack - extra newline character sets correct caret positioning;
        this extra character also somehow can't be selected */
