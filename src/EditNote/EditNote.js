@@ -46,6 +46,7 @@ class EditNote extends Component {
   async loadInfo() {
     const problemInfo = await this.loadProblemInfo();
     const noteInfo = await this.loadNoteInfo();
+    
     await Utils.setStatePromise(this, {
       problemInfo: problemInfo,
       noteInfo: noteInfo,

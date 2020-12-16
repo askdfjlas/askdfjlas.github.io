@@ -1,0 +1,26 @@
+.Like-button {
+  font-family: 'Verdana';
+  font-weight: bold;
+  font-size: 0.9em;
+  border: none;
+  background: none;
+  padding: 0;
+  color: #EEEEEE;
+  transition: color 0.3s;
+}
+
+.Like-button:hover {
+  cursor: pointer;
+  color: #00D080;
+  transition: color 0.3s;
+}
+
+.Like-button-liked {
+  color: #00D080;
+  transition: color 0.3s;
+}
+
+.Like-dislike .Like-dislike-score {
+  color: #00D080;
+  margin-right: 0.5em;
+}

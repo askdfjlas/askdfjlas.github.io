@@ -25,6 +25,8 @@ class HeaderAuth extends Component {
     this.hideUserMenu = this.hideUserMenu.bind(this);
     this.afterLogin = this.afterLogin.bind(this);
     this.unverifiedAccount = this.unverifiedAccount.bind(this);
+
+    window.suggestUserRegister = this.toggleRegisterForm;
   }
 
   async refreshUsername() {
