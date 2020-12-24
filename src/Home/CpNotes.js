@@ -3,8 +3,8 @@ import TextEditor from '../TextEditor/TextEditor';
 import Utils from '../Utils';
 
 class CpNotes extends Component {
-  async componentDidMount() {
-    await Utils.renderMathJax();
+  componentDidMount() {
+    Utils.renderMathJax();
   }
 
   render() {

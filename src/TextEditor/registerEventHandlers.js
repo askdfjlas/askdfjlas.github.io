@@ -87,7 +87,7 @@ const registerEventHandlers = (that) => {
     await that.compositionInsert(event.data);
   });
 
-  document.addEventListener('selectionchange', async (event) => {
+  let handleSelectionChange = async (event) => {
     if(that.composing) {
       return;
     }
@@ -105,7 +105,11 @@ const registerEventHandlers = (that) => {
     catch(err) {
       /* anchorElement isn't a div inside the text editor */
     }
-  });
+  };
+
+  document.addEventListener('selectionchange', handleSelectionChange);
+
+  return handleSelectionChange;
 }
 
 export default registerEventHandlers;

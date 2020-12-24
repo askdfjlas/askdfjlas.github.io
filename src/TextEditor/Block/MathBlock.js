@@ -1,16 +1,15 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class MathBlock extends Component {
-  render() {
-    let content = this.props.block.c;
+function MathBlock({ id, index, block, rendered }) {
+  // let content = rendered ? '\\(' + block.c + '\\)' : block.c;
+  let content = block.c;
+  let className = rendered ? 'Askd-te-MATHJAX' : 'Askd-te-MATH';
 
-    return (
-      <div className="Askd-te-MATH" id={this.props.id} index={this.props.index}
-           tabIndex="0" onBlur={this.handleBlur} onFocus={this.handleFocus}>
-        { content }
-      </div>
-    );
-  }
+  return (
+    <div className={className} id={id} index={index}>
+      { content }
+    </div>
+  );
 }
 
 export default MathBlock;

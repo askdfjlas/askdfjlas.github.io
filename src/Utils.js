@@ -41,9 +41,9 @@ class Utils {
     }
   }
 
-  static async renderMathJax() {
+  static renderMathJax(selectors) {
     if(window.MathJax) {
-      await window.MathJax.typesetPromise();
+      window.MathJax.typeset(selectors);
     }
   }
 }

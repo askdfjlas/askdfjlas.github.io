@@ -187,7 +187,7 @@ class TextEditor extends Component {
 
   componentDidMount() {
     this.textEditor = document.getElementById(this.id);
-    registerEventHandlers(this);
+    this.handleSelectionChange = registerEventHandlers(this);
   }
 
   async componentDidUpdate() {
@@ -237,6 +237,7 @@ class TextEditor extends Component {
 
   componentWillUnmount() {
     this.mounted = false;
+    document.removeEventListener('selectionchange', this.handleSelectionChange);
   }
 
   render() {

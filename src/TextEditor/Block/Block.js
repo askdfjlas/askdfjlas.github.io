@@ -13,6 +13,10 @@ function getClassName(mask) {
 }
 
 class Block extends Component {
+  componentDidMount() {
+    window.MathJax.typeset(['.Askd-te-MATHJAX']);
+  }
+
   render() {
     const block = this.props.block;
     const editorId = this.props.id;
