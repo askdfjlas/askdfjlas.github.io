@@ -4,7 +4,7 @@
   background-color: #272739;
   margin: auto;
   width: 90%;
-  padding: 1.4em 2em 2em 2em;
+  padding: 1.2em;
   box-sizing: border-box;
   flex: 1 0 auto;
 }
@@ -66,25 +66,24 @@
 }
 
 .Module-info-box {
-  background-color: #335577;
+  background-color: #282864;
   font-family: 'Arial';
   width: 100%;
-  padding: 0.8em 1em;
+  padding: 0.6em 1em;
   box-sizing: border-box;
   color: white;
   border-radius: 3px;
 }
 
 .Module-info-box h4 {
-  margin: 0.3em 0 0.6em 0;
+  margin: 0.2em 0 0.4em 0;
 }
 
 .Module-info-box p, .Module-info-box a  {
-  margin: 0.6em 0;
+  margin: 0.4em 0;
 }
 
 .Module-info-box a {
-  font-weight: bold;
   font-size: 0.8em;
 }
 

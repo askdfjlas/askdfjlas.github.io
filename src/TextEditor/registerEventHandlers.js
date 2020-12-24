@@ -50,12 +50,21 @@ const registerEventHandlers = (that) => {
     that.compositionIndex = that.caretInfo.index;
     that.compositionPosition = that.caretInfo.position;
 
-    /* Prevent browser from overwriting the next block */
+    /* Set the previous block to be uneditable */
+    let previousBlockElement = document.getElementById(that.id +
+      (that.compositionIndex - 1));
+    if(previousBlockElement) {
+      previousBlockElement.setAttribute('contenteditable', 'false');
+    }
+
     let nextBlockElement = document.getElementById(that.id +
       (that.compositionIndex + 1));
-    if(nextBlockElement) {
-      nextBlockElement.setAttribute('contenteditable', 'false');
-    }
+
+    /* Create an empty uneditable composition div in front of this block */
+    let compositionDiv = document.createElement('div');
+    compositionDiv.setAttribute('contenteditable', 'false');
+    compositionDiv.setAttribute('id', that.id + 'composition');
+    that.textEditor.insertBefore(compositionDiv, nextBlockElement);
   });
 
   that.textEditor.addEventListener('compositionend', async (event) => {
@@ -63,12 +72,16 @@ const registerEventHandlers = (that) => {
       return;
     }
 
-    /* Composition has ended; set the next block to be editable again */
-    let nextBlockElement = document.getElementById(that.id +
-      (that.compositionIndex + 1));
-    if(nextBlockElement) {
-      nextBlockElement.setAttribute('contenteditable', 'true');
+    /* Composition has ended; allow the previous block to be editable again */
+    let previousBlockElement = document.getElementById(that.id +
+      (that.compositionIndex - 1));
+    if(previousBlockElement) {
+      previousBlockElement.setAttribute('contenteditable', 'true');
     }
+
+    /* Remove the composition div */
+    let compositionDiv = document.getElementById(that.id + 'composition');
+    that.textEditor.removeChild(compositionDiv);
 
     that.composing = false;
     await that.compositionInsert(event.data);

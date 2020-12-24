@@ -3,6 +3,7 @@ import Caret from './Caret';
 import Toolbar from './Toolbar';
 import VirtualTextEditor from './VirtualTextEditor';
 import TextEditorContent from './TextEditorContent';
+import MaskManager from './MaskManager';
 import Utils from '../Utils';
 import registerEventHandlers from './registerEventHandlers';
 import '../css/TextEditor.css';
@@ -18,6 +19,7 @@ class TextEditor extends Component {
 
     this.contentChanged = false;
     this.caretInfo = {
+      editorSelected: false,
       rangeSelect: false,
       index: 0,
       position: 0
@@ -107,17 +109,43 @@ class TextEditor extends Component {
     });
   }
 
-  async toolbarUpdate(bit, on) {
+  async toolbarUpdate(bit) {
     this.textEditor.focus();
-    await this.updateMask(this.state.editorMask ^ bit);
+
+    const on = (this.state.editorMask & bit) === 0;
+    const newToolbarMask = MaskManager.toolbarMergeBit(bit, on, this.state.editorMask);
+
+    await this.updateMask(newToolbarMask);
     await this.rangeMaskUpdate(bit, on);
   }
 
   updateCaretInfo() {
     const newCaretInfo = this.caret.getInfo();
+    const maxCaretIndex = this.state.content.length - 2;
 
     /* Maintain previous info for the other selection type */
     if(newCaretInfo.rangeSelect) {
+      let badCaretRange = false;
+
+      if(newCaretInfo.leftIndex >= maxCaretIndex && newCaretInfo.leftPosition > 0) {
+        newCaretInfo.leftIndex = maxCaretIndex;
+        newCaretInfo.leftPosition = 0;
+        badCaretRange = true;
+      }
+
+      if(newCaretInfo.rightIndex >= maxCaretIndex && newCaretInfo.rightPosition > 0) {
+        newCaretInfo.rightIndex = maxCaretIndex;
+        newCaretInfo.rightPosition = 0;
+        badCaretRange = true;
+      }
+
+      if(badCaretRange) {
+        this.caret.setRangePosition(newCaretInfo.leftIndex,
+          newCaretInfo.leftPosition, newCaretInfo.rightIndex,
+          newCaretInfo.rightPosition
+        );
+      }
+
       this.caretInfo.leftIndex = newCaretInfo.leftIndex;
       this.caretInfo.leftPosition = newCaretInfo.leftPosition;
       this.caretInfo.rightIndex = newCaretInfo.rightIndex;
@@ -125,10 +153,18 @@ class TextEditor extends Component {
       this.caretInfo.rangeSelect = true;
     }
     else {
+      if(newCaretInfo.index >= maxCaretIndex && newCaretInfo.position > 0) {
+        newCaretInfo.index = maxCaretIndex;
+        newCaretInfo.position = 0;
+        this.caret.setPosition(newCaretInfo.index, newCaretInfo.position);
+      }
+
       this.caretInfo.index = newCaretInfo.index;
       this.caretInfo.position = newCaretInfo.position;
       this.caretInfo.rangeSelect = false;
     }
+
+    this.caretInfo.editorSelected = true;
   }
 
   async selectionChanged() {
@@ -154,7 +190,7 @@ class TextEditor extends Component {
     registerEventHandlers(this);
   }
 
-  componentDidUpdate() {
+  async componentDidUpdate() {
     if(!this.contentChanged) {
       return;
     }
@@ -204,11 +240,20 @@ class TextEditor extends Component {
   }
 
   render() {
+    let handleBlur = (event) => {
+      if(this.caretInfo.editorSelected) {
+        this.caretInfo.editorSelected = false;
+        this.forceUpdate();
+      }
+    };
+
     return (
       <div className="Askd-text-editor" id={this.id + '!'}>
         <Toolbar mask={this.state.editorMask} callback={this.toolbarUpdate} />
         <TextEditorContent content={this.state.content} id={this.id}
-                           editable={true} />
+                           editable={true} handleBlur={handleBlur}
+                           editorMask={this.state.editorMask}
+                           caretInfo={this.caretInfo} />
       </div>
     );
   }

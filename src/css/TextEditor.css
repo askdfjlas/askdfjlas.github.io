@@ -76,6 +76,11 @@
   cursor: pointer;
 }
 
+.Askd-tb-MATH::after {
+  content: 'x';
+  font-style: italic;
+}
+
 .Askd-tb-BOLD::after {
   content: 'B';
   font-weight: bold;
@@ -95,6 +100,16 @@
 }
 
 /* User-inputted text styles */
+.Askd-te-MATH {
+  color: green;
+  padding: 0.15em;
+  position: relative;
+  font-family: Courier New, Consolas, Monaco, Lucida Console;
+  font-size: 0.9em;
+  bottom: 0.08em;
+  background-color: rgba(0, 255, 0, 0.2);
+}
+
 .Askd-te-BOLD {
   font-weight: bold;
 }

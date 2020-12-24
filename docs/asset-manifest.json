@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/static/css/main.971fb333.chunk.css",
-    "main.js": "/static/js/main.c788f7bd.chunk.js",
-    "main.js.map": "/static/js/main.c788f7bd.chunk.js.map",
+    "main.css": "/static/css/main.382f50e3.chunk.css",
+    "main.js": "/static/js/main.4f5cfabd.chunk.js",
+    "main.js.map": "/static/js/main.4f5cfabd.chunk.js.map",
     "runtime-main.js": "/static/js/runtime-main.7f89be4e.js",
     "runtime-main.js.map": "/static/js/runtime-main.7f89be4e.js.map",
     "static/js/2.af20cb8d.chunk.js": "/static/js/2.af20cb8d.chunk.js",
     "static/js/2.af20cb8d.chunk.js.map": "/static/js/2.af20cb8d.chunk.js.map",
     "index.html": "/index.html",
-    "static/css/main.971fb333.chunk.css.map": "/static/css/main.971fb333.chunk.css.map",
+    "static/css/main.382f50e3.chunk.css.map": "/static/css/main.382f50e3.chunk.css.map",
     "static/js/2.af20cb8d.chunk.js.LICENSE.txt": "/static/js/2.af20cb8d.chunk.js.LICENSE.txt",
     "static/media/Form.css": "/static/media/spinner.3214e05a.gif",
     "static/media/Header.css": "/static/media/header_bg.59247c74.jpg"
@@ -16,7 +16,7 @@
   "entrypoints": [
     "static/js/runtime-main.7f89be4e.js",
     "static/js/2.af20cb8d.chunk.js",
-    "static/css/main.971fb333.chunk.css",
-    "static/js/main.c788f7bd.chunk.js"
+    "static/css/main.382f50e3.chunk.css",
+    "static/js/main.4f5cfabd.chunk.js"
   ]
 }

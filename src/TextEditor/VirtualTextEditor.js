@@ -1,3 +1,5 @@
+import MaskManager from './MaskManager';
+
 // This is different from str.length; for example emojis use up 2
 function countCharacters(str) {
   let counter = 0;
@@ -71,7 +73,9 @@ class VirtualTextEditor {
     const globalIndex = this.getGlobalIndex(index, position);
 
     if(globalIndex === 0) {
-      return this.characters[0].m;
+      if(this.characters.length > 0)
+        return this.characters[0].m;
+      return 0;
     }
     else if(rangeSelect) {
       return this.characters[globalIndex].m;
@@ -120,10 +124,7 @@ class VirtualTextEditor {
     const globalRightIndex = this.getGlobalIndex(rightIndex, rightPosition);
 
     for(let i = globalLeftIndex; i < globalRightIndex; i++) {
-      if((on && !(this.characters[i].m & bit)) ||
-         (!on && (this.characters[i].m & bit))) {
-        this.characters[i].m = this.characters[i].m ^ bit;
-      }
+      this.characters[i].m = MaskManager.editorMergeBit(bit, on, this.characters[i].m);
     }
 
     this.updateBlocks();
@@ -134,19 +135,10 @@ class VirtualTextEditor {
   }
 
   updateBlocks() {
-    if(this.characters.length === 0) {
-      this.blocks = [
-        { m: 0, c: '' }
-      ];
-      this.blockStarts = [ 0 ];
-
-      return;
-    }
-
     this.blocks = [];
     this.blockStarts = [];
 
-    let currentMask = this.characters[0].m;
+    let currentMask = this.characters.length > 0 ? this.characters[0].m : 0;
     let characterBuffer = [];
     this.characters.forEach((character, i) => {
       if(character.m !== currentMask) {
@@ -170,9 +162,20 @@ class VirtualTextEditor {
     });
     this.blockStarts.push(this.characters.length - characterBuffer.length);
 
-    /* Strange hack - extra newline character sets correct caret positioning;
-       this extra character also somehow can't be selected */
-    this.blocks[this.blocks.length - 1].c += String.fromCharCode(10);
+    /* Extra 'empty' block for a potential caret position */
+    this.blocks.push({
+      m: 0,
+      c: String.fromCharCode(8203)
+    });
+
+    /* Extra newline character sets correct caret positioning */
+    this.blocks.push({
+      m: 0,
+      c: String.fromCharCode(10)
+    });
+
+    this.blockStarts.push(this.characters.length);
+    this.blockStarts.push(this.characters.length);
   }
 
   getContent() {
