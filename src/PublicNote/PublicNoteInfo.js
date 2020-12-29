@@ -35,7 +35,7 @@ function PublicNoteInfo({ info }) {
         </Link>
       </p>
       <div className="Askd-text-editor">
-        <TextEditorContent content={content} id={null} editable={false} />
+        <TextEditorContent content={content} id='Askd-public-note' editable={false} />
       </div>
       <p className="Module-space-text">
         Last edited on {editedTimestamp}

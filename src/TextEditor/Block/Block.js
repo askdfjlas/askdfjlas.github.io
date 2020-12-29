@@ -13,21 +13,15 @@ function getClassName(mask) {
 }
 
 class Block extends Component {
-  componentDidMount() {
-    window.MathJax.typeset(['.Askd-te-MATHJAX']);
-  }
-
   render() {
     const block = this.props.block;
     const editorId = this.props.id;
     const index = this.props.index;
-    const editorMask = this.props.editorMask;
     const selected = this.props.selected;
 
     if(block.m === ContentType.MATH) {
-      const rendered = !selected || !(editorMask & ContentType.MATH);
       return (
-        <MathBlock id={editorId + index} rendered={rendered} block={block}
+        <MathBlock id={editorId + index} rendered={!selected} block={block}
                    index={index} />
       );
     }

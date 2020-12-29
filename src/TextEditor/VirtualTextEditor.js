@@ -69,6 +69,14 @@ class VirtualTextEditor {
     return globalIndex - 1;
   }
 
+  /* Visually identical caret positions can have two different caret indices
+  and positions if it's in the middle of two blocks. This method returns the end
+  position of the first block if that happens. */
+  getCorrectedIndexAndPosition(index, position) {
+    const globalIndex = this.getGlobalIndex(index, position);
+    return this.getIndexAndPosition(globalIndex);
+  }
+
   getCharacterMask(index, position, rangeSelect) {
     const globalIndex = this.getGlobalIndex(index, position);
 
@@ -162,19 +170,12 @@ class VirtualTextEditor {
     });
     this.blockStarts.push(this.characters.length - characterBuffer.length);
 
-    /* Extra 'empty' block for a potential caret position */
-    this.blocks.push({
-      m: 0,
-      c: String.fromCharCode(8203)
-    });
-
     /* Extra newline character sets correct caret positioning */
     this.blocks.push({
       m: 0,
       c: String.fromCharCode(10)
     });
 
-    this.blockStarts.push(this.characters.length);
     this.blockStarts.push(this.characters.length);
   }
 

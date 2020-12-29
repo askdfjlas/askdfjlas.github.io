@@ -59,10 +59,7 @@
 .Askd-tb-icon {
   height: 100%;
   width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 0 1 auto;
+  text-align: center;
   font-size: 1.1em;
   margin: 0;
   padding: 0;

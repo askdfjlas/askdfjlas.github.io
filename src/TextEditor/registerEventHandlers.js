@@ -57,14 +57,16 @@ const registerEventHandlers = (that) => {
       previousBlockElement.setAttribute('contenteditable', 'false');
     }
 
-    let nextBlockElement = document.getElementById(that.id +
-      (that.compositionIndex + 1));
-
     /* Create an empty uneditable composition div in front of this block */
     let compositionDiv = document.createElement('div');
     compositionDiv.setAttribute('contenteditable', 'false');
     compositionDiv.setAttribute('id', that.id + 'composition');
-    that.textEditor.insertBefore(compositionDiv, nextBlockElement);
+
+    let nextBlockElement = document.getElementById(that.id +
+      (that.compositionIndex + 1));
+    if(nextBlockElement) {
+      that.textEditor.insertBefore(compositionDiv, nextBlockElement);
+    }
   });
 
   that.textEditor.addEventListener('compositionend', async (event) => {
@@ -81,17 +83,20 @@ const registerEventHandlers = (that) => {
 
     /* Remove the composition div */
     let compositionDiv = document.getElementById(that.id + 'composition');
-    that.textEditor.removeChild(compositionDiv);
+    if(compositionDiv) {
+      that.textEditor.removeChild(compositionDiv);
+    }
 
     that.composing = false;
     await that.compositionInsert(event.data);
   });
 
-  let handleSelectionChange = async (event) => {
+  let handleSelectionChange = (event) => {
     if(that.composing) {
       return;
     }
 
+    let selectionChanged = false;
     try {
       const selection = window.getSelection();
       const anchorElement = selection.anchorNode.parentElement;
@@ -99,11 +104,21 @@ const registerEventHandlers = (that) => {
 
       if(anchorElement.getAttribute('id') === that.id + '!' ||
          parentElement.getAttribute('id') === that.id) {
-        await that.selectionChanged();
+        const newCaretInfo = that.caret.getInfo();
+        for(const key in newCaretInfo) {
+          if(newCaretInfo.hasOwnProperty(key) &&
+             that.caretInfo[key] !== newCaretInfo[key]) {
+            selectionChanged = true;
+          }
+        }
       }
     }
     catch(err) {
       /* anchorElement isn't a div inside the text editor */
+    }
+
+    if(selectionChanged) {
+      that.selectionChanged();
     }
   };
 

@@ -18,11 +18,13 @@ class TextEditor extends Component {
     this.caret = new Caret(this.id);
 
     this.contentChanged = false;
+    this.ignoreNextSelectionMaskChange = false;
     this.caretInfo = {
-      editorSelected: false,
       rangeSelect: false,
       index: 0,
-      position: 0
+      position: 0,
+      editorSelected: false,
+      insideCaretBlock: false
     };
 
     this.composing = false;
@@ -98,6 +100,9 @@ class TextEditor extends Component {
 
   async updateText() {
     this.contentChanged = true;
+    this.caret.removeCaretBlock();
+    this.caretInfo.insideCaretBlock = false;
+
     await Utils.setStatePromise(this, {
       content: this.virtualTextEditor.getContent()
     });
@@ -110,79 +115,128 @@ class TextEditor extends Component {
   }
 
   async toolbarUpdate(bit) {
-    this.textEditor.focus();
+    if(!this.caretInfo.editorSelected) {
+      this.caretInfo.editorSelected = true;
+      await this.updateMask(this.state.editorMask);
+    }
 
     const on = (this.state.editorMask & bit) === 0;
     const newToolbarMask = MaskManager.toolbarMergeBit(bit, on, this.state.editorMask);
 
-    await this.updateMask(newToolbarMask);
-    await this.rangeMaskUpdate(bit, on);
+    if(this.caretInfo.rangeSelect) {
+      await this.updateMask(newToolbarMask);
+      await this.rangeMaskUpdate(bit, on);
+      this.caret.setInfo(this.caretInfo);
+      this.updateCaretInfo();
+    }
+    else {
+      const leftCharacterMask = this.virtualTextEditor.getCharacterMask(
+        this.caretInfo.index, this.caretInfo.position, false
+      );
+
+      const willBeInsideCaretBlock = this.state.content[0].c.length === 0 ||
+        newToolbarMask !== leftCharacterMask;
+
+      if(willBeInsideCaretBlock) {
+        this.caret.setInfo(this.caretInfo);
+        this.updateCaretInfo(newToolbarMask);
+        await this.updateMask(newToolbarMask);
+      }
+      else {
+        this.caretInfo.insideCaretBlock = false;
+        await this.updateMask(newToolbarMask);
+        this.caret.setInfo(this.caretInfo);
+        this.updateCaretInfo();
+      }
+    }
   }
 
-  updateCaretInfo() {
+  async selectionChanged() {
     const newCaretInfo = this.caret.getInfo();
-    const maxCaretIndex = this.state.content.length - 2;
+
+    let leftCharacterMask;
+    if(this.ignoreNextSelectionMaskChange) {
+      this.ignoreNextSelectionMaskChange = false;
+    }
+    else {
+      if(newCaretInfo.rangeSelect) {
+        leftCharacterMask = this.virtualTextEditor.getCharacterMask(
+          newCaretInfo.leftIndex, newCaretInfo.leftPosition, true
+        );
+
+        await this.updateMask(leftCharacterMask);
+      }
+      else {
+        this.caretInfo.insideCaretBlock = false;
+        [ this.caretInfo.index, this.caretInfo.position ] =
+          this.virtualTextEditor.getCorrectedIndexAndPosition(
+            newCaretInfo.index, newCaretInfo.position
+          );
+
+        leftCharacterMask = this.virtualTextEditor.getCharacterMask(
+          this.caretInfo.index, this.caretInfo.position, false
+        );
+
+        await this.updateMask(leftCharacterMask);
+        this.caret.setPosition(this.caretInfo.index, this.caretInfo.position);
+      }
+    }
+
+    this.updateCaretInfo();
+  }
+
+  updateCaretInfo(toolbarMask=this.state.editorMask) {
+    const newCaretInfo = this.caret.getInfo();
+    this.caretInfo.editorSelected = true;
 
     /* Maintain previous info for the other selection type */
     if(newCaretInfo.rangeSelect) {
-      let badCaretRange = false;
-
-      if(newCaretInfo.leftIndex >= maxCaretIndex && newCaretInfo.leftPosition > 0) {
-        newCaretInfo.leftIndex = maxCaretIndex;
-        newCaretInfo.leftPosition = 0;
-        badCaretRange = true;
-      }
-
-      if(newCaretInfo.rightIndex >= maxCaretIndex && newCaretInfo.rightPosition > 0) {
-        newCaretInfo.rightIndex = maxCaretIndex;
-        newCaretInfo.rightPosition = 0;
-        badCaretRange = true;
-      }
-
-      if(badCaretRange) {
-        this.caret.setRangePosition(newCaretInfo.leftIndex,
-          newCaretInfo.leftPosition, newCaretInfo.rightIndex,
-          newCaretInfo.rightPosition
-        );
-      }
-
       this.caretInfo.leftIndex = newCaretInfo.leftIndex;
       this.caretInfo.leftPosition = newCaretInfo.leftPosition;
       this.caretInfo.rightIndex = newCaretInfo.rightIndex;
       this.caretInfo.rightPosition = newCaretInfo.rightPosition;
       this.caretInfo.rangeSelect = true;
+      this.caretInfo.insideCaretBlock = false;
     }
     else {
-      if(newCaretInfo.index >= maxCaretIndex && newCaretInfo.position > 0) {
-        newCaretInfo.index = maxCaretIndex;
-        newCaretInfo.position = 0;
-        this.caret.setPosition(newCaretInfo.index, newCaretInfo.position);
+      if(newCaretInfo.insideCaretBlock) {
+        this.caretInfo.index = newCaretInfo.index;
+        this.caretInfo.position = newCaretInfo.position;
+        this.caretInfo.rangeSelect = false;
+        this.caretInfo.insideCaretBlock = true;
       }
+      else {
+        if(this.caret.removeCaretBlock()) {
+          return this.updateCaretInfo();
+        }
 
-      this.caretInfo.index = newCaretInfo.index;
-      this.caretInfo.position = newCaretInfo.position;
-      this.caretInfo.rangeSelect = false;
+        let [ correctIndex, correctPosition ] =
+          this.virtualTextEditor.getCorrectedIndexAndPosition(
+            newCaretInfo.index, newCaretInfo.position
+          );
+
+        if(correctIndex !== newCaretInfo.index ||
+           correctPosition !== newCaretInfo.position) {
+          this.caret.setPosition(correctIndex, correctPosition);
+        }
+
+        const correctCharacterMask = this.virtualTextEditor.getCharacterMask(
+          correctIndex, correctPosition, false
+        );
+
+        if(toolbarMask !== correctCharacterMask ||
+           this.state.content[0].c.length === 0) {
+          this.caret.addCaretBlock(correctIndex, correctPosition);
+          this.caret.setPosition(-1, 0);
+          newCaretInfo.insideCaretBlock = true;
+        }
+
+        this.caretInfo.index = correctIndex;
+        this.caretInfo.position = correctPosition;
+        this.caretInfo.rangeSelect = false;
+        this.caretInfo.insideCaretBlock = newCaretInfo.insideCaretBlock;
+      }
     }
-
-    this.caretInfo.editorSelected = true;
-  }
-
-  async selectionChanged() {
-    this.updateCaretInfo();
-
-    let leftCharacterMask;
-    if(this.caretInfo.rangeSelect) {
-      leftCharacterMask = this.virtualTextEditor.getCharacterMask(
-        this.caretInfo.leftIndex, this.caretInfo.leftPosition, true
-      );
-    }
-    else {
-      leftCharacterMask = this.virtualTextEditor.getCharacterMask(
-        this.caretInfo.index, this.caretInfo.position, false
-      );
-    }
-
-    await this.updateMask(leftCharacterMask);
   }
 
   componentDidMount() {
@@ -190,7 +244,7 @@ class TextEditor extends Component {
     this.handleSelectionChange = registerEventHandlers(this);
   }
 
-  async componentDidUpdate() {
+  componentDidUpdate() {
     if(!this.contentChanged) {
       return;
     }
@@ -211,23 +265,18 @@ class TextEditor extends Component {
 
     for(let i = 0; i < this.state.content.length; i++) {
       let childElement = this.textEditor.children[i];
+      if(childElement.classList.contains('Askd-te-MATHJAX')) {
+        continue;
+      }
+
       if(childElement.innerHTML !== this.state.content[i].c) {
         childElement.childNodes[0].nodeValue = this.state.content[i].c;
       }
     }
 
-    if(this.caretInfo.rangeSelect) {
-      this.caret.setRangePosition(
-        this.caretInfo.leftIndex, this.caretInfo.leftPosition,
-        this.caretInfo.rightIndex, this.caretInfo.rightPosition
-      );
-    }
-    else {
-      this.caret.setPosition(this.caretInfo.index, this.caretInfo.position);
-    }
-
+    this.caret.setInfo(this.caretInfo);
     this.contentChanged = false;
-    this.updateCaretInfo();
+    this.selectionChanged();
 
     /* Callback with new content */
     if(this.props.onChange) {
@@ -242,8 +291,17 @@ class TextEditor extends Component {
 
   render() {
     let handleBlur = (event) => {
+      let outerTextEditor = document.getElementById(this.id + '!');
+
+      /* Don't blur if this is one of the toolbar buttons */
+      if(event.relatedTarget && event.relatedTarget.classList.contains('Askd-tb-icon') &&
+         outerTextEditor.contains(event.relatedTarget)) {
+        return;
+      }
+
       if(this.caretInfo.editorSelected) {
         this.caretInfo.editorSelected = false;
+        this.caret.removeCaretBlock();
         this.forceUpdate();
       }
     };
@@ -253,7 +311,7 @@ class TextEditor extends Component {
         <Toolbar mask={this.state.editorMask} callback={this.toolbarUpdate} />
         <TextEditorContent content={this.state.content} id={this.id}
                            editable={true} handleBlur={handleBlur}
-                           editorMask={this.state.editorMask}
+                           handleFocus={this.handleSelectionChange}
                            caretInfo={this.caretInfo} />
       </div>
     );
