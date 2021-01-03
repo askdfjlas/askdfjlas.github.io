@@ -99,11 +99,9 @@ const registerEventHandlers = (that) => {
     let selectionChanged = false;
     try {
       const selection = window.getSelection();
-      const anchorElement = selection.anchorNode.parentElement;
-      const parentElement = anchorElement.parentElement;
+      const anchorNode = selection.anchorNode;
 
-      if(anchorElement.getAttribute('id') === that.id + '!' ||
-         parentElement.getAttribute('id') === that.id) {
+      if(that.textEditor.contains(anchorNode)) {
         const newCaretInfo = that.caret.getInfo();
         for(const key in newCaretInfo) {
           if(newCaretInfo.hasOwnProperty(key) &&

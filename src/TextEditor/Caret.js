@@ -11,8 +11,13 @@ class Caret {
 
   getInfo() {
     const selection = window.getSelection();
-    const anchorElement = selection.anchorNode.parentElement;
-    const focusElement = selection.focusNode.parentElement;
+    let anchorElement = selection.anchorNode.parentElement;
+    let focusElement = selection.focusNode.parentElement;
+
+    let anchorMathBlock = this.getContainingMathBlock(anchorElement);
+    let focusMathBlock = this.getContainingMathBlock(focusElement);
+    if(anchorMathBlock) anchorElement = anchorMathBlock;
+    if(focusMathBlock) focusElement = focusMathBlock;
 
     let anchorIndex = anchorElement.getAttribute('index');
     let focusIndex = focusElement.getAttribute('index');
@@ -63,18 +68,21 @@ class Caret {
     };
   }
 
-  setInfo(caretInfo) {
-    if(caretInfo.rangeSelect) {
+  setInfo(newCaretInfo) {
+    if(newCaretInfo.rangeSelect) {
+      this.removeCaretBlock();
       this.setRangePosition(
-        caretInfo.leftIndex, caretInfo.leftPosition,
-        caretInfo.rightIndex, caretInfo.rightPosition
+        newCaretInfo.leftIndex, newCaretInfo.leftPosition,
+        newCaretInfo.rightIndex, newCaretInfo.rightPosition
       );
     }
-    else if(caretInfo.insideCaretBlock) {
-      this.setPosition(-1, 0);
+    else if(newCaretInfo.insideCaretBlock) {
+      this.addCaretBlock(newCaretInfo.index, newCaretInfo.position);
+      this.setPosition(-1, 1);
     }
     else {
-      this.setPosition(caretInfo.index, caretInfo.position);
+      this.removeCaretBlock();
+      this.setPosition(newCaretInfo.index, newCaretInfo.position);
     }
   }
 
@@ -126,28 +134,8 @@ class Caret {
     caretBlock.setAttribute('position', position);
     caretBlock.innerHTML = String.fromCharCode(8203);
 
-    let indexBlock = document.getElementById(this.id + index);
-    let currentIndex = 0;
-    let leftBuffer = [];
-    let rightBuffer = [];
-    for(const character of indexBlock.innerHTML) {
-      if(currentIndex < position) {
-        leftBuffer.push(character);
-      }
-      else {
-        rightBuffer.push(character);
-      }
-      currentIndex += character.length;
-    }
-
     let nextBlock = document.getElementById(this.id + (index + 1));
-    let nextBlockParent = nextBlock.parentElement;
-    if(rightBuffer.length > 0) {
-
-    }
-    else {
-      nextBlockParent.insertBefore(caretBlock, nextBlock);
-    }
+    nextBlock.parentElement.insertBefore(caretBlock, nextBlock);
   }
 
   removeCaretBlock() {
@@ -157,6 +145,16 @@ class Caret {
       return true;
     }
     return false;
+  }
+
+  getContainingMathBlock(element) {
+    while(element) {
+      if(element.classList.contains('Askd-te-MATHJAX')) {
+        return element;
+      }
+      element = element.parentElement;
+    }
+    return null;
   }
 }
 

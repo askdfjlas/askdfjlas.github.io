@@ -18,7 +18,6 @@ class TextEditor extends Component {
     this.caret = new Caret(this.id);
 
     this.contentChanged = false;
-    this.ignoreNextSelectionMaskChange = false;
     this.caretInfo = {
       rangeSelect: false,
       index: 0,
@@ -54,7 +53,7 @@ class TextEditor extends Component {
     }
 
     this.caretInfo.rangeSelect = false;
-    await this.updateText();
+    await this.insertionUpdate();
   }
 
   async insert(newString) {
@@ -70,7 +69,7 @@ class TextEditor extends Component {
     );
 
     this.caretInfo.rangeSelect = false;
-    await this.updateText();
+    await this.insertionUpdate();
   }
 
   async compositionInsert(newString) {
@@ -80,7 +79,7 @@ class TextEditor extends Component {
     );
 
     this.caretInfo.rangeSelect = false;
-    await this.updateText();
+    await this.insertionUpdate();
   }
 
   async rangeMaskUpdate(bit, on) {
@@ -95,14 +94,20 @@ class TextEditor extends Component {
       this.caretInfo.rightIndex, this.caretInfo.rightPosition, bit, on
     );
 
-    await this.updateText();
+    await this.insertionUpdate();
   }
 
-  async updateText() {
+  async insertionUpdate() {
     this.contentChanged = true;
     this.caret.removeCaretBlock();
     this.caretInfo.insideCaretBlock = false;
 
+    await this.updateContent();
+    this.caret.setInfo(this.caretInfo);
+    await this.selectionChanged();
+  }
+
+  async updateContent() {
     await Utils.setStatePromise(this, {
       content: this.virtualTextEditor.getContent()
     });
@@ -115,77 +120,64 @@ class TextEditor extends Component {
   }
 
   async toolbarUpdate(bit) {
-    if(!this.caretInfo.editorSelected) {
-      this.caretInfo.editorSelected = true;
-      await this.updateMask(this.state.editorMask);
-    }
+    this.caretInfo.editorSelected = true;
 
     const on = (this.state.editorMask & bit) === 0;
     const newToolbarMask = MaskManager.toolbarMergeBit(bit, on, this.state.editorMask);
 
-    if(this.caretInfo.rangeSelect) {
-      await this.updateMask(newToolbarMask);
-      await this.rangeMaskUpdate(bit, on);
-      this.caret.setInfo(this.caretInfo);
-      this.updateCaretInfo();
-    }
-    else {
+    if(!this.caretInfo.rangeSelect) {
       const leftCharacterMask = this.virtualTextEditor.getCharacterMask(
         this.caretInfo.index, this.caretInfo.position, false
       );
 
-      const willBeInsideCaretBlock = this.state.content[0].c.length === 0 ||
+      this.caretInfo.insideCaretBlock = this.state.content[0].c.length === 0 ||
         newToolbarMask !== leftCharacterMask;
-
-      if(willBeInsideCaretBlock) {
-        this.caret.setInfo(this.caretInfo);
-        this.updateCaretInfo(newToolbarMask);
-        await this.updateMask(newToolbarMask);
-      }
-      else {
-        this.caretInfo.insideCaretBlock = false;
-        await this.updateMask(newToolbarMask);
-        this.caret.setInfo(this.caretInfo);
-        this.updateCaretInfo();
-      }
     }
+
+    if(this.caretInfo.insideCaretBlock) {
+      this.virtualTextEditor.addCaretBlock(
+        this.caretInfo.index, this.caretInfo.position
+      );
+      await this.updateContent();
+    }
+
+    await this.updateMask(newToolbarMask);
+    await this.rangeMaskUpdate(bit, on);
+
+    this.caret.setInfo(this.caretInfo);
   }
 
   async selectionChanged() {
-    const newCaretInfo = this.caret.getInfo();
+    this.updateCaretInfo();
+
+    let potentialNewIndexAndPosition = this.virtualTextEditor.removeCaretBlock(
+      this.caretInfo.index, this.caretInfo.position
+    );
+
+    if(potentialNewIndexAndPosition) {
+      [ this.caretInfo.index, this.caretInfo.position ] = potentialNewIndexAndPosition;
+      await this.updateContent();
+    }
 
     let leftCharacterMask;
-    if(this.ignoreNextSelectionMaskChange) {
-      this.ignoreNextSelectionMaskChange = false;
+    if(this.caretInfo.rangeSelect) {
+      leftCharacterMask = this.virtualTextEditor.getCharacterMask(
+        this.caretInfo.leftIndex, this.caretInfo.leftPosition, true
+      );
     }
     else {
-      if(newCaretInfo.rangeSelect) {
-        leftCharacterMask = this.virtualTextEditor.getCharacterMask(
-          newCaretInfo.leftIndex, newCaretInfo.leftPosition, true
-        );
-
-        await this.updateMask(leftCharacterMask);
-      }
-      else {
-        this.caretInfo.insideCaretBlock = false;
-        [ this.caretInfo.index, this.caretInfo.position ] =
-          this.virtualTextEditor.getCorrectedIndexAndPosition(
-            newCaretInfo.index, newCaretInfo.position
-          );
-
-        leftCharacterMask = this.virtualTextEditor.getCharacterMask(
-          this.caretInfo.index, this.caretInfo.position, false
-        );
-
-        await this.updateMask(leftCharacterMask);
-        this.caret.setPosition(this.caretInfo.index, this.caretInfo.position);
-      }
+      leftCharacterMask = this.virtualTextEditor.getCharacterMask(
+        this.caretInfo.index, this.caretInfo.position, false
+      );
     }
+    await this.updateMask(leftCharacterMask);
 
-    this.updateCaretInfo();
+    if(!this.caretInfo.rangeSelect) {
+      this.caret.setInfo(this.caretInfo);
+    }
   }
 
-  updateCaretInfo(toolbarMask=this.state.editorMask) {
+  updateCaretInfo() {
     const newCaretInfo = this.caret.getInfo();
     this.caretInfo.editorSelected = true;
 
@@ -199,48 +191,25 @@ class TextEditor extends Component {
       this.caretInfo.insideCaretBlock = false;
     }
     else {
-      if(newCaretInfo.insideCaretBlock) {
-        this.caretInfo.index = newCaretInfo.index;
-        this.caretInfo.position = newCaretInfo.position;
-        this.caretInfo.rangeSelect = false;
-        this.caretInfo.insideCaretBlock = true;
-      }
-      else {
-        if(this.caret.removeCaretBlock()) {
-          return this.updateCaretInfo();
-        }
-
-        let [ correctIndex, correctPosition ] =
-          this.virtualTextEditor.getCorrectedIndexAndPosition(
-            newCaretInfo.index, newCaretInfo.position
-          );
-
-        if(correctIndex !== newCaretInfo.index ||
-           correctPosition !== newCaretInfo.position) {
-          this.caret.setPosition(correctIndex, correctPosition);
-        }
-
-        const correctCharacterMask = this.virtualTextEditor.getCharacterMask(
-          correctIndex, correctPosition, false
+      let [ correctIndex, correctPosition ] =
+        this.virtualTextEditor.getCorrectedIndexAndPosition(
+          newCaretInfo.index, newCaretInfo.position
         );
 
-        if(toolbarMask !== correctCharacterMask ||
-           this.state.content[0].c.length === 0) {
-          this.caret.addCaretBlock(correctIndex, correctPosition);
-          this.caret.setPosition(-1, 0);
-          newCaretInfo.insideCaretBlock = true;
-        }
-
-        this.caretInfo.index = correctIndex;
-        this.caretInfo.position = correctPosition;
-        this.caretInfo.rangeSelect = false;
-        this.caretInfo.insideCaretBlock = newCaretInfo.insideCaretBlock;
+      if(this.state.content[0].c.length === 0) {
+        newCaretInfo.insideCaretBlock = true;
       }
+
+      this.caretInfo.index = correctIndex;
+      this.caretInfo.position = correctPosition;
+      this.caretInfo.rangeSelect = false;
+      this.caretInfo.insideCaretBlock = newCaretInfo.insideCaretBlock;
     }
   }
 
   componentDidMount() {
     this.textEditor = document.getElementById(this.id);
+    this.outerTextEditor = document.getElementById(this.id + '!');
     this.handleSelectionChange = registerEventHandlers(this);
   }
 
@@ -249,8 +218,7 @@ class TextEditor extends Component {
       return;
     }
 
-    /* The rendered text must be manually sanitized since there's no way to
-       preventDefault a compositionend event in some browsers... */
+    /* The rendered text must be manually sanitized */
     let junkNodes = [];
     for(const node of this.textEditor.childNodes) {
       if(node.nodeType === Node.TEXT_NODE || node.nodeName === 'BR' ||
@@ -274,14 +242,12 @@ class TextEditor extends Component {
       }
     }
 
-    this.caret.setInfo(this.caretInfo);
-    this.contentChanged = false;
-    this.selectionChanged();
-
     /* Callback with new content */
     if(this.props.onChange) {
       this.props.onChange(this.state.content);
     }
+
+    this.contentChanged = false;
   }
 
   componentWillUnmount() {
@@ -291,12 +257,15 @@ class TextEditor extends Component {
 
   render() {
     let handleBlur = (event) => {
-      let outerTextEditor = document.getElementById(this.id + '!');
+      /* Don't blur if this is one of the toolbar buttons or math block */
+      if(event.relatedTarget) {
+        let isIcon = event.relatedTarget.classList.contains('Askd-tb-icon') &&
+           this.outerTextEditor.contains(event.relatedTarget);
+        let mathBlock = this.caret.getContainingMathBlock(event.relatedTarget);
 
-      /* Don't blur if this is one of the toolbar buttons */
-      if(event.relatedTarget && event.relatedTarget.classList.contains('Askd-tb-icon') &&
-         outerTextEditor.contains(event.relatedTarget)) {
-        return;
+        if(isIcon || mathBlock) {
+          return;
+        }
       }
 
       if(this.caretInfo.editorSelected) {

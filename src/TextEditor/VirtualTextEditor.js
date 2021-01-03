@@ -13,7 +13,8 @@ function countCharacters(str) {
 class VirtualTextEditor {
   constructor(initialContent) {
     this.characters = [];
-    this.globalCaretPosition = 0;
+    this.caretBlockIndex = null;
+    this.caretBlockPosition = null;
 
     if(initialContent) {
       for(const block of initialContent) {
@@ -26,7 +27,7 @@ class VirtualTextEditor {
         }
       }
 
-      /* Remove extra newline character */
+      /* Remove extra newline character if it exists */
       this.characters.splice(this.characters.length - 1);
     }
 
@@ -107,6 +108,9 @@ class VirtualTextEditor {
       this.characters.push(character);
     }
 
+    this.caretBlockIndex = null;
+    this.caretBlockPosition = null;
+
     this.updateBlocks();
     return this.getIndexAndPosition(globalCaretPosition);
   }
@@ -123,6 +127,9 @@ class VirtualTextEditor {
     this.characters.splice(globalLeftIndex, deleteLength);
     const globalCaretPosition = globalLeftIndex;
 
+    this.caretBlockIndex = null;
+    this.caretBlockPosition = null;
+
     this.updateBlocks();
     return this.getIndexAndPosition(globalCaretPosition);
   }
@@ -135,11 +142,33 @@ class VirtualTextEditor {
       this.characters[i].m = MaskManager.editorMergeBit(bit, on, this.characters[i].m);
     }
 
+    this.caretBlockIndex = null;
+    this.caretBlockPosition = null;
+
     this.updateBlocks();
 
     const [ newLeftIndex, newLeftPosition ] = this.getIndexAndPosition(globalLeftIndex);
     const [ newRightIndex, newRightPosition ] = this.getIndexAndPosition(globalRightIndex);
     return [ newLeftIndex, newLeftPosition, newRightIndex, newRightPosition ];
+  }
+
+  addCaretBlock(index, position) {
+    this.caretBlockIndex = index;
+    this.caretBlockPosition = position;
+    this.updateBlocks();
+  }
+
+  /* Removes the caret block, and returns the new index and position of the caret */
+  removeCaretBlock(index, position) {
+    const globalIndex = this.getGlobalIndex(index, position);
+    if(this.caretBlockIndex !== null) {
+      this.caretBlockIndex = null;
+      this.caretBlockPosition = null;
+
+      this.updateBlocks();
+      return this.getIndexAndPosition(globalIndex);
+    }
+    return null;
   }
 
   updateBlocks() {
@@ -148,19 +177,26 @@ class VirtualTextEditor {
 
     let currentMask = this.characters.length > 0 ? this.characters[0].m : 0;
     let characterBuffer = [];
+    let blockPosition = 0;
     this.characters.forEach((character, i) => {
-      if(character.m !== currentMask) {
+      let caretBlockIncoming = this.blocks.length === this.caretBlockIndex &&
+        blockPosition === this.caretBlockPosition;
+
+      /* End of this block */
+      if(character.m !== currentMask || caretBlockIncoming) {
         this.blocks.push({
           m: currentMask,
           c: characterBuffer.join('')
         });
         this.blockStarts.push(i - characterBuffer.length);
 
+        blockPosition = character.c.length;
         currentMask = character.m;
         characterBuffer = [ character.c ];
       }
       else {
         characterBuffer.push(character.c);
+        blockPosition += character.c.length;
       }
     });
 
