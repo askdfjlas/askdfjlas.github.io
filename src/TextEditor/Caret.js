@@ -1,3 +1,5 @@
+import MaskManager from './MaskManager';
+
 function lessThan(a, b, c, d) {
   if(a === c)
     return b < d;
@@ -13,6 +15,8 @@ class Caret {
     const selection = window.getSelection();
     let anchorElement = selection.anchorNode.parentElement;
     let focusElement = selection.focusNode.parentElement;
+    let originalAnchorElement = anchorElement;
+    let originalFocusElement = focusElement;
 
     let anchorMathBlock = this.getContainingMathBlock(anchorElement);
     let focusMathBlock = this.getContainingMathBlock(focusElement);
@@ -33,6 +37,15 @@ class Caret {
         insideCaretBlock: false,
         editorSelected: true
       };
+    }
+
+    if(originalAnchorElement.classList.contains('Askd-te-MATHJAX') &&
+       selection.anchorOffset === 0) {
+      anchorOffset = 0;
+    }
+    if(originalFocusElement.classList.contains('Askd-te-MATHJAX') &&
+       selection.focusOffset === 0) {
+      focusOffset = 0;
     }
 
     if(anchorOffset === null) anchorOffset = selection.anchorOffset;
@@ -68,7 +81,7 @@ class Caret {
     };
   }
 
-  setInfo(newCaretInfo) {
+  setInfo(newCaretInfo, editorMask) {
     if(newCaretInfo.rangeSelect) {
       this.removeCaretBlock();
       this.setRangePosition(
@@ -77,7 +90,7 @@ class Caret {
       );
     }
     else if(newCaretInfo.insideCaretBlock) {
-      this.addCaretBlock(newCaretInfo.index, newCaretInfo.position);
+      this.addCaretBlock(newCaretInfo.index, newCaretInfo.position, editorMask);
       this.setPosition(-1, 1);
     }
     else {
@@ -125,13 +138,14 @@ class Caret {
     selection.addRange(range);
   }
 
-  addCaretBlock(index, position) {
+  addCaretBlock(index, position, editorMask) {
     this.removeCaretBlock();
 
     let caretBlock = document.createElement('div');
     caretBlock.setAttribute('id', 'Askd-te-CARET');
     caretBlock.setAttribute('index', index);
     caretBlock.setAttribute('position', position);
+    caretBlock.setAttribute('class', MaskManager.getClassName(editorMask));
     caretBlock.innerHTML = String.fromCharCode(8203);
 
     let nextBlock = document.getElementById(this.id + (index + 1));

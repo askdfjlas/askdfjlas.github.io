@@ -103,7 +103,7 @@ class TextEditor extends Component {
     this.caretInfo.insideCaretBlock = false;
 
     await this.updateContent();
-    this.caret.setInfo(this.caretInfo);
+    this.caret.setInfo(this.caretInfo, this.state.editorMask);
     await this.selectionChanged();
   }
 
@@ -130,50 +130,73 @@ class TextEditor extends Component {
         this.caretInfo.index, this.caretInfo.position, false
       );
 
-      this.caretInfo.insideCaretBlock = this.state.content[0].c.length === 0 ||
-        newToolbarMask !== leftCharacterMask;
+      let previouslyInsideCaretBlock = this.caretInfo.insideCaretBlock;
+      this.caretInfo.insideCaretBlock = newToolbarMask !== leftCharacterMask ||
+        this.virtualTextEditor.atBlockNewlineEnd(
+          this.caretInfo.index, this.caretInfo.position
+        );
+
+      if(this.caretInfo.insideCaretBlock) {
+        this.virtualTextEditor.addCaretBlock(
+          this.caretInfo.index, this.caretInfo.position
+        );
+        await this.updateContent();
+      }
+      else {
+        if(previouslyInsideCaretBlock) {
+          this.virtualTextEditor.removeCaretBlock();
+          await this.updateContent();
+        }
+      }
+
+      await this.updateMask(newToolbarMask);
+      this.caret.setInfo(this.caretInfo, this.state.editorMask);
     }
-
-    if(this.caretInfo.insideCaretBlock) {
-      this.virtualTextEditor.addCaretBlock(
-        this.caretInfo.index, this.caretInfo.position
-      );
-      await this.updateContent();
+    else {
+      await this.rangeMaskUpdate(bit, on);
     }
-
-    await this.updateMask(newToolbarMask);
-    await this.rangeMaskUpdate(bit, on);
-
-    this.caret.setInfo(this.caretInfo);
   }
 
   async selectionChanged() {
+    let previouslyInsideCaretBlock = this.caretInfo.insideCaretBlock;
     this.updateCaretInfo();
 
-    let potentialNewIndexAndPosition = this.virtualTextEditor.removeCaretBlock(
-      this.caretInfo.index, this.caretInfo.position
-    );
-
-    if(potentialNewIndexAndPosition) {
-      [ this.caretInfo.index, this.caretInfo.position ] = potentialNewIndexAndPosition;
+    if(previouslyInsideCaretBlock) {
+      this.virtualTextEditor.removeCaretBlock(this.caretInfo);
+      this.caret.removeCaretBlock();
       await this.updateContent();
+      this.caret.setInfo(this.caretInfo, this.state.editorMask);
     }
 
-    let leftCharacterMask;
     if(this.caretInfo.rangeSelect) {
-      leftCharacterMask = this.virtualTextEditor.getCharacterMask(
+      let updateCaret = false;
+      let leftElement = document.getElementById(this.id + this.caretInfo.leftIndex);
+      let rightElement = document.getElementById(this.id + this.caretInfo.rightIndex);
+
+      let leftElementLength = this.state.content[this.caretInfo.leftIndex].c.length;
+      let atLeftElementEnd = (this.caretInfo.leftPosition === leftElementLength);
+      let atRightElementBegin = (this.caretInfo.rightPosition === 0);
+
+      if(leftElement.classList.contains('Askd-te-MATHJAX') && !atLeftElementEnd)
+        updateCaret = true;
+      if(rightElement.classList.contains('Askd-te-MATHJAX') && !atRightElementBegin)
+        updateCaret = true;
+
+      let leftCharacterMask = this.virtualTextEditor.getCharacterMask(
         this.caretInfo.leftIndex, this.caretInfo.leftPosition, true
       );
+      await this.updateMask(leftCharacterMask);
+
+      if(updateCaret) {
+        this.caret.setInfo(this.caretInfo, this.state.editorMask);
+      }
     }
     else {
-      leftCharacterMask = this.virtualTextEditor.getCharacterMask(
+      let leftCharacterMask = this.virtualTextEditor.getCharacterMask(
         this.caretInfo.index, this.caretInfo.position, false
       );
-    }
-    await this.updateMask(leftCharacterMask);
-
-    if(!this.caretInfo.rangeSelect) {
-      this.caret.setInfo(this.caretInfo);
+      await this.updateMask(leftCharacterMask);
+      this.caret.setInfo(this.caretInfo, this.state.editorMask);
     }
   }
 
@@ -183,25 +206,31 @@ class TextEditor extends Component {
 
     /* Maintain previous info for the other selection type */
     if(newCaretInfo.rangeSelect) {
-      this.caretInfo.leftIndex = newCaretInfo.leftIndex;
-      this.caretInfo.leftPosition = newCaretInfo.leftPosition;
-      this.caretInfo.rightIndex = newCaretInfo.rightIndex;
-      this.caretInfo.rightPosition = newCaretInfo.rightPosition;
+      [ this.caretInfo.leftIndex, this.caretInfo.leftPosition ] =
+        this.virtualTextEditor.getCorrectedIndexAndPosition(
+          newCaretInfo.leftIndex, newCaretInfo.leftPosition, false
+        );
+
+      [ this.caretInfo.rightIndex, this.caretInfo.rightPosition ] =
+        this.virtualTextEditor.getCorrectedIndexAndPosition(
+          newCaretInfo.rightIndex, newCaretInfo.rightPosition, true
+        );
+
       this.caretInfo.rangeSelect = true;
       this.caretInfo.insideCaretBlock = false;
     }
     else {
-      let [ correctIndex, correctPosition ] =
+      [ this.caretInfo.index, this.caretInfo.position ] =
         this.virtualTextEditor.getCorrectedIndexAndPosition(
-          newCaretInfo.index, newCaretInfo.position
+          newCaretInfo.index, newCaretInfo.position, false
         );
 
-      if(this.state.content[0].c.length === 0) {
+      if(this.virtualTextEditor.atBlockNewlineEnd(
+        this.caretInfo.index, this.caretInfo.position
+      )) {
         newCaretInfo.insideCaretBlock = true;
       }
 
-      this.caretInfo.index = correctIndex;
-      this.caretInfo.position = correctPosition;
       this.caretInfo.rangeSelect = false;
       this.caretInfo.insideCaretBlock = newCaretInfo.insideCaretBlock;
     }
@@ -257,21 +286,29 @@ class TextEditor extends Component {
 
   render() {
     let handleBlur = (event) => {
-      /* Don't blur if this is one of the toolbar buttons or math block */
+      /* Don't blur if event.relatedTarget is one of the toolbar buttons or
+      contained within the 'textarea' */
       if(event.relatedTarget) {
         let isIcon = event.relatedTarget.classList.contains('Askd-tb-icon') &&
            this.outerTextEditor.contains(event.relatedTarget);
-        let mathBlock = this.caret.getContainingMathBlock(event.relatedTarget);
+        let contained = this.textEditor.contains(event.relatedTarget);
 
-        if(isIcon || mathBlock) {
+        if(isIcon || contained) {
           return;
         }
       }
 
       if(this.caretInfo.editorSelected) {
         this.caretInfo.editorSelected = false;
-        this.caret.removeCaretBlock();
-        this.forceUpdate();
+        if(this.caretInfo.insideCaretBlock) {
+          this.caretInfo.insideCaretBlock = false;
+          this.caret.removeCaretBlock();
+          this.virtualTextEditor.removeCaretBlock();
+          this.updateContent();
+        }
+        else {
+          this.forceUpdate();
+        }
       }
     };
 

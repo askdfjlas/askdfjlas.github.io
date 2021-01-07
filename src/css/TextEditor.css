@@ -107,6 +107,10 @@
   background-color: rgba(0, 255, 0, 0.2);
 }
 
+.Askd-te-MATHJAX:hover {
+  cursor: pointer;
+}
+
 .Askd-te-BOLD {
   font-weight: bold;
 }

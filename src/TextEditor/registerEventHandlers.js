@@ -1,5 +1,9 @@
+import ContentType from './ContentType';
+
 const registerEventHandlers = (that) => {
   that.textEditor.addEventListener('keydown', async (event) => {
+    let mathSelected = (that.state.editorMask & ContentType.MATH) > 0;
+
     /* TBD, bro who even uses that button lol */
     if(event.key === 'Delete') {
       event.preventDefault();
@@ -8,7 +12,7 @@ const registerEventHandlers = (that) => {
       await that.delete();
       event.preventDefault();
     }
-    else if(event.key === 'Enter' && !that.composing) {
+    else if(event.key === 'Enter' && !that.composing && !mathSelected) {
       await that.insert(String.fromCharCode(10));
       event.preventDefault();
     }
@@ -49,42 +53,11 @@ const registerEventHandlers = (that) => {
     that.composing = true;
     that.compositionIndex = that.caretInfo.index;
     that.compositionPosition = that.caretInfo.position;
-
-    /* Set the previous block to be uneditable */
-    let previousBlockElement = document.getElementById(that.id +
-      (that.compositionIndex - 1));
-    if(previousBlockElement) {
-      previousBlockElement.setAttribute('contenteditable', 'false');
-    }
-
-    /* Create an empty uneditable composition div in front of this block */
-    let compositionDiv = document.createElement('div');
-    compositionDiv.setAttribute('contenteditable', 'false');
-    compositionDiv.setAttribute('id', that.id + 'composition');
-
-    let nextBlockElement = document.getElementById(that.id +
-      (that.compositionIndex + 1));
-    if(nextBlockElement) {
-      that.textEditor.insertBefore(compositionDiv, nextBlockElement);
-    }
   });
 
   that.textEditor.addEventListener('compositionend', async (event) => {
     if(!that.composing) {
       return;
-    }
-
-    /* Composition has ended; allow the previous block to be editable again */
-    let previousBlockElement = document.getElementById(that.id +
-      (that.compositionIndex - 1));
-    if(previousBlockElement) {
-      previousBlockElement.setAttribute('contenteditable', 'true');
-    }
-
-    /* Remove the composition div */
-    let compositionDiv = document.getElementById(that.id + 'composition');
-    if(compositionDiv) {
-      that.textEditor.removeChild(compositionDiv);
     }
 
     that.composing = false;

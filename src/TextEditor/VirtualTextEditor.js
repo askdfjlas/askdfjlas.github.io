@@ -1,10 +1,11 @@
 import MaskManager from './MaskManager';
+import ContentType from './ContentType';
 
-// This is different from str.length; for example emojis use up 2
+/* This is different from str.length; for example, emojis can use up 2 or more */
 function countCharacters(str) {
   let counter = 0;
   for(const character of str) {
-    Number(character);  // Silence unused variable warning
+    Number(character);  // Silence unused variable linter warning
     counter++;
   }
   return counter;
@@ -59,23 +60,34 @@ class VirtualTextEditor {
   getGlobalIndex(index, position) {
     let globalIndex = this.blockStarts[index];
     let characterCounter = 0;
-    while(characterCounter < position) {
+    while(characterCounter < position && globalIndex < this.characters.length) {
       characterCounter += this.characters[globalIndex].c.length;
       globalIndex++;
     }
 
-    if(characterCounter === position)
+    if(characterCounter <= position)
       return globalIndex;
 
     return globalIndex - 1;
   }
 
-  /* Visually identical caret positions can have two different caret indices
+  /* Visually identical caret positions can have two different indices
   and positions if it's in the middle of two blocks. This method returns the end
-  position of the first block if that happens. */
-  getCorrectedIndexAndPosition(index, position) {
-    const globalIndex = this.getGlobalIndex(index, position);
-    return this.getIndexAndPosition(globalIndex);
+  position of the first block if rangeEnd is false and the starting position
+  of the second block otherwise. */
+  getCorrectedIndexAndPosition(index, position, rangeEnd, globalIndex=null) {
+    if(globalIndex === null) {
+      globalIndex = this.getGlobalIndex(index, position);
+    }
+
+    const firstBlockEnd = this.getIndexAndPosition(globalIndex);
+    if(rangeEnd && globalIndex < this.characters.length) {
+      const nextBlockGlobalIndex = this.getGlobalIndex(firstBlockEnd[0] + 1, 0);
+      if(globalIndex === nextBlockGlobalIndex) {
+        return [ firstBlockEnd[0] + 1, 0 ];
+      }
+    }
+    return firstBlockEnd;
   }
 
   getCharacterMask(index, position, rangeSelect) {
@@ -144,7 +156,6 @@ class VirtualTextEditor {
 
     this.caretBlockIndex = null;
     this.caretBlockPosition = null;
-
     this.updateBlocks();
 
     const [ newLeftIndex, newLeftPosition ] = this.getIndexAndPosition(globalLeftIndex);
@@ -158,17 +169,54 @@ class VirtualTextEditor {
     this.updateBlocks();
   }
 
-  /* Removes the caret block, and returns the new index and position of the caret */
-  removeCaretBlock(index, position) {
-    const globalIndex = this.getGlobalIndex(index, position);
+  /* Removes the caret block, and appropriately modifies caretInfo if provided */
+  removeCaretBlock(caretInfo) {
     if(this.caretBlockIndex !== null) {
       this.caretBlockIndex = null;
       this.caretBlockPosition = null;
 
-      this.updateBlocks();
-      return this.getIndexAndPosition(globalIndex);
+      if(caretInfo) {
+        if(caretInfo.rangeSelect) {
+          let leftGlobalIndex = this.getGlobalIndex(
+            caretInfo.leftIndex, caretInfo.leftPosition
+          );
+
+          let rightGlobalIndex = this.getGlobalIndex(
+            caretInfo.rightIndex, caretInfo.rightPosition
+          );
+
+          this.updateBlocks();
+
+          [ caretInfo.leftIndex, caretInfo.leftPosition ] =
+            this.getCorrectedIndexAndPosition(null, null, false, leftGlobalIndex);
+          [ caretInfo.rightIndex, caretInfo.rightPosition ] =
+            this.getCorrectedIndexAndPosition(null, null, true, rightGlobalIndex);
+        }
+        else {
+          let globalIndex = this.getGlobalIndex(caretInfo.index, caretInfo.position);
+          this.updateBlocks();
+          [ caretInfo.index, caretInfo.position ] =
+            this.getCorrectedIndexAndPosition(null, null, false, globalIndex);
+        }
+      }
+      else {
+        this.updateBlocks();
+      }
     }
-    return null;
+  }
+
+  isEmpty() {
+    return this.characters.length === 0;
+  }
+
+  /* Returns true if content is empty, or the caret position is at the end of
+  a block and the last character is a newline. This is important for mobile. */
+  atBlockNewlineEnd(index, position) {
+    if(this.isEmpty()) return true;
+    let content = this.blocks[index].c;
+    if(content.length === position && content[position - 1] === String.fromCharCode(10))
+       return true;
+    return false;
   }
 
   updateBlocks() {
@@ -179,11 +227,20 @@ class VirtualTextEditor {
     let characterBuffer = [];
     let blockPosition = 0;
     this.characters.forEach((character, i) => {
+      /* For math mode, replace newlines with spaces */
+      if(character.m === ContentType.MATH && character.c === String.fromCharCode(10)) {
+        character.c = ' ';
+      }
+
       let caretBlockIncoming = this.blocks.length === this.caretBlockIndex &&
         blockPosition === this.caretBlockPosition;
 
       /* End of this block */
       if(character.m !== currentMask || caretBlockIncoming) {
+        if(characterBuffer.length === 0) {
+          currentMask = 0;
+        }
+
         this.blocks.push({
           m: currentMask,
           c: characterBuffer.join('')

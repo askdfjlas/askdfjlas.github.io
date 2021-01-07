@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Block from './Block/Block';
+import Utils from '../Utils';
 
 function TextEditorContent({ content, id, editable, caretInfo, handleBlur, handleFocus }) {
   let contentElements = [];
