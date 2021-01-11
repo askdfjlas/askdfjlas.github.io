@@ -6,7 +6,7 @@ class UserApi {
       username: username
     };
 
-    return await Api.getJson('profile', options);
+    return await Api.getJson('users', options);
   }
 }
 
