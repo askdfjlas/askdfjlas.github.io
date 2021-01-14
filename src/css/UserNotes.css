@@ -3,15 +3,6 @@
   position: relative;
 }
 
-.User-notes .Paginator:first-child {
-  margin-top: 0.5em;
-  margin-bottom: 0;
-}
-
-.User-notes .Paginator {
-  margin-bottom: 0.5em;
-}
-
 .User-notes-nothing {
   display: flex;
   align-items: center;
@@ -37,6 +28,10 @@
   font-family: Arial;
   color: white;
   margin: 0.2em;
+}
+
+.User-notes-organize:last-child {
+  margin-bottom: 1em;
 }
 
 .User-notes-organize label {

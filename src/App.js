@@ -5,6 +5,7 @@ import Home from './Home/Home';
 import UserProfile from './UserProfile/UserProfile';
 import EditNote from './EditNote/EditNote';
 import PublicNote from './PublicNote/PublicNote';
+import UsersList from './UsersList/UsersList';
 
 import './css/App.css';
 import './css/Module.css';
@@ -18,6 +19,7 @@ function App() {
         <Switch>
           <Route exact path="/" component={Home} />
           <Route exact path="/home" component={Home} />
+          <Route exact path="/users" component={UsersList} />
           <Route exact path="/users/:username" component={UserProfile} />
           <Route exact path="/notes/edit/:platform/:contestId/:problemCode"
                  component={EditNote} />

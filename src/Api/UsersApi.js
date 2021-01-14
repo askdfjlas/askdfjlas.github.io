@@ -1,6 +1,6 @@
 import Api from './Api';
 
-class UserApi {
+class UsersApi {
   static async getUserInfo(username) {
     const options = {
       username: username
@@ -8,6 +8,14 @@ class UserApi {
 
     return await Api.getJson('users', options);
   }
+
+  static async getUsers(page) {
+    const options = {
+      page: page
+    };
+
+    return await Api.getJson('users', options);
+  }
 }
 
-export default UserApi;
+export default UsersApi;

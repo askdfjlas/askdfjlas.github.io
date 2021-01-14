@@ -1,0 +1,33 @@
+.Users-table {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  margin: 0.5em;
+}
+
+.Users-table-last-updated {
+  font-style: italic;
+  font-size: 0.8em;
+  margin: 0.4em 0.2em;
+}
+
+.Users-table-table {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  border: 1px solid white;
+  border-radius: 2px;
+  background-color: #353555;
+  overflow: hidden;
+}
+
+.Users-table-table table {
+  border-collapse: collapse;
+  margin: -1px;
+}
+
+.Users-table-table td, .Users-table-table th {
+  padding: 0.4em;
+  border: 1px solid white;
+  margin: 0;
+}

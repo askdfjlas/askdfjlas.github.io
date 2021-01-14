@@ -4,7 +4,7 @@
   background-color: #272739;
   margin: auto;
   width: 90%;
-  padding: 1.2em;
+  padding: 0.8em;
   box-sizing: border-box;
   flex: 1 0 auto;
 }
@@ -12,14 +12,14 @@
 @media screen and (max-width: 750px) {
   .Module-wrapper {
     width: 100%;
-    padding: 1em;
+    padding: 0.8em;
   }
 }
 
 .Module-wrapper .Module-heading {
   font-family: 'Verdana';
   color: white;
-  margin: 0.7em auto 0.4em auto;
+  margin: 0.4em auto 0.4em auto;
   text-align: center;
 }
 
@@ -42,10 +42,9 @@
   flex-direction: column;
   box-sizing: border-box;
   overflow-wrap: anywhere;
-  margin: 0.8em auto 0 auto;
   width: 100%;
   border-radius: 3px;
-  border: 2px solid white;
+  border: 1px solid white;
   color: white;
 }
 
@@ -70,6 +69,7 @@
   font-family: 'Arial';
   width: 100%;
   padding: 0.6em 1em;
+  margin-bottom: 0.8em;
   box-sizing: border-box;
   color: white;
   border-radius: 3px;

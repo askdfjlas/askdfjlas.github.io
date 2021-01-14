@@ -31,9 +31,12 @@ function Paginator({ currentPage, totalPages, callback }) {
   for(const pageIndex of pageIndices) {
     const buttonClassName = (pageIndex === currentPage) ?
       'Paginator-list-selected' : 'Askd-form-link';
+    const buttonOnClick = (pageIndex === currentPage) ?
+      null : () => callback(pageIndex);
+
     paginatorButtons.push(
       <li key={pageIndex}>
-        <button className={buttonClassName} onClick={() => callback(pageIndex)}>
+        <button className={buttonClassName} onClick={buttonOnClick}>
           {pageIndex}
         </button>
       </li>

@@ -68,6 +68,11 @@
   padding: 1em;
 }
 
+.Header ul li, .Header-small ul li {
+  display: inline;
+  margin-right: 1.3em;
+}
+
 .Header-small ul li a, .Header ul li a {
   display: inline-block;
   color: white;

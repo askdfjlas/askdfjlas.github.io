@@ -3,6 +3,15 @@
   margin: 0;
 }
 
+.Module-space .Paginator:first-child {
+  margin-top: 0.5em;
+  margin-bottom: 0;
+}
+
+.Module-space .Paginator {
+  margin-bottom: 0.5em;
+}
+
 .Paginator-list {
   display: block;
   margin: 0 0.5em;

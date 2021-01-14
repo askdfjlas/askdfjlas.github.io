@@ -170,12 +170,12 @@ class TextEditor extends Component {
 
     if(this.caretInfo.rangeSelect) {
       let updateCaret = false;
-      let leftElement = document.getElementById(this.id + this.caretInfo.leftIndex);
-      let rightElement = document.getElementById(this.id + this.caretInfo.rightIndex);
+      const leftElement = document.getElementById(this.id + this.caretInfo.leftIndex);
+      const rightElement = document.getElementById(this.id + this.caretInfo.rightIndex);
 
-      let leftElementLength = this.state.content[this.caretInfo.leftIndex].c.length;
-      let atLeftElementEnd = (this.caretInfo.leftPosition === leftElementLength);
-      let atRightElementBegin = (this.caretInfo.rightPosition === 0);
+      const leftElementLength = this.state.content[this.caretInfo.leftIndex].c.length;
+      const atLeftElementEnd = (this.caretInfo.leftPosition === leftElementLength);
+      const atRightElementBegin = (this.caretInfo.rightPosition === 0);
 
       if(leftElement.classList.contains('Askd-te-MATHJAX') && !atLeftElementEnd)
         updateCaret = true;

@@ -9,7 +9,7 @@ class Block extends Component {
     const editorId = this.props.id;
     const selected = this.props.selected;
     const index = this.props.index;
-    let content = block.c;
+    const content = block.c;
 
     if(block.m === ContentType.MATH) {
       return (
