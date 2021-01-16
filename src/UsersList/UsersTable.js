@@ -10,15 +10,18 @@ function UsersTable({ currentPage, lastUpdated, users }) {
   let userRows = [];
   let index = (currentPage - 1) * PAGE_SIZE + 1;
   for(const user of users) {
+    const contributionClassName = user.contribution > 0 ?
+      'Users-table-contributor' : '';
+
     userRows.push(
       <tr key={index}>
         <td>{index}</td>
-        <td>
-          <Link className="Askd-form-link" to={`/users/${user.username}`}>
+        <td className="Users-table-username">
+          <Link className="Askd-button Askd-button-generic" to={`/users/${user.username}`}>
             {user.username}
           </Link>
         </td>
-        <td>{user.contribution}</td>
+        <td className={contributionClassName}>{user.contribution}</td>
       </tr>
     );
     index++;
@@ -31,7 +34,7 @@ function UsersTable({ currentPage, lastUpdated, users }) {
           <tbody>
             <tr>
               <th>#</th>
-              <th>Username</th>
+              <th className="Users-table-username">Username</th>
               <th>Contribution</th>
             </tr>
             {userRows}

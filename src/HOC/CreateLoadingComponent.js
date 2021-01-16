@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
+import LoadingSpinner from '../Misc/LoadingSpinner';
 import LoadState from '../Enum/LoadState';
 
 function CreateLoadingComponent(getData, defaultParams, notFoundErrorName, WrappedComponent) {
@@ -43,7 +44,7 @@ function CreateLoadingComponent(getData, defaultParams, notFoundErrorName, Wrapp
     let innerContent;
     if(componentScreen === LoadState.LOADING) {
       innerContent = (
-        <h2>I am loading lol</h2>
+        <LoadingSpinner />
       );
     }
     else {

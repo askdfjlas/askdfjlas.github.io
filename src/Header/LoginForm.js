@@ -12,6 +12,7 @@ class LoginForm extends Component {
       error: '',
       username: null,
       destination: null,
+      loading: false,
       screen: props.screen || HeaderState.LOGIN
     }
 
@@ -21,6 +22,7 @@ class LoginForm extends Component {
     this.forgotPassword = this.forgotPassword.bind(this);
     this.resetPassword = this.resetPassword.bind(this);
     this.resendVerificationEmail = this.resendVerificationEmail.bind(this);
+    this.setLoading = this.setLoading.bind(this);
   }
 
   close() {
@@ -39,24 +41,21 @@ class LoginForm extends Component {
       return;
     }
 
+    await this.setLoading(true);
     try {
-      try {
-        await UserAuthApi.login(username, password);
-        this.props.exitCallback(true);
-      }
-      catch(err) {
-        if(err.code === 'UserNotConfirmedException') {
-          const destination = await UserAuthApi.resendVerificationEmail(username);
-          await this.props.emailVerificationCallback(username, destination);
-        }
-        else {
-          throw err;
-        }
-      }
+      await UserAuthApi.login(username, password);
+      this.props.exitCallback(true);
     }
     catch(err) {
-      await Utils.componentSetError(this, err.message);
+      if(err.code === 'UserNotConfirmedException') {
+        const destination = await UserAuthApi.resendVerificationEmail(username);
+        await this.props.emailVerificationCallback(username, destination);
+      }
+      else {
+        await Utils.componentSetError(this, err.message);
+      }
     }
+    await this.setLoading(false);
   }
 
   async enablePasswordRecovery(event) {
@@ -75,8 +74,10 @@ class LoginForm extends Component {
       return;
     }
 
+    await this.setLoading(true);
     try {
       const destination = await UserAuthApi.forgotPassword(username);
+
       await Utils.setStatePromise(this, {
         error: '',
         username: username,
@@ -87,6 +88,7 @@ class LoginForm extends Component {
     catch(err) {
       await Utils.componentSetError(this, err.message);
     }
+    await this.setLoading(false);
   }
 
   async resetPassword(event) {
@@ -106,8 +108,10 @@ class LoginForm extends Component {
     if(!passwordsOk)
       return;
 
+    await this.setLoading(true);
     try {
       await UserAuthApi.resetPassword(this.state.username, code, password);
+
       await Utils.setStatePromise(this, {
         error: '',
         success: '',
@@ -117,6 +121,7 @@ class LoginForm extends Component {
     catch(err) {
       await Utils.componentSetError(this, err.message);
     }
+    await this.setLoading(false);
   }
 
   async resendVerificationEmail(event) {
@@ -129,11 +134,22 @@ class LoginForm extends Component {
     }
   }
 
+  async setLoading(isLoading) {
+    await Utils.setStatePromise(this, {
+      loading: isLoading
+    });
+  }
+
   componentWillUnmount() {
     this.mounted = false;
   }
 
   render() {
+    let submitButtonClassName = 'Askd-button';
+    if(this.state.loading) {
+      submitButtonClassName += ' Askd-form-loading';
+    }
+
     const loginForm = (
       <div className="Register-form Module-popup">
         { this.state.error && <h2>{this.state.error}</h2> }
@@ -152,7 +168,8 @@ class LoginForm extends Component {
             Forgot your password?
           </button>
 
-          <input className="Askd-button" type="submit" value="Login" />
+          <input className={submitButtonClassName} type="submit" value="Login"
+                 disabled={this.state.loading} />
         </form>
       </div>
     );
@@ -170,7 +187,8 @@ class LoginForm extends Component {
           <input autoComplete="off" type="text" name="username"
                  key="reset-username" id="reset-username" />
 
-          <input className="Askd-button" type="submit" value="Submit" />
+          <input className={submitButtonClassName} type="submit" value="Submit"
+                 disabled={this.state.loading} />
         </form>
       </div>
     );
@@ -202,7 +220,8 @@ class LoginForm extends Component {
             Didn't get the email? Click here to resend
           </button>
 
-          <input className="Askd-button" type="submit" value="Submit" />
+          <input className={submitButtonClassName} type="submit" value="Submit"
+                 disabled={this.state.loading} />
         </form>
       </div>
     );

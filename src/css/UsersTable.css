@@ -17,17 +17,43 @@
   flex: 1 0 auto;
   border: 1px solid white;
   border-radius: 2px;
-  background-color: #353555;
-  overflow: hidden;
+  overflow-x: auto;
 }
 
 .Users-table-table table {
+  white-space: nowrap;
   border-collapse: collapse;
   margin: -1px;
+}
+
+.Users-table-table tr:nth-child(odd) {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.Users-table-table th {
+  background-color: rgba(0, 0, 0, 0.2);
 }
 
 .Users-table-table td, .Users-table-table th {
   padding: 0.4em;
   border: 1px solid white;
   margin: 0;
+}
+
+.Users-table-table td:not(.Users-table-username),
+.Users-table-table th:not(.Users-table-username) {
+  text-align: center;
+}
+
+.Users-table-contributor:before {
+  content: '+';
+}
+
+.Users-table-contributor {
+  color: #35E575;
+  font-weight: bold;
+}
+
+.Users-table-username {
+  width: 100%;
 }

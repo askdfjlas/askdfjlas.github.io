@@ -70,6 +70,7 @@ class UserNotes extends Component {
     }
     catch(err) {
       await Utils.componentSetError(formComponent, err.message);
+      await formComponent.setLoading(false);
     }
   }
 

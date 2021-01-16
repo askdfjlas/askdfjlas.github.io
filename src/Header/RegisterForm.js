@@ -20,13 +20,15 @@ class RegisterForm extends Component {
       success: '',
       username: props.unverifiedAccountUsername,
       destination: props.unverifiedAccountDestination,
-      screen: screen
+      screen: screen,
+      loading: false
     };
 
     this.close = this.close.bind(this);
     this.register = this.register.bind(this);
     this.verifyEmail = this.verifyEmail.bind(this);
     this.resendVerificationEmail = this.resendVerificationEmail.bind(this);
+    this.setLoading = this.setLoading.bind(this);
   }
 
   close() {
@@ -72,6 +74,7 @@ class RegisterForm extends Component {
     if(!passwordsOk)
       return;
 
+    await this.setLoading(true);
     try {
       const destination = await UserAuthApi.register(username, email, password);
       Utils.setStatePromise(this, {
@@ -84,12 +87,14 @@ class RegisterForm extends Component {
     catch(err) {
       await this.setError(err.message);
     }
+    await this.setLoading(false);
   }
 
   async verifyEmail(event) {
     event.preventDefault();
 
     const code = event.target.code.value;
+    await this.setLoading(true);
     try {
       await UserAuthApi.verifyEmail(this.state.username, code);
       Utils.setStatePromise(this, {
@@ -101,6 +106,7 @@ class RegisterForm extends Component {
     catch(err) {
       await this.setError(err.message);
     }
+    await this.setLoading(false);
   }
 
   async resendVerificationEmail(event) {
@@ -113,11 +119,22 @@ class RegisterForm extends Component {
     }
   }
 
+  async setLoading(isLoading) {
+    await Utils.setStatePromise(this, {
+      loading: isLoading
+    });
+  }
+
   componentWillUnmount() {
     this.mounted = false;
   }
 
   render() {
+    let submitButtonClassName = 'Askd-button';
+    if(this.state.loading) {
+      submitButtonClassName += ' Askd-form-loading';
+    }
+
     const createAccountForm = (
       <div className="Register-form Module-popup">
         { this.state.error && <h2>{this.state.error}</h2> }
@@ -139,8 +156,8 @@ class RegisterForm extends Component {
           <input autoComplete="off" type="password" name="confirmPassword"
                  id="register-confirm-password" />
 
-          <input className="Askd-button Module-popup-last" type="submit"
-                 value="Register" />
+          <input className={submitButtonClassName} type="submit" value="Register"
+                 disabled={this.state.loading} />
         </form>
       </div>
     );
@@ -165,8 +182,8 @@ class RegisterForm extends Component {
             Didn't get the email? Click here to resend
           </button>
 
-          <input className="Askd-button Module-popup-last" type="submit"
-                 value="Submit" />
+          <input className={submitButtonClassName} type="submit" value="Submit"
+                 disabled={this.state.loading} />
         </form>
       </div>
     );

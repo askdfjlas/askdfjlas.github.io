@@ -15,6 +15,7 @@ class DeleteMenu extends Component {
 
     this.close = this.close.bind(this);
     this.deleteNote = this.deleteNote.bind(this);
+    this.setLoading = this.setLoading.bind(this);
   }
 
   close() {
@@ -35,15 +36,28 @@ class DeleteMenu extends Component {
       const platform = this.props.platform;
       const problemId = this.props.problemInfo.problemId;
 
+      await this.setLoading(true);
       await NotesApi.deleteNote(username, platform, problemId);
       this.props.history.push(`/users/${username}`);
     }
     catch(err) {
       await Utils.componentSetError(this, err.message);
+      await this.setLoading(false);
     }
   }
 
+  async setLoading(isLoading) {
+    await Utils.setStatePromise(this, {
+      loading: isLoading
+    });
+  }
+
   render() {
+    let submitButtonClassName = 'Askd-button';
+    if(this.state.loading) {
+      submitButtonClassName += ' Askd-form-loading';
+    }
+
     return (
       <div className="Module-blocker">
         <button onClick={this.close}
@@ -62,7 +76,8 @@ class DeleteMenu extends Component {
             <input autoComplete="off" type="text" name="confirmCode"
                    key="confirmCode" id="confirmCode" />
 
-            <input className="Askd-button" type="submit" value="Delete" />
+            <input className={submitButtonClassName} type="submit" value="Delete"
+                   disabled={this.state.loading} />
           </form>
         </div>
       </div>

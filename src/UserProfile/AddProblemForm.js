@@ -13,7 +13,8 @@ class AddProblemForm extends Component {
       platform: null,
       contestSortKey: null,
       problemSortKey: null,
-      skipContestSearch: false
+      skipContestSearch: false,
+      loading: false
     };
 
     this.close = this.close.bind(this);
@@ -22,6 +23,7 @@ class AddProblemForm extends Component {
     this.updateProblemSortKey = this.updateProblemSortKey.bind(this);
     this.updateContestSortKey = this.updateContestSortKey.bind(this);
     this.addProblem = this.addProblem.bind(this);
+    this.setLoading = this.setLoading.bind(this);
   }
 
   close() {
@@ -63,10 +65,22 @@ class AddProblemForm extends Component {
       return;
     }
 
+    await this.setLoading(true);
     this.props.callback(this.state.problemSortKey, this.state.platform, this);
   }
 
+  async setLoading(isLoading) {
+    await Utils.setStatePromise(this, {
+      loading: isLoading
+    });
+  }
+
   render() {
+    let submitButtonClassName = 'Askd-button';
+    if(this.state.loading) {
+      submitButtonClassName += ' Askd-form-loading';
+    }
+
     var searchContestFunction = null;
     var searchContestKey = null;
     if(this.state.platform && !this.state.skipContestSearch) {
@@ -123,8 +137,8 @@ class AddProblemForm extends Component {
                           keys={['prettySk', 'name']} callback={this.updateProblemSortKey}
                           displayKey='name' staticKey={searchProblemKey} />
 
-            <input className="Askd-button Module-popup-last" type="submit"
-                   value="Add Problem" />
+            <input className={submitButtonClassName} type="submit"
+                   value="Add Problem" disabled={this.state.loading} />
           </form>
         </div>
       </div>

@@ -11,7 +11,10 @@ class ProblemInfo extends Component {
             {this.props.platform} {info.problemCode} - {info.problemName}
           </h4>
           <p className="Edit-note-contest">{info.contestName}</p>
-          <a className="Askd-form-link" href={info.link}>Problem link</a>
+          <a className="Askd-form-link" href={info.link} target="_blank"
+             rel="noopener noreferrer">
+            Problem link
+          </a>
         </div>
       </div>
     );

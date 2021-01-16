@@ -1,4 +1,7 @@
 .User-menu {
+  position: absolute;
+  right: 0;
+  width: 9em;
   color: white;
   background-color: #252545;
   border: 2px solid white;
@@ -17,7 +20,7 @@
   text-decoration: none;
   text-align: left;
   box-sizing: border-box;
-  padding: 0.3em 3em 0.3em 1em;
+  padding: 0.3em 1em 0.3em 1em;
   transition: 0.25s;
 }
 

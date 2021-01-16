@@ -1,0 +1,16 @@
+@keyframes fade-dark {
+  from { background-color: rgba(0, 0, 0, 0) }
+  to { background-color: rgba(0, 0, 0, 0.2) }
+}
+
+.Loading-spinner {
+  display: flex;
+  flex: 1 0 auto;
+  animation: fade-dark 0.7s forwards;
+  background-image: url('../img/spinner.gif');
+  background-blend-mode: darken;
+  background-size: 2em;
+  background-position: center;
+  background-repeat: no-repeat;
+  border-radius: 3px;
+}
