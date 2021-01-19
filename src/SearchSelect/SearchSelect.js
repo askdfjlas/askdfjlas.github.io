@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import Utils from '../Utils';
 import '../css/SearchSelect.css';
 
-const MAX_OPTIONS = 10;
+const MAX_OPTIONS = 15;
 const GLOBAL_SORT_KEY = 'sk';
+const NETWORK_LOAD_DELAY = 250;
 
 class SearchSelect extends Component {
   constructor(props) {
@@ -14,6 +15,8 @@ class SearchSelect extends Component {
       searchTerm: '',
       previousValidSearchTerm: '',
       showOptions: false,
+      lastChangedTime: 0,
+      lastLoadTime: 0,
       options: [],
       filteredOptions: []
     };
@@ -21,7 +24,7 @@ class SearchSelect extends Component {
     this.handleChange = this.handleChange.bind(this);
     this.handleBlur = this.handleBlur.bind(this);
     this.handleFocus = this.handleFocus.bind(this);
-    this.handleOptionSelect = this.handleOptionSelect.bind(this);
+    this.handleOptionSelectWithKeys = this.handleOptionSelectWithKeys.bind(this);
   }
 
   getOptionString(option) {
@@ -59,6 +62,30 @@ class SearchSelect extends Component {
     });
   }
 
+  async networkLoadOptions() {
+    if(this.mounted === false) return;
+
+    const currentTime = Date.now();
+    await Utils.setStatePromise(this, {
+      loading: true,
+      lastLoadTime: currentTime
+    });
+
+    const currentSearchTerm = this.state.searchTerm;
+    const filteredOptions = await this.props.search(this.state.searchTerm);
+    if(currentSearchTerm === this.state.searchTerm) {
+      await Utils.setStatePromise(this, {
+        filteredOptions: filteredOptions
+      });
+    }
+
+    if(this.state.lastLoadTime === currentTime) {
+      await Utils.setStatePromise(this, {
+        loading: false
+      });
+    }
+  }
+
   async componentDidUpdate(prevProps) {
     if(prevProps.staticKey && !this.props.staticKey) {
       await Utils.setStatePromise(this, {
@@ -87,11 +114,33 @@ class SearchSelect extends Component {
   }
 
   async handleChange(event) {
-    await Utils.setStatePromise(this, {
-      searchTerm: event.target.value,
-    });
+    if(this.props.network) {
+      const currentTime = Date.now();
+      await Utils.setStatePromise(this, {
+        searchTerm: event.target.value,
+        lastChangedTime: currentTime
+      });
 
-    await this.filterOptions();
+      if(this.state.searchTerm.length > 0) {
+        window.setTimeout(() => {
+          if(this.state.lastChangedTime === currentTime) {
+            this.networkLoadOptions();
+          }
+        }, NETWORK_LOAD_DELAY);
+      }
+      else {
+        await Utils.setStatePromise(this, {
+          filteredOptions: []
+        });
+      }
+    }
+    else {
+      await Utils.setStatePromise(this, {
+        searchTerm: event.target.value
+      });
+
+      await this.filterOptions();
+    }
   }
 
   async handleBlur(event) {
@@ -99,10 +148,17 @@ class SearchSelect extends Component {
     if(focusedElement && focusedElement.id === `Select-options-${this.props.name}`)
       return;
 
-    await Utils.setStatePromise(this, {
-      showOptions: false,
-      searchTerm: this.state.previousValidSearchTerm
-    });
+    if(this.props.network) {
+      await Utils.setStatePromise(this, {
+        showOptions: false
+      });
+    }
+    else {
+      await Utils.setStatePromise(this, {
+        showOptions: false,
+        searchTerm: this.state.previousValidSearchTerm
+      });
+    }
   }
 
   async handleFocus(event) {
@@ -111,7 +167,7 @@ class SearchSelect extends Component {
     });
   }
 
-  async handleOptionSelect(sortKey, optionString) {
+  async handleOptionSelectWithKeys(sortKey, optionString) {
     await Utils.setStatePromise(this, {
       searchTerm: optionString,
       previousValidSearchTerm: optionString,
@@ -127,18 +183,30 @@ class SearchSelect extends Component {
   }
 
   render() {
-    var optionElements = [];
+    let optionElements = [];
     for(const option of this.state.filteredOptions) {
-      const optionString = this.getOptionString(option);
-      const displayString = option[this.props.displayKey];
-      const sortKey = option[GLOBAL_SORT_KEY];
-      optionElements.push(
-        <li onClick={() => this.handleOptionSelect(sortKey, displayString)}
-            key={sortKey}>
-            {optionString}
-        </li>
-      );
+      if(this.props.keys) {
+        const optionString = this.getOptionString(option);
+        const displayString = option[this.props.displayKey];
+        const sortKey = option[GLOBAL_SORT_KEY];
+        optionElements.push(
+          <li onClick={() => this.handleOptionSelectWithKeys(sortKey, displayString)}
+              key={sortKey}>
+              {optionString}
+          </li>
+        );
+      }
+      else {
+        optionElements.push(
+          <li onClick={() => this.props.callback(option)} key={option}>
+            {option}
+          </li>
+        );
+      }
     }
+
+    const inputDisabled = !this.props.network &&
+      (!this.props.search || this.state.loading);
 
     return (
       <div onBlur={this.handleBlur} className="Search-select">
@@ -146,7 +214,7 @@ class SearchSelect extends Component {
                onChange={this.handleChange} autoComplete="off" type="text"
                value={this.state.searchTerm} onFocus={this.handleFocus}
                name={this.props.name} id={this.props.id}
-               disabled={!this.props.search || this.state.loading} />
+               disabled={inputDisabled} placeholder={this.props.placeholder} />
         {
           optionElements.length > 0 && this.state.showOptions &&
           <ol id={`Select-options-${this.props.name}`} tabIndex="-1"

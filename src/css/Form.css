@@ -13,6 +13,10 @@
   border: none;
 }
 
+.Askd-form input::placeholder {
+  color: #AAAAAA;
+}
+
 .Askd-form input:not(.Askd-not-fullwidth),
 .Askd-form textarea,
 .Askd-form label,

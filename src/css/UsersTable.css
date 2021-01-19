@@ -5,43 +5,55 @@
   margin: 0.5em;
 }
 
+.Users-table-search {
+  margin-bottom: 0.8em;
+}
+
 .Users-table-last-updated {
   font-style: italic;
   font-size: 0.8em;
   margin: 0.4em 0.2em;
+  color: #D5D5D5;
+  float: bottom;
 }
 
 .Users-table-table {
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
-  border: 1px solid white;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+
+.Users-table-table-table {
+  color: #D5D5D5;
   border-radius: 2px;
   overflow-x: auto;
 }
 
-.Users-table-table table {
+.Users-table-table-table table {
   white-space: nowrap;
   border-collapse: collapse;
+  box-sizing: border-box;
 }
 
-.Users-table-table tr:nth-child(odd) {
+.Users-table-table-table tr:nth-child(odd) {
   background-color: rgba(0, 0, 0, 0.2);
 }
 
-.Users-table-table th {
+.Users-table-table-table th {
   background-color: rgba(0, 0, 0, 0.2);
+  color: #EEEEEE;
 }
 
-.Users-table-table td, .Users-table-table th {
+.Users-table-table-table td, .Users-table-table-table th {
   padding: 0.4em;
-  border: 1px solid white;
+  border: 1px solid #494A66;
   margin: 0;
   box-sizing: border-box;
 }
 
-.Users-table-table td:not(.Users-table-username),
-.Users-table-table th:not(.Users-table-username) {
+.Users-table-table-table td:not(.Users-table-username),
+.Users-table-table-table th:not(.Users-table-username) {
   text-align: center;
 }
 

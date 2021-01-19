@@ -6,8 +6,9 @@
   border: 2px solid white;
   padding: 0;
   margin: 0;
-  max-height: 8em;
+  max-height: 11em;
   overflow: auto;
+  box-sizing: border-box;
   z-index: 1;
 }
 

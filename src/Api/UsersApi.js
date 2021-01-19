@@ -16,6 +16,14 @@ class UsersApi {
 
     return await Api.getJson('users', options);
   }
+
+  static async getSearchUsers(searchTerm) {
+    const options = {
+      searchTerm: searchTerm
+    };
+
+    return await Api.getJson('users', options);
+  }
 }
 
 export default UsersApi;

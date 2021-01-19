@@ -30,16 +30,18 @@ function UsersTable({ currentPage, lastUpdated, users }) {
   return (
     <div className="Users-table">
       <div className="Users-table-table">
-        <table>
-          <tbody>
-            <tr>
-              <th>#</th>
-              <th className="Users-table-username">Username</th>
-              <th>Contribution</th>
-            </tr>
-            {userRows}
-          </tbody>
-        </table>
+        <div className="Users-table-table-table">
+          <table>
+            <tbody>
+              <tr>
+                <th>#</th>
+                <th className="Users-table-username">Username</th>
+                <th>Contribution</th>
+              </tr>
+              {userRows}
+            </tbody>
+          </table>
+        </div>
       </div>
       <span className="Users-table-last-updated">
         Last updated on {updatedTime}
