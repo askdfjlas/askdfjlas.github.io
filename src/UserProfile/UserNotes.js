@@ -77,50 +77,52 @@ class UserNotes extends Component {
   render() {
     return (
       <>
-        <h2 className="Module-heading">Problems</h2>
+        <h2 className="Module-heading">Notes</h2>
         {
           this.state.showAddProblemForm &&
           <AddProblemForm callback={this.addProblem} />
         }
-        <form>
-          <div className="User-notes-organize">
-            <label>
-              <b>Organize by</b>
-            </label>
-            <input type="checkbox" name="solved" value="solved"
-                   onChange={this.toggleOrganizeBySolved} />
-            <label htmlFor="solved">Solved</label>
-            <input type="checkbox" name="platform" value="platform"
-                   onChange={this.toggleOrganizeByPlatform} />
-            <label htmlFor="platform">Platform</label>
-            <input type="checkbox" name="contest" value="contest"
-                   onChange={this.toggleOrganizeByContest} />
-            <label htmlFor="contest">Contest</label>
+        <div className="User-notes-outer Module-outer-space">
+          <form>
+            <div className="User-notes-organize">
+              <label>
+                <b>Organize by</b>
+              </label>
+              <input type="checkbox" name="solved" value="solved"
+                     onChange={this.toggleOrganizeBySolved} />
+              <label htmlFor="solved">Solved</label>
+              <input type="checkbox" name="platform" value="platform"
+                     onChange={this.toggleOrganizeByPlatform} />
+              <label htmlFor="platform">Platform</label>
+              <input type="checkbox" name="contest" value="contest"
+                     onChange={this.toggleOrganizeByContest} />
+              <label htmlFor="contest">Contest</label>
+            </div>
+            <div className="User-notes-organize">
+              <label htmlFor="sort">
+                <b>Sort by</b>
+              </label>
+              <select defaultValue="default" name="sort"
+                      onChange={this.toggleSortByRecent}>
+                <option value="default">Default</option>
+                <option value="recent">Recent</option>
+              </select>
+            </div>
+          </form>
+          <div className="User-notes Module-space">
+            <UserNotesList organizeBySolved={this.state.organizeBySolved}
+                           organizeByPlatform={this.state.organizeByPlatform}
+                           organizeByContest={this.state.organizeByContest}
+                           sortByRecent={this.state.sortByRecent}
+                           notes={this.props.notes} />
+            {
+              this.props.userInfo.email &&
+              <button onClick={this.toggleAddProblemForm}
+                      className="User-notes-add Askd-button Askd-button-circular">
+                +
+              </button>
+            }
           </div>
-          <div className="User-notes-organize">
-            <label htmlFor="sort">
-              <b>Sort by</b>
-            </label>
-            <select defaultValue="default" name="sort"
-                    onChange={this.toggleSortByRecent}>
-              <option value="default">Default</option>
-              <option value="recent">Recent</option>
-            </select>
-          </div>
-        </form>
-        <div className="User-notes Module-space">
-          <UserNotesList organizeBySolved={this.state.organizeBySolved}
-                         organizeByPlatform={this.state.organizeByPlatform}
-                         organizeByContest={this.state.organizeByContest}
-                         sortByRecent={this.state.sortByRecent}
-                         notes={this.props.notes} />
-          {
-            this.props.userInfo.email &&
-            <button onClick={this.toggleAddProblemForm}
-                    className="User-notes-add Askd-button Askd-button-circular">
-              +
-            </button>
-          }
         </div>
       </>
     );

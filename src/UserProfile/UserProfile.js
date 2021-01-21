@@ -11,6 +11,7 @@ async function getUserData(props, params) {
   const userInfo = await UsersApi.getUserInfo(username);
   const notes = await NotesApi.getNotes(username);
 
+  userInfo.totalNotes = notes.length;
   return {
     userInfo: userInfo,
     notes: notes
@@ -28,9 +29,7 @@ function UserProfile({ otherProps, info, screen }) {
   else {
     return (
       <>
-        <div className="Module-description">
-          <UserInfo info={info.userInfo} />
-        </div>
+        <UserInfo info={info.userInfo} />
         <UserNotes userInfo={info.userInfo} notes={info.notes}
                    history={otherProps.history} />
       </>

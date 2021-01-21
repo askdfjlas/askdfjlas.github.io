@@ -41,6 +41,10 @@ class Utils {
     }
   }
 
+  static getImageSourceFromBase64(data, extension) {
+    return `data:image/${extension};base64,${data}`;
+  }
+
   static renderMathJax(selectors) {
     if(window.MathJax) {
       window.MathJax.typeset(selectors);

@@ -8,6 +8,7 @@
   padding: 0.8em 1.2em;
   box-sizing: border-box;
   flex: 1 0 auto;
+  overflow: hidden;
 }
 
 @media screen and (max-width: 1000px) {
@@ -25,10 +26,9 @@
 }
 
 .Module-wrapper .Module-heading {
-  font-family: 'Verdana';
-  color: white;
-  margin: 0.4em auto 0.4em auto;
-  text-align: center;
+  margin: 0 0 0.4em 0;
+  padding-bottom: 0.2em;
+  border-bottom: 2px solid #494A66;
 }
 
 .Module-description {
@@ -40,6 +40,21 @@
 
 .Module-description-centered {
   text-align: center;
+}
+
+.Module-outer-space {
+  display: flex;
+  width: 100%;
+  padding: 1em;
+  box-sizing: border-box;
+  background-color: rgba(0, 0, 0, 0.1);
+  border-radius: 3px;
+}
+
+@media screen and (max-width: 750px) {
+  .Module-outer-space {
+    padding: 0.3em;
+  }
 }
 
 .Module-space {
