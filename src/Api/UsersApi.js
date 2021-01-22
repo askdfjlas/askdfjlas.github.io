@@ -24,6 +24,16 @@ class UsersApi {
 
     return await Api.getJson('users', options);
   }
+
+  static async updateUserInfo(username, avatarData, avatarExtension) {
+    const options = {
+      username: username,
+      avatarData: avatarData,
+      avatarExtension: avatarExtension
+    };
+
+    return await Api.putJson('users', options);
+  }
 }
 
 export default UsersApi;

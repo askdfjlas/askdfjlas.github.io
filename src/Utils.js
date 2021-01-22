@@ -45,6 +45,18 @@ class Utils {
     return `data:image/${extension};base64,${data}`;
   }
 
+  static convertFileToBase64(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const data = reader.result.split('base64,')[1];
+        resolve(data);
+      }
+      reader.onerror = (err) => reject(err);
+    });
+  }
+
   static renderMathJax(selectors) {
     if(window.MathJax) {
       window.MathJax.typeset(selectors);

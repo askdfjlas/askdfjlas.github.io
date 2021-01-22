@@ -12,6 +12,8 @@ async function getUserData(props, params) {
   const notes = await NotesApi.getNotes(username);
 
   userInfo.totalNotes = notes.length;
+  userInfo.username = username;
+
   return {
     userInfo: userInfo,
     notes: notes
