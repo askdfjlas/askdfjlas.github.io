@@ -6,6 +6,7 @@ import UserProfile from './UserProfile/UserProfile';
 import EditNote from './EditNote/EditNote';
 import PublicNote from './PublicNote/PublicNote';
 import UsersList from './UsersList/UsersList';
+import NotesSearch from './NotesSearch/NotesSearch';
 
 import './css/App.css';
 import './css/Module.css';
@@ -20,6 +21,7 @@ function App() {
           <Route exact path="/" component={Home} />
           <Route exact path="/home" component={Home} />
           <Route exact path="/users" component={UsersList} />
+          <Route exact path="/notes" component={NotesSearch} />
           <Route exact path="/users/:username" component={UserProfile} />
           <Route exact path="/notes/edit/:platform/:contestId/:problemCode"
                  component={EditNote} />

@@ -1,6 +1,7 @@
 import React from 'react';
 import CreateLoadingComponent from '../HOC/CreateLoadingComponent';
 import LoadState from '../Enum/LoadState';
+import LoadingSpinner from '../Misc/LoadingSpinner';
 import EditNoteForm from './EditNoteForm';
 import ProblemInfo from './ProblemInfo';
 import ProblemsApi from '../Api/ProblemsApi'
@@ -28,15 +29,19 @@ async function getNoteAndProblemData(props, params) {
 function EditNote({ otherProps, info, screen }) {
   const platform = otherProps.match.params.platform;
 
+  let innerContent;
   if(screen === LoadState.NOT_FOUND) {
-    return (
+    innerContent = (
       <div className="Module-description">
         <h2>Note not found!</h2>
       </div>
     );
   }
+  else if(screen === LoadState.LOADING) {
+    innerContent = <LoadingSpinner />
+  }
   else {
-    return (
+    innerContent = (
       <>
         <ProblemInfo info={info.problemInfo} platform={platform} />
         <EditNoteForm problemInfo={info.problemInfo}
@@ -45,6 +50,12 @@ function EditNote({ otherProps, info, screen }) {
       </>
     );
   }
+
+  return (
+    <div className="Module-wrapper">
+      { innerContent }
+    </div>
+  );
 }
 
 export default CreateLoadingComponent(

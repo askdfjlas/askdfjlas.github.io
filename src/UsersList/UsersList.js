@@ -1,5 +1,6 @@
 import React from 'react';
 import CreateLoadingComponent from '../HOC/CreateLoadingComponent';
+import LoadingSpinner from '../Misc/LoadingSpinner';
 import Paginator from '../Paginator/Paginator';
 import SearchUserSelect from '../SearchSelect/SearchUserSelect';
 import UsersTable from './UsersTable';
@@ -18,14 +19,25 @@ function UsersList({ otherProps, info, loadInfo, screen, currentParams }) {
     otherProps.history.push(`/users/${username}`);
   };
 
-  const usersInfo = info.usersInfo;
+  const usersInfo = info ? info.usersInfo : null;
 
+  let innerContent;
   if(screen === LoadState.NOT_FOUND) {
-    return (
+    innerContent = (
       <div className="Module-description">
         Page not found!
       </div>
     );
+  }
+  else if(screen === LoadState.LOADING) {
+    innerContent = (
+      <>
+        <SearchUserSelect callback={loadUserProfile} />
+        <div className="Module-space">
+          <LoadingSpinner />
+        </div>
+      </>
+    )
   }
   else {
     const paginator = (
@@ -33,7 +45,7 @@ function UsersList({ otherProps, info, loadInfo, screen, currentParams }) {
                  callback={loadInfo} />
     );
 
-    return (
+    innerContent = (
       <>
         <SearchUserSelect callback={loadUserProfile} />
         <div className="Module-space">
@@ -45,6 +57,12 @@ function UsersList({ otherProps, info, loadInfo, screen, currentParams }) {
       </>
     );
   }
+
+  return (
+    <div className="Module-wrapper">
+      { innerContent }
+    </div>
+  );
 }
 
 export default CreateLoadingComponent(

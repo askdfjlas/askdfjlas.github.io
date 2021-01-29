@@ -54,12 +54,12 @@
 
 .User-note-info {
   position: relative;
-  border: 1px solid white;
+  border: 1px solid #494A78;
   padding: 0.5em;
   margin: 0.5em;
   box-sizing: border-box;
   border-radius: 2px;
-  background-color: #353555;
+  background-color: #323252;
 }
 
 .User-note-info h5 {
@@ -67,7 +67,7 @@
 }
 
 .User-note-info-title {
-  color: #DDDDDD;
+  color: #CCCCCC;
   margin: 0.15em 0;
   font-weight: normal;
   font-style: italic;
@@ -195,7 +195,7 @@
   margin: 0.3em;
   width: 2.5em;
   height: 2.5em;
-  border: 1px solid white;
+  border: 1px solid #DDDDDD;
   justify-content: center;
   align-items: center;
 }

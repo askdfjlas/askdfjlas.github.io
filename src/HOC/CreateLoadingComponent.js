@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useCallback, useRef } from 'react';
-import LoadingSpinner from '../Misc/LoadingSpinner';
 import LoadState from '../Enum/LoadState';
 
 function CreateLoadingComponent(getData, defaultParams, notFoundErrorName, WrappedComponent) {
@@ -41,23 +40,9 @@ function CreateLoadingComponent(getData, defaultParams, notFoundErrorName, Wrapp
       };
     }, [loadInfo]);
 
-    let innerContent;
-    if(componentScreen === LoadState.LOADING) {
-      innerContent = (
-        <LoadingSpinner />
-      );
-    }
-    else {
-      innerContent = (
-        <WrappedComponent otherProps={props} loadInfo={loadInfo} info={info}
-                          screen={componentScreen} currentParams={currentParams} />
-      );
-    }
-
     return (
-      <div className="Module-wrapper">
-        { innerContent }
-      </div>
+      <WrappedComponent otherProps={props} loadInfo={loadInfo} info={info}
+                        screen={componentScreen} currentParams={currentParams} />
     );
   };
 }

@@ -32,7 +32,7 @@ function UserInfo({ info }) {
       await UsersApi.updateUserInfo(info.username, avatarData, avatarExtension);
     }
     catch(err) {
-      setError('Error ' + err.message);
+      setError('Error: ' + err.message);
     }
 
     setImageLoading(false);

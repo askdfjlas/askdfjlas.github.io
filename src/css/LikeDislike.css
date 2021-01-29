@@ -11,16 +11,16 @@
 
 .Like-button:hover {
   cursor: pointer;
-  color: #00D080;
+  color: #35E575;
   transition: color 0.3s;
 }
 
 .Like-button-liked {
-  color: #00D080;
+  color: #35E575;
   transition: color 0.3s;
 }
 
-.Like-dislike .Like-dislike-score {
-  color: #00D080;
+.Like-dislike-score {
+  color: #35E575;
   margin-right: 0.5em;
 }

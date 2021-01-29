@@ -1,5 +1,6 @@
 import React from 'react';
 import CreateLoadingComponent from '../HOC/CreateLoadingComponent';
+import LoadingSpinner from '../Misc/LoadingSpinner';
 import LoadState from '../Enum/LoadState';
 import ProblemInfo from '../EditNote/ProblemInfo';
 import PublicNoteInfo from './PublicNoteInfo';
@@ -26,21 +27,33 @@ async function getNoteAndProblemData(props, params) {
 function PublicNote({ otherProps, info, screen }) {
   const platform = otherProps.match.params.platform;
 
+  let innerContent;
   if(screen === LoadState.NOT_FOUND) {
-    return (
+    innerContent = (
       <div className="Module-description">
         <h2>Note is either unpublished or does not exist!</h2>
       </div>
     );
   }
+  else if(screen === LoadState.LOADING) {
+    innerContent = (
+      <LoadingSpinner />
+    );
+  }
   else {
-    return (
+    innerContent = (
       <>
         <ProblemInfo info={info.problemInfo} platform={platform} />
         <PublicNoteInfo info={info.noteInfo} />
       </>
     );
   }
+
+  return (
+    <div className="Module-wrapper">
+      { innerContent }
+    </div>
+  );
 }
 
 export default CreateLoadingComponent(

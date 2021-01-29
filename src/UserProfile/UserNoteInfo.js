@@ -11,6 +11,8 @@ class UserNoteInfo extends Component {
     const publishedClass = info.published ? 'published' : 'unpublished';
     const timestamp = (new Date(info.editedTime)).toLocaleDateString();
     const authorUsername = info.username;
+    const profileLink = `/users/${authorUsername}`;
+    const noteTitle = this.props.mostLikedMode ? ' - ' + info.title : info.title;
 
     return (
       <li className={`User-note-info User-note-info-${solvedClass}`}>
@@ -35,10 +37,22 @@ class UserNoteInfo extends Component {
           }
         </ul>
         <h5>
+          {
+            (info.published && info.likeCount) > 0 &&
+            <span className="Like-dislike-score">
+              +{info.likeCount}
+            </span>
+          }
           {info.platform} {info.problemCode} - {info.problemName}
         </h5>
         <h6 className="User-note-info-title">
-          {info.title}
+          {
+            this.props.mostLikedMode &&
+            <Link className="Askd-form-link" to={profileLink}>
+              {authorUsername}
+            </Link>
+          }
+          {noteTitle}
         </h6>
         <h6 className="User-note-info-timestamp">
           {timestamp}

@@ -9,6 +9,18 @@ class NotesApi {
     return await Api.getJson('notes', options);
   }
 
+  static async getMostLikedNotes(username, platform, contestId, problemId, page) {
+    const options = {
+      username: username,
+      platform: platform,
+      contestId: contestId,
+      problemId: problemId,
+      page: page
+    };
+
+    return await Api.getJson('notes', options);
+  }
+
   static async getNoteInfo(username, platform, problemId, forcePublished) {
     const options = {
       username: username,

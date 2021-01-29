@@ -1,5 +1,6 @@
 import React from 'react';
 import CreateLoadingComponent from '../HOC/CreateLoadingComponent';
+import LoadingSpinner from '../Misc/LoadingSpinner';
 import UserInfo from './UserInfo';
 import UserNotes from './UserNotes';
 import UsersApi from '../Api/UsersApi';
@@ -21,15 +22,19 @@ async function getUserData(props, params) {
 }
 
 function UserProfile({ otherProps, info, screen }) {
+  let innerContent;
   if(screen === LoadState.NOT_FOUND) {
-    return (
+    innerContent = (
       <div className="Module-description">
         <h2>User not found!</h2>
       </div>
     );
   }
+  else if(screen === LoadState.LOADING) {
+    innerContent = <LoadingSpinner />
+  }
   else {
-    return (
+    innerContent = (
       <>
         <UserInfo info={info.userInfo} />
         <UserNotes userInfo={info.userInfo} notes={info.notes}
@@ -37,6 +42,12 @@ function UserProfile({ otherProps, info, screen }) {
       </>
     );
   }
+
+  return (
+    <div className="Module-wrapper">
+      { innerContent }
+    </div>
+  );
 }
 
 export default CreateLoadingComponent(

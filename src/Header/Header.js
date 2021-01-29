@@ -18,6 +18,9 @@ function Header() {
         <li>
           <Link to="/users">Users</Link>
         </li>
+        <li>
+          <Link to="/notes">Notes</Link>
+        </li>
       </ul>
       <HeaderAuth />
       <span className="Header-bottom"></span>
