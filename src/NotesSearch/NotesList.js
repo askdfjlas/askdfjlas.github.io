@@ -53,15 +53,24 @@ function NotesList({ otherProps, info, screen }) {
       );
     }
 
-    innerContent = (
-      <>
-        { paginator }
-        <ul className="User-notes-list">
-          { noteInfoElements }
-        </ul>
-        { paginator }
-      </>
-    );
+    if(noteInfoElements.length === 0) {
+      innerContent = (
+        <p className="User-notes-nothing">
+          There are no published notes for that search!
+        </p>
+      );
+    }
+    else {
+      innerContent = (
+        <>
+          { paginator }
+          <ul className="User-notes-list">
+            { noteInfoElements }
+          </ul>
+          { paginator }
+        </>
+      );
+    }
   }
 
   return (

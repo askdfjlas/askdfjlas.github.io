@@ -1,5 +1,7 @@
 import Api from './Api';
 
+const LIKED_NOTES_PAGE_SIZE = 50;
+
 class NotesApi {
   static async getNotes(username) {
     const options = {
@@ -10,15 +12,33 @@ class NotesApi {
   }
 
   static async getMostLikedNotes(username, platform, contestId, problemId, page) {
-    const options = {
-      username: username,
-      platform: platform,
-      contestId: contestId,
-      problemId: problemId,
-      page: page
-    };
+    if(username) {
+      let notes = await NotesApi.getNotes(username);
+      notes.sort((note1, note2) => note2.likeCount - note1.likeCount);
 
-    return await Api.getJson('notes', options);
+      let visibleNotes = [];
+      const startIndex = (page - 1) * LIKED_NOTES_PAGE_SIZE;
+      const endIndex = Math.min(startIndex + LIKED_NOTES_PAGE_SIZE, notes.length);
+      for(let i = startIndex; i < endIndex; i++) {
+        visibleNotes.push(notes[i]);
+      }
+
+      return {
+        notes: visibleNotes,
+        totalPages: Math.ceil(notes.length/LIKED_NOTES_PAGE_SIZE)
+      };
+    }
+    else {
+      const options = {
+        username: username,
+        platform: platform,
+        contestId: contestId,
+        problemId: problemId,
+        page: page
+      };
+
+      return await Api.getJson('notes', options);
+    }
   }
 
   static async getNoteInfo(username, platform, problemId, forcePublished) {

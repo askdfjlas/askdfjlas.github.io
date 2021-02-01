@@ -38,7 +38,7 @@ class UserNoteInfo extends Component {
         </ul>
         <h5>
           {
-            (info.published && info.likeCount) > 0 &&
+            info.published && (info.likeCount > 0) &&
             <span className="Like-dislike-score">
               +{info.likeCount}
             </span>

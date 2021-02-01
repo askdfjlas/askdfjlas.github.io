@@ -197,8 +197,18 @@ class SearchSelect extends Component {
         );
       }
       else {
+        let optionCallback = async () => {
+          await Utils.setStatePromise(this, {
+            searchTerm: option,
+            showOptions: false
+          });
+          this.props.callback(option);
+
+          await this.networkLoadOptions();
+        };
+
         optionElements.push(
-          <li onClick={() => this.props.callback(option)} key={option}>
+          <li onClick={optionCallback} key={option}>
             {option}
           </li>
         );
