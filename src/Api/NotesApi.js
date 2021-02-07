@@ -16,16 +16,32 @@ class NotesApi {
       let notes = await NotesApi.getNotes(username);
       notes.sort((note1, note2) => note2.likeCount - note1.likeCount);
 
+      let publishedNotes = [];
+      for(const note of notes) {
+        if(!note.published) continue;
+        if(platform && note.platform !== platform) continue;
+        if(contestId && note.contestCode !== contestId) continue;
+        if(problemId && note.problemSk !== problemId) continue;
+        publishedNotes.push(note);
+      }
+
+      const totalPages = Math.ceil(publishedNotes.length/LIKED_NOTES_PAGE_SIZE);
+      if(page > Math.max(totalPages, 1)) {
+        let err = Error();
+        err.name = 'PageNotFound';
+        throw err;
+      }
+
       let visibleNotes = [];
       const startIndex = (page - 1) * LIKED_NOTES_PAGE_SIZE;
-      const endIndex = Math.min(startIndex + LIKED_NOTES_PAGE_SIZE, notes.length);
+      const endIndex = Math.min(startIndex + LIKED_NOTES_PAGE_SIZE, publishedNotes.length);
       for(let i = startIndex; i < endIndex; i++) {
-        visibleNotes.push(notes[i]);
+        visibleNotes.push(publishedNotes[i]);
       }
 
       return {
         notes: visibleNotes,
-        totalPages: Math.ceil(notes.length/LIKED_NOTES_PAGE_SIZE)
+        totalPages: Math.max(totalPages, 1)
       };
     }
     else {

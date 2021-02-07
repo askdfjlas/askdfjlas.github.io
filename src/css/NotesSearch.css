@@ -1,0 +1,17 @@
+.Notes-search .Module-outer-space {
+  border: 1px solid #C2C2DD;
+  padding: 1.2em;
+  margin-top: 0.4em;
+}
+
+.Notes-search label[for="username"] {
+  margin: 0;
+}
+
+.Notes-search-reset {
+  margin-top: 1em;
+}
+
+.Notes-search .Module-space {
+  margin-top: 0.7em;
+}

@@ -29,9 +29,9 @@ function NotesList({ otherProps, info, screen }) {
   let innerContent;
   if(screen === LoadState.NOT_FOUND) {
     innerContent = (
-      <div className="Module-description">
+      <p className="User-notes-nothing">
         Page not found!
-      </div>
+      </p>
     );
   }
   else if(screen === LoadState.LOADING) {

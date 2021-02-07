@@ -86,12 +86,54 @@ class SearchSelect extends Component {
     }
   }
 
+  async componentDidMount() {
+    if(!this.props.network && this.props.search) {
+      if(this.props.initialSearchSortKey) {
+        await Utils.setStatePromise(this, {
+          searchTerm: '',
+          loading: true
+        });
+
+        const options = await this.props.search();
+        for(const option of options) {
+          if(option[GLOBAL_SORT_KEY] === this.props.initialSearchSortKey) {
+            const searchTerm = this.getOptionString(option);
+            await Utils.setStatePromise(this, {
+              searchTerm: searchTerm,
+              previousValidSearchTerm: searchTerm,
+              loading: false,
+              options: options
+            });
+            break;
+          }
+        }
+
+        await this.filterOptions();
+      }
+      else {
+        await this.componentDidUpdate({});
+      }
+    }
+    else if(this.props.initialSearchTerm) {
+      await Utils.setStatePromise(this, {
+        searchTerm: this.props.initialSearchTerm
+      });
+      await this.networkLoadOptions();
+    }
+  }
+
   async componentDidUpdate(prevProps) {
     if(prevProps.staticKey && !this.props.staticKey) {
       await Utils.setStatePromise(this, {
         searchTerm: ''
       });
       return;
+    }
+
+    if(this.props.initialSearchTerm !== prevProps.initialSearchTerm) {
+       await Utils.setStatePromise(this, {
+         searchTerm: this.props.initialSearchTerm
+       });
     }
 
     if(this.props.staticKey === prevProps.staticKey)
