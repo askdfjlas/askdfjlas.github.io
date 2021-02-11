@@ -29,19 +29,20 @@ async function getNoteAndProblemData(props, params) {
 function EditNote({ otherProps, info, screen }) {
   const platform = otherProps.match.params.platform;
 
-  let innerContent;
   if(screen === LoadState.NOT_FOUND) {
-    innerContent = (
+    return (
       <div className="Module-description">
         <h2>Note not found!</h2>
       </div>
     );
   }
   else if(screen === LoadState.LOADING) {
-    innerContent = <LoadingSpinner />
+    return (
+      <LoadingSpinner />
+    );
   }
   else {
-    innerContent = (
+    return (
       <>
         <ProblemInfo info={info.problemInfo} platform={platform} />
         <EditNoteForm problemInfo={info.problemInfo}
@@ -50,12 +51,6 @@ function EditNote({ otherProps, info, screen }) {
       </>
     );
   }
-
-  return (
-    <div className="Module-wrapper">
-      { innerContent }
-    </div>
-  );
 }
 
 export default CreateLoadingComponent(

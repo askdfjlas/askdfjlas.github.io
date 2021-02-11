@@ -22,19 +22,20 @@ async function getUserData(props, params) {
 }
 
 function UserProfile({ otherProps, info, screen }) {
-  let innerContent;
   if(screen === LoadState.NOT_FOUND) {
-    innerContent = (
+    return (
       <div className="Module-description">
         <h2>User not found!</h2>
       </div>
     );
   }
   else if(screen === LoadState.LOADING) {
-    innerContent = <LoadingSpinner />
+    return (
+      <LoadingSpinner />
+    );
   }
   else {
-    innerContent = (
+    return (
       <>
         <UserInfo info={info.userInfo} />
         <UserNotes userInfo={info.userInfo} notes={info.notes}
@@ -42,12 +43,6 @@ function UserProfile({ otherProps, info, screen }) {
       </>
     );
   }
-
-  return (
-    <div className="Module-wrapper">
-      { innerContent }
-    </div>
-  );
 }
 
 export default CreateLoadingComponent(

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import LoadState from '../Enum/LoadState';
 
 function CreateLoadingComponent(getData, defaultParams, notFoundErrorName, WrappedComponent) {
@@ -9,7 +9,7 @@ function CreateLoadingComponent(getData, defaultParams, notFoundErrorName, Wrapp
     let [ info, changeInfo ] = useState(null);
     let [ componentScreen, changeScreen ] = useState(LoadState.LOADING);
 
-    const loadInfo = async (params) => {
+    const loadInfo = useCallback(async (params) => {
       changeScreen(LoadState.LOADING);
 
       try {
@@ -30,7 +30,7 @@ function CreateLoadingComponent(getData, defaultParams, notFoundErrorName, Wrapp
           throw err;
         }
       }
-    };
+    }, [props]);
 
     useEffect(() => {
       mounted.current = true;

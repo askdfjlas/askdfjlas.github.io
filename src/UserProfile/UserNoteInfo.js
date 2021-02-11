@@ -3,11 +3,22 @@ import { Link } from 'react-router-dom';
 import ProblemsApi from '../Api/ProblemsApi';
 
 class UserNoteInfo extends Component {
+  static getNoteEditLink(note) {
+    const problemUrl = note.problemSk.replace('#', '/');
+    return `/notes/edit/${note.platform}/${problemUrl}`;
+  }
+
+  static getNotePublishedLink(note) {
+    const problemUrl = note.problemSk.replace('#', '/');
+    return `/notes/${note.username}/${note.platform}/${problemUrl}`;
+  }
+
   render() {
     const info = this.props.info;
 
     const solvedClass = ProblemsApi.getSolvedStateCssClass(info.solved);
-    const problemUrl = info.problemSk.replace('#', '/');
+    const noteEditLink = UserNoteInfo.getNoteEditLink(info);
+    const notePublishedLink = UserNoteInfo.getNotePublishedLink(info);
     const publishedClass = info.published ? 'published' : 'unpublished';
     const timestamp = (new Date(info.editedTime)).toLocaleDateString();
     const authorUsername = info.username;
@@ -20,8 +31,7 @@ class UserNoteInfo extends Component {
           {
             this.props.loggedInUsername === authorUsername &&
             <li>
-              <Link className="Askd-form-link"
-                    to={`/notes/edit/${info.platform}/${problemUrl}`}>
+              <Link className="Askd-form-link" to={noteEditLink}>
                 Edit
               </Link>
             </li>
@@ -29,8 +39,7 @@ class UserNoteInfo extends Component {
           {
             info.published &&
             <li>
-              <Link className="Askd-form-link"
-                    to={`/notes/${authorUsername}/${info.platform}/${problemUrl}`}>
+              <Link className="Askd-form-link" to={notePublishedLink}>
                 View
               </Link>
             </li>

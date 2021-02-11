@@ -75,7 +75,7 @@ function NotesSearch({ history }) {
   const skipContestSearch = !!problemId && !contestId;
 
   return (
-    <div className="Module-wrapper Notes-search">
+    <div className="Notes-search">
       <button onClick={toggleFilterForm} className="Askd-form-link">
         { toggleFilterFormText }
       </button>

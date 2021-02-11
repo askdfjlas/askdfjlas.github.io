@@ -27,33 +27,26 @@ async function getNoteAndProblemData(props, params) {
 function PublicNote({ otherProps, info, screen }) {
   const platform = otherProps.match.params.platform;
 
-  let innerContent;
   if(screen === LoadState.NOT_FOUND) {
-    innerContent = (
+    return (
       <div className="Module-description">
         <h2>Note is either unpublished or does not exist!</h2>
       </div>
     );
   }
   else if(screen === LoadState.LOADING) {
-    innerContent = (
+    return (
       <LoadingSpinner />
     );
   }
   else {
-    innerContent = (
+    return (
       <>
         <ProblemInfo info={info.problemInfo} platform={platform} />
         <PublicNoteInfo info={info.noteInfo} />
       </>
     );
   }
-
-  return (
-    <div className="Module-wrapper">
-      { innerContent }
-    </div>
-  );
 }
 
 export default CreateLoadingComponent(

@@ -7,6 +7,7 @@ import EditNote from './EditNote/EditNote';
 import PublicNote from './PublicNote/PublicNote';
 import UsersList from './UsersList/UsersList';
 import NotesSearch from './NotesSearch/NotesSearch';
+import RecentNotesList from './Misc/RecentNotesList';
 
 import './css/App.css';
 import './css/Module.css';
@@ -17,17 +18,22 @@ function App() {
     <BrowserRouter>
       <div className="App">
         <Header />
-        <Switch>
-          <Route exact path="/" component={Home} />
-          <Route exact path="/home" component={Home} />
-          <Route exact path="/users" component={UsersList} />
-          <Route exact path="/notes" component={NotesSearch} />
-          <Route exact path="/users/:username" component={UserProfile} />
-          <Route exact path="/notes/edit/:platform/:contestId/:problemCode"
-                 component={EditNote} />
-          <Route exact path="/notes/:ownerUsername/:platform/:contestId/:problemCode"
-                 component={PublicNote} />
-        </Switch>
+        <div className="Module-wrapper">
+          <div className="Module-content-left">
+            <Switch>
+              <Route exact path="/" component={Home} />
+              <Route exact path="/home" component={Home} />
+              <Route exact path="/users" component={UsersList} />
+              <Route exact path="/notes" component={NotesSearch} />
+              <Route exact path="/users/:username" component={UserProfile} />
+              <Route exact path="/notes/edit/:platform/:contestId/:problemCode"
+                     component={EditNote} />
+              <Route exact path="/notes/:ownerUsername/:platform/:contestId/:problemCode"
+                     component={PublicNote} />
+            </Switch>
+          </div>
+          <RecentNotesList />
+        </div>
       </div>
     </BrowserRouter>
   );

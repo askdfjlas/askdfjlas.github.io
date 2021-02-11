@@ -57,6 +57,15 @@ class NotesApi {
     }
   }
 
+  static async getMostRecentNotes(page) {
+    const options = {
+      page: page,
+      recent: true
+    };
+
+    return await Api.getJson('notes', options);
+  }
+
   static async getNoteInfo(username, platform, problemId, forcePublished) {
     const options = {
       username: username,

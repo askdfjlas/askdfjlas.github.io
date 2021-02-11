@@ -146,7 +146,6 @@ button.Askd-form-link {
 }
 
 .Askd-button-generic {
-  display: inline-flex;
   width: auto;
   border: none;
   transition: 0.5s;

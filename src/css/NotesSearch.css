@@ -1,3 +1,9 @@
+.Notes-search {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+
 .Notes-search .Module-outer-space {
   border: 1px solid #C2C2DD;
   padding: 1.2em;
