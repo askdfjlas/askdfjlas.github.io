@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useLocation, Link } from 'react-router-dom';
 import CreateLoadingComponent from '../HOC/CreateLoadingComponent';
-import LoadingSpinner from '../Misc/LoadingSpinner';
+import LoadingSpinner from './LoadingSpinner';
 import NotesApi from '../Api/NotesApi';
 import LoadState from '../Enum/LoadState';
 import UserNoteInfo from '../UserProfile/UserNoteInfo';
@@ -14,6 +14,7 @@ function getProblemDisplayName(platform, contestName, problemCode, problemName) 
   if(platform === 'CodeForces') {
     return `${contestName} ${problemCode} - ${problemName}`
   }
+  return `${platform} - ${contestName} ${problemCode} - ${problemName}`;
 }
 
 function RecentNotesList({ otherProps, loadInfo, info, screen }) {
@@ -29,7 +30,7 @@ function RecentNotesList({ otherProps, loadInfo, info, screen }) {
     );
   }
   else if(screen === LoadState.DONE) {
-    innerContent = [];
+    let noteListItems = [];
     for(let i = 0; i < info.notes.length; i++) {
       const note = info.notes[i];
       const noteLink = UserNoteInfo.getNotePublishedLink(note);
@@ -37,7 +38,7 @@ function RecentNotesList({ otherProps, loadInfo, info, screen }) {
         note.platform, note.contestName, note.problemCode, note.problemName
       );
 
-      innerContent.push(
+      noteListItems.push(
         <li key={i}>
           <Link className="Askd-form-link"
                 to={`/users/${note.username}`}>
@@ -51,9 +52,17 @@ function RecentNotesList({ otherProps, loadInfo, info, screen }) {
       );
     }
 
+    noteListItems.push(
+      <li key="more">
+        <Link className="Askd-form-link" to="/notes?recent=1">
+          More...
+        </Link>
+      </li>
+    );
+
     innerContent = (
       <ol className="Module-recent-notes-list">
-        { innerContent }
+        { noteListItems }
       </ol>
     );
   }

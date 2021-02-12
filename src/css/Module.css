@@ -8,13 +8,13 @@
   overflow: hidden;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 1100px) {
   .Module-wrapper {
     width: 94%;
   }
 }
 
-@media screen and (max-width: 750px) {
+@media screen and (max-width: 900px) {
   .Module-wrapper {
     width: 100%;
   }
@@ -46,6 +46,16 @@
 
   .Module-recent-notes {
     width: 25%;
+  }
+}
+
+@media screen and (max-width: 727px) {
+  .Module.content-left {
+    width: 100%;
+  }
+
+  .Module-recent-notes {
+    display: none;
   }
 }
 

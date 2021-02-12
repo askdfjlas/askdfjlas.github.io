@@ -1,4 +1,5 @@
 .Notes-search {
+  position: relative;
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
@@ -8,6 +9,24 @@
   border: 1px solid #C2C2DD;
   padding: 1.2em;
   margin-top: 0.4em;
+}
+
+.Notes-search-filter {
+  max-width: calc(100% - 12em);
+}
+
+.Notes-search-sort {
+  position: absolute;
+  right: 0;
+  top: -0.25em;
+}
+
+.Notes-search-sort label {
+  margin: 0;
+  padding: 0;
+  font-size: 0.8em;
+  font-weight: bold;
+  margin-right: 0.3em;
 }
 
 .Notes-search label[for="username"] {

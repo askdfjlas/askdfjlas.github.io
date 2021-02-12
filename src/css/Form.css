@@ -98,6 +98,11 @@ input.Askd-not-fullwidth {
   font-weight: normal;
   color: #77AAFF;
   text-align: left;
+  text-decoration: none;
+}
+
+.Askd-form-link:disabled {
+  color: darkgray;
 }
 
 button.Askd-form-link {
@@ -106,11 +111,7 @@ button.Askd-form-link {
   padding: 0;
 }
 
-.Askd-form-link {
-  text-decoration: none;
-}
-
-.Askd-form-link:hover {
+.Askd-form-link:hover:not(:disabled) {
   cursor: pointer;
   text-decoration: underline;
 }

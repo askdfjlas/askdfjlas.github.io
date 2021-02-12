@@ -16,6 +16,7 @@ function NotesSearch({ history }) {
   const platform = urlParams.platform || '';
   const contestId = urlParams.contestId || '';
   const problemId = urlParams.problemId || '';
+  const sortByRecent = urlParams.recent;
 
   const changeSearchAttributes = (changes) => {
     for(const attribute in changes) {
@@ -34,7 +35,7 @@ function NotesSearch({ history }) {
     event.preventDefault();
 
     changeSearchAttributes({
-      page: 1,
+      page: null,
       username: null,
       platform: null,
       contestId: null,
@@ -43,6 +44,10 @@ function NotesSearch({ history }) {
   }
 
   const changePage = (newPage) => {
+    if(newPage === 1) {
+      newPage = null;
+    }
+    
     changeSearchAttributes({
       page: newPage
     });
@@ -51,7 +56,7 @@ function NotesSearch({ history }) {
   const changeUsername = (newUsername) => {
     changeSearchAttributes({
       username: newUsername,
-      page: 1
+      page: null
     });
   }
 
@@ -60,13 +65,37 @@ function NotesSearch({ history }) {
       platform: platform,
       contestId: contestId,
       problemId: problemId,
-      page: 1
+      page: null
     });
   };
 
   let [ showFilterForm, setShowFilterForm ] = useState(false);
   const toggleFilterForm = () => {
     setShowFilterForm(!showFilterForm);
+  };
+
+  if(sortByRecent && showFilterForm) {
+    setShowFilterForm(false);
+  }
+
+  const changeSort = (event) => {
+    const newSort = event.target.value;
+    if(newSort === 'Recent') {
+      changeSearchAttributes({
+        username: null,
+        platform: null,
+        contestId: null,
+        problemId: null,
+        page: null,
+        recent: 1
+      });
+    }
+    else {
+      changeSearchAttributes({
+        page: null,
+        recent: null
+      });
+    }
   };
 
   const toggleFilterFormText = showFilterForm ? 'Want to hide this?' :
@@ -76,9 +105,18 @@ function NotesSearch({ history }) {
 
   return (
     <div className="Notes-search">
-      <button onClick={toggleFilterForm} className="Askd-form-link">
+      <button onClick={toggleFilterForm} disabled={sortByRecent}
+              className="Notes-search-filter Askd-form-link">
         { toggleFilterFormText }
       </button>
+      <div className="Notes-search-sort">
+        <label htmlFor="search-sort">Sort by</label>
+        <select value={sortByRecent ? 'Recent' : 'Likes'} name="search-sort"
+                onChange={changeSort}>
+          <option value="Likes">Most Liked</option>
+          <option value="Recent">Recent</option>
+        </select>
+      </div>
       {
         showFilterForm &&
         <div className="Module-outer-space">
@@ -97,7 +135,8 @@ function NotesSearch({ history }) {
         </div>
       }
       <NotesList username={username} platform={platform} contestId={contestId}
-                 problemId={problemId} page={page} pageChangeCallback={changePage} />
+                 problemId={problemId} page={page} sortByRecent={sortByRecent}
+                 pageChangeCallback={changePage} />
     </div>
   );
 }

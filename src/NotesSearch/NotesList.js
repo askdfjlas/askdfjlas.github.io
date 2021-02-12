@@ -13,10 +13,17 @@ async function getMostLikedNotes(props, params) {
   const contestId = props.contestId;
   const problemId = props.problemId;
   const page = props.page;
+  const sortByRecent = props.sortByRecent;
 
-  const data = await NotesApi.getMostLikedNotes(
-    username, platform, contestId, problemId, page
-  );
+  let data;
+  if(sortByRecent) {
+    data = await NotesApi.getMostRecentNotes(page);
+  }
+  else {
+    data = await NotesApi.getMostLikedNotes(
+      username, platform, contestId, problemId, page
+    );
+  }
   const loggedInUsername = await UserAuthApi.getUsername();
 
   return {
