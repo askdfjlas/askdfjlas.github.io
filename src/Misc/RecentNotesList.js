@@ -4,17 +4,9 @@ import CreateLoadingComponent from '../HOC/CreateLoadingComponent';
 import LoadingSpinner from './LoadingSpinner';
 import NotesApi from '../Api/NotesApi';
 import LoadState from '../Enum/LoadState';
-import UserNoteInfo from '../UserProfile/UserNoteInfo';
 
 async function getMostRecentNotes(props, params) {
   return await NotesApi.getMostRecentNotes(1);
-}
-
-function getProblemDisplayName(platform, contestName, problemCode, problemName) {
-  if(platform === 'CodeForces') {
-    return `${contestName} ${problemCode} - ${problemName}`
-  }
-  return `${platform} - ${contestName} ${problemCode} - ${problemName}`;
 }
 
 function RecentNotesList({ otherProps, loadInfo, info, screen }) {
@@ -33,10 +25,8 @@ function RecentNotesList({ otherProps, loadInfo, info, screen }) {
     let noteListItems = [];
     for(let i = 0; i < info.notes.length; i++) {
       const note = info.notes[i];
-      const noteLink = UserNoteInfo.getNotePublishedLink(note);
-      const displayName = getProblemDisplayName(
-        note.platform, note.contestName, note.problemCode, note.problemName
-      );
+      const noteLink = NotesApi.getNotePublishedLink(note);
+      const displayName = NotesApi.getNoteDisplayName(note);
 
       noteListItems.push(
         <li key={i}>

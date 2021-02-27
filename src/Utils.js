@@ -57,6 +57,17 @@ class Utils {
     });
   }
 
+  /* Taken from dynamodbUtils.js in backend */
+  static removePrefixZeroes(inputString) {
+    let zeroCount = 0;
+    for(let i = 0; i < inputString.length; i++) {
+      if(inputString[i] !== '0') break;
+      zeroCount++;
+    }
+
+    return inputString.substring(zeroCount, inputString.length);
+  }
+
   static renderMathJax(selectors) {
     if(window.MathJax) {
       window.MathJax.typeset(selectors);

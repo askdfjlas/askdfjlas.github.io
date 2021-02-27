@@ -1,8 +1,25 @@
 import Api from './Api';
+import ProblemsApi from './ProblemsApi';
 
 const LIKED_NOTES_PAGE_SIZE = 50;
 
 class NotesApi {
+  static getNoteEditLink(note) {
+    const problemUrl = note.problemSk.replace('#', '/');
+    return `/notes/edit/${note.platform}/${problemUrl}`;
+  }
+
+  static getNotePublishedLink(note) {
+    const problemUrl = note.problemSk.replace('#', '/');
+    return `/notes/${note.username}/${note.platform}/${problemUrl}`;
+  }
+
+  static getNoteDisplayName(note) {
+    const contestDisplayName = ProblemsApi.getContestDisplayName(note);
+    const problemDisplayName = ProblemsApi.getProblemDisplayNameWithoutPlatform(note);
+    return `${contestDisplayName} ${problemDisplayName}`;
+  }
+
   static async getNotes(username) {
     const options = {
       username: username

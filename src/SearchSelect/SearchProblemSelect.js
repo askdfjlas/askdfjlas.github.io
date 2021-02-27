@@ -31,22 +31,27 @@ function SearchProblemSelect({ initialPlatform, initialContestId,
   };
 
   let searchContestFunction = null;
-  let searchContestKey = null;
+  let searchContestStaticKey = null;
   if(platform && !skipContestSearch) {
     searchContestFunction = () => ProblemsApi.getContests(platform);
-    searchContestKey = platform;
+    searchContestStaticKey = platform;
   }
 
   let searchProblemFunction = null;
-  let searchProblemKey = null;
+  let searchProblemStaticKey = null;
   if(platform && contestSk) {
     searchProblemFunction = () => ProblemsApi.getProblems(platform, contestSk);
-    searchProblemKey = platform + contestSk;
+    searchProblemStaticKey = platform + contestSk;
   }
   else if(platform && skipContestSearch) {
     searchProblemFunction = () => ProblemsApi.getProblems(platform);
-    searchProblemKey = platform;
+    searchProblemStaticKey = platform;
   }
+
+  const searchContestKeys = (platform === 'Project Euler') ?
+                            ['name'] : ['contestCode', 'name'];
+  const searchProblemKeys = (platform === 'TopCoder') ?
+                            ['name'] : ['problemCode', 'name'];
 
   const selectPlatformValue = platform ? platform : '';
   const skipButtonText = skipContestSearch ? 'Want to filter by contest?' :
@@ -65,12 +70,16 @@ function SearchProblemSelect({ initialPlatform, initialContestId,
         <option disabled value=""></option>
         <option value="CodeForces">CodeForces</option>
         <option value="CodeChef">CodeChef</option>
+        <option value="AtCoder">AtCoder</option>
+        <option value="TopCoder">TopCoder</option>
+        <option value="Project Euler">Project Euler</option>
+        <option value="ICPC">ICPC (Kattis)</option>
       </select>
 
       <label htmlFor="cp-contest">Contest</label>
       <SearchSelect name='contest' id='cp-contest' search={searchContestFunction}
-                    keys={['sk', 'name']} callback={updateContestSortKey}
-                    displayKey='name' staticKey={searchContestKey}
+                    keys={searchContestKeys} callback={updateContestSortKey}
+                    displayKey='name' staticKey={searchContestStaticKey}
                     initialSearchSortKey={initialContestId} />
 
       <button onClick={toggleSkipContestSearch}
@@ -80,8 +89,8 @@ function SearchProblemSelect({ initialPlatform, initialContestId,
 
       <label htmlFor="cp-title">Problem</label>
       <SearchSelect name='title' id='cp-title' search={searchProblemFunction}
-                    keys={['prettySk', 'name']} callback={updateProblemSortKey}
-                    displayKey='name' staticKey={searchProblemKey}
+                    keys={searchProblemKeys} callback={updateProblemSortKey}
+                    displayKey='name' staticKey={searchProblemStaticKey}
                     initialSearchSortKey={initialProblemId} />
     </div>
   );

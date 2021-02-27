@@ -14,10 +14,9 @@ async function getNoteAndProblemData(props, params) {
   const problemCode = props.match.params.problemCode;
   const problemId = `${contestId}#${problemCode}`;
 
-  let problemInfo = await ProblemsApi.getProblemInfo(platform, problemId);
-  problemInfo.problemId = problemId;
-
+  const problemInfo = await ProblemsApi.getProblemInfo(platform, problemId);
   const noteInfo = await NotesApi.getNoteInfo(ownerUsername, platform, problemId, true);
+  
   return {
     problemInfo: problemInfo,
     noteInfo: noteInfo

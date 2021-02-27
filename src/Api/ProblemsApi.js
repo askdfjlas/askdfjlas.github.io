@@ -1,11 +1,41 @@
 import Api from './Api';
+import Utils from '../Utils';
 import SolvedState from '../Enum/SolvedState';
 
 class ProblemsApi {
-  static _prettifyProblems(problems) {
-    for(let i = 0; i < problems.length; i++) {
-      problems[i].prettySk = problems[i].sk.replaceAll('#', '');
+  static getProblemDisplayNameWithoutPlatform(info) {
+    if(info.platform === 'CodeChef') {
+      return `${info.contestCode} ${info.problemCode} - ${info.problemName}`;
     }
+    if(info.platform === 'TopCoder') {
+      const divisionLevel = 3 - Math.ceil(info.level/3);
+      const problemLevel = (info.level - 1) % 3 + 1;
+      const divisionString = `Division ${divisionLevel} Level ${problemLevel}`;
+      return `${divisionString} - ${info.problemName}`;
+    }
+    return `${info.problemCode} - ${info.problemName}`;
+  }
+
+  static getProblemDisplayName(info) {
+    const afterText = ProblemsApi.getProblemDisplayNameWithoutPlatform(info);
+    return `${info.platform} ${afterText}`
+  }
+
+  static getContestDisplayName(info) {
+    const lowerCaseContestName = info.contestName.toLowerCase();
+    const lowerCasePlatform = info.platform.toLowerCase();
+    if(lowerCaseContestName.includes(lowerCasePlatform)) {
+      return info.contestName;
+    }
+    return `${info.platform} - ${info.contestName}`;
+  }
+
+  static getProblemLetter(info) {
+    if(info.platform === 'Project Euler') {
+      const inflatedProblemLetter = info.problemSk.split('#')[1];
+      return Utils.removePrefixZeroes(inflatedProblemLetter);
+    }
+    return info.problemSk.split('#')[1];
   }
 
   static async getContests(platform) {
@@ -22,10 +52,7 @@ class ProblemsApi {
       contestId: contestId
     };
 
-    let problems = await Api.getJson('problems', options);
-    ProblemsApi._prettifyProblems(problems);
-
-    return problems;
+    return await Api.getJson('problems', options);
   }
 
   static async getProblemInfo(platform, problemId) {
@@ -34,7 +61,11 @@ class ProblemsApi {
       problemId: problemId
     };
 
-    return await Api.getJson('problems', options);
+    let problemInfo = await Api.getJson('problems', options);
+    problemInfo.problemId = problemId;
+    problemInfo.platform = platform;
+
+    return problemInfo;
   }
 
   static getSolvedStateText(solvedStateValue) {

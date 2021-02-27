@@ -9,12 +9,12 @@ class UserContestInfo extends Component {
     let noteElements = [];
     for(let i = 0; i < info.notes.length; i++) {
       const note = info.notes[i];
-      const problemCode = note.problemSk.split('#')[1];
+      const problemLetter = ProblemsApi.getProblemLetter(note);
       const problemUrl = note.problemSk.replace('#', '/');
       const authorUsername = note.username;
 
       let codeClassName = 'User-note-contest-code';
-      if(problemCode.length >= 3) {
+      if(problemLetter.length >= 3) {
         codeClassName += '-small';
       }
 
@@ -43,18 +43,19 @@ class UserContestInfo extends Component {
             }
           </ul>
           <span className={codeClassName}>
-            {problemCode}
+            {problemLetter}
           </span>
         </li>
       );
     }
 
+    const contestDisplayName = ProblemsApi.getContestDisplayName(info);
     const timestamp = (new Date(info.editedTime)).toLocaleDateString();
 
     return (
       <li className="User-note-info">
         <h5>
-          {info.contestName}
+          {contestDisplayName}
         </h5>
         <h6 className="User-note-contest-timestamp">
           {timestamp}

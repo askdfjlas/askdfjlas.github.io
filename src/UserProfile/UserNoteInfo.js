@@ -1,25 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ProblemsApi from '../Api/ProblemsApi';
+import NotesApi from '../Api/NotesApi';
 
 class UserNoteInfo extends Component {
-  static getNoteEditLink(note) {
-    const problemUrl = note.problemSk.replace('#', '/');
-    return `/notes/edit/${note.platform}/${problemUrl}`;
-  }
-
-  static getNotePublishedLink(note) {
-    const problemUrl = note.problemSk.replace('#', '/');
-    return `/notes/${note.username}/${note.platform}/${problemUrl}`;
-  }
-
   render() {
     const info = this.props.info;
 
     const solvedClass = ProblemsApi.getSolvedStateCssClass(info.solved);
-    const noteEditLink = UserNoteInfo.getNoteEditLink(info);
-    const notePublishedLink = UserNoteInfo.getNotePublishedLink(info);
+    const noteEditLink = NotesApi.getNoteEditLink(info);
+    const notePublishedLink = NotesApi.getNotePublishedLink(info);
     const publishedClass = info.published ? 'published' : 'unpublished';
+    const problemDisplayName =  ProblemsApi.getProblemDisplayName(info);
     const timestamp = (new Date(info.editedTime)).toLocaleDateString();
     const authorUsername = info.username;
     const profileLink = `/users/${authorUsername}`;
@@ -52,7 +44,7 @@ class UserNoteInfo extends Component {
               +{info.likeCount}
             </span>
           }
-          {info.platform} {info.problemCode} - {info.problemName}
+          { problemDisplayName }
         </h5>
         <h6 className="User-note-info-title">
           {
