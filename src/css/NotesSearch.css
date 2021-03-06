@@ -6,7 +6,6 @@
 }
 
 .Notes-search .Module-outer-space {
-  border: 1px solid #C2C2DD;
   padding: 1.2em;
   margin-top: 0.4em;
 }
@@ -38,5 +37,5 @@
 }
 
 .Notes-search .Module-space {
-  margin-top: 0.7em;
+  margin-top: 0.4em;
 }

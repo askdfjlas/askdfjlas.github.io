@@ -1,37 +1,52 @@
 .Paginator {
   width: 100%;
   margin: 0;
-}
-
-.Module-space .Paginator:first-child {
-  margin-top: 0.5em;
-  margin-bottom: 0;
-}
-
-.Module-space .Paginator {
-  margin-bottom: 0.5em;
-}
-
-.Paginator-list {
-  display: block;
-  margin: 0 0.5em;
-  padding: 0.2em;
-  box-sizing: border-box;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.3);
   border-radius: 2px;
 }
 
+.Paginator-list {
+  display: flex;
+  height: 1.8em;
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
 .Paginator-list li {
-  display: inline;
-  margin: 0 0.5em;
+  display: inline-block;
+  min-width: 0.8em;
+  min-height: 0.8em;
+  min-width: 1.8em;
+}
+
+.Paginator-list button {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px solid var(--darker-bg-color);
+}
+
+.Paginator-list-selected, .Paginator-list-free {
+  border: none;
 }
 
 .Paginator-list-selected {
-  border: none;
-  background: none;
-  padding: 0;
-  margin: 0;
   color: white;
+  background-color: var(--recent-actions-color);
   font-weight: bold;
+}
+
+.Paginator-list-free {
+  background-color: var(--main-content-color);
+  color: var(--username-black);
+}
+
+.Paginator-list-free:hover {
+  cursor: pointer;
+  background-color: var(--main-bg-color);
+}
+
+.Module-space .Paginator:first-child {
+  margin-bottom: 0.4em;
 }

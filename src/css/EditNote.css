@@ -5,10 +5,10 @@
 .Edit-note-form {
   display: flex;
   flex-direction: column;
-  padding: 1.4em;
+  padding: 1.2em;
   box-sizing: border-box;
   background-color: #222233;
-  border: 1px solid white;
+  border: 1px solid #C2C2DD;
   border-radius: 3px;
   flex: 1 0 auto;
 }

@@ -4,6 +4,8 @@ import CreateLoadingComponent from '../HOC/CreateLoadingComponent';
 import LoadingSpinner from './LoadingSpinner';
 import NotesApi from '../Api/NotesApi';
 import LoadState from '../Enum/LoadState';
+import SimpleBar from 'simplebar-react';
+import 'simplebar/dist/simplebar.min.css';
 
 async function getMostRecentNotes(props, params) {
   return await NotesApi.getMostRecentNotes(1);
@@ -16,12 +18,12 @@ function RecentNotesList({ otherProps, loadInfo, info, screen }) {
   }, [loadInfo, location]);
 
   let innerContent;
-  if(screen === LoadState.LOADING) {
+  if(!info) {
     innerContent = (
       <LoadingSpinner />
     );
   }
-  else if(screen === LoadState.DONE) {
+  else {
     let noteListItems = [];
     for(let i = 0; i < info.notes.length; i++) {
       const note = info.notes[i];
@@ -30,7 +32,7 @@ function RecentNotesList({ otherProps, loadInfo, info, screen }) {
 
       noteListItems.push(
         <li key={i}>
-          <Link className="Askd-form-link"
+          <Link className="Username"
                 to={`/users/${note.username}`}>
             {note.username}
           </Link>
@@ -44,14 +46,14 @@ function RecentNotesList({ otherProps, loadInfo, info, screen }) {
 
     noteListItems.push(
       <li key="more">
-        <Link className="Askd-form-link" to="/notes?recent=1">
+        <Link className="Username" to="/notes?recent=1">
           More...
         </Link>
       </li>
     );
 
     innerContent = (
-      <ol className="Module-recent-notes-list">
+      <ol>
         { noteListItems }
       </ol>
     );
@@ -59,8 +61,13 @@ function RecentNotesList({ otherProps, loadInfo, info, screen }) {
 
   return (
     <div className="Module-recent-notes">
-      <h4 className="Module-heading">Recent actions</h4>
-      { innerContent }
+      <div className="Module-recent-actions">
+        <h4>Recent actions</h4>
+      </div>
+      <div className="Module-recent-notes-divider" />
+      <SimpleBar className="Module-recent-notes-list">
+        { innerContent }
+      </SimpleBar>
     </div>
   );
 }

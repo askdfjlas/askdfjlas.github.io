@@ -1,11 +1,12 @@
 .Module-wrapper {
   display: flex;
-  background-color: #262746;
   margin: auto;
   width: 85%;
   box-sizing: border-box;
+  background-color: var(--main-content-color);
   flex: 1 0 auto;
   overflow: hidden;
+  box-shadow: 2px 0 9px 1px rgba(0, 0, 0, 0.2);
 }
 
 @media screen and (max-width: 1100px) {
@@ -26,17 +27,17 @@
   flex: 1 0 auto;
   width: 77%;
   box-sizing: border-box;
-  padding: 0.6em;
+  padding: 0.4em;
 }
 
 .Module-recent-notes {
   display: flex;
   flex-direction: column;
   flex: 0 1 23%;
-  background-color: rgba(0, 0, 0, 0.2);
-  border-left: 2px solid #494A66;
+  background-color: var(--recent-actions-color);
   box-sizing: border-box;
-  padding: 0.6em;
+  box-shadow: 0 0 2px 2px rgba(53, 86, 120, 0.4);
+  min-height: 35em;
 }
 
 @media screen and (max-width: 1000px) {
@@ -59,21 +60,42 @@
   }
 }
 
+.Module-recent-actions {
+  background-color: var(--bright-heading-color);
+  padding: 0.4em;
+}
+
+.Module-recent-actions h4 {
+  color: white;
+  font-family: var(--bold-text-font);
+  padding: 0;
+  margin: 0;
+}
+
+.Module-recent-notes-divider {
+  width: 100%;
+  background-color: var(--main-content-color);
+  height: 0.1em;
+}
+
 .Module-recent-notes-list {
   display: flex;
   flex-direction: column;
   flex: 1 1;
   flex-basis: 0;
   overflow: auto;
+  padding: 0.2em 0.5em;
+}
+
+.Module-recent-notes-list ol {
   list-style-type: none;
   padding: 0;
   margin: 0;
-  font-size: 0.8em;
 }
 
 .Module-recent-notes-list li {
   white-space: pre-wrap;
-  margin: 0.4em 0;
+  margin: 0.5em 0;
 }
 
 .Module-wrapper .Module-heading {
@@ -83,10 +105,9 @@
 }
 
 .Module-description {
-  font-family: 'Verdana';
-  color: white;
   margin: auto;
   width: 85%;
+  font-family: var(--bold-text-font);
 }
 
 .Module-description-centered {
@@ -98,7 +119,7 @@
   width: 100%;
   padding: 1em;
   box-sizing: border-box;
-  background-color: rgba(0, 0, 0, 0.1);
+  background-color: rgba(0, 0, 0, 0.15);
   border-radius: 3px;
 }
 
@@ -110,15 +131,12 @@
 
 .Module-space {
   display: flex;
-  background-color: #252545;
-  font-family: 'Verdana';
   flex: 1 0 auto;
   flex-direction: column;
   box-sizing: border-box;
   overflow-wrap: anywhere;
   width: 100%;
   border-radius: 3px;
-  border: 1px solid #C2C2DD;
 }
 
 .Module-padding-box {
@@ -138,13 +156,12 @@
 }
 
 .Module-info-box {
-  background-color: #282864;
+  background-color: rgba(0, 0, 30, 0.3);
   font-family: 'Arial';
   width: 100%;
   padding: 0.6em 1em;
-  margin-bottom: 0.6em;
+  margin-bottom: 0.3em;
   box-sizing: border-box;
-  color: white;
   border-radius: 3px;
 }
 
@@ -167,7 +184,7 @@
   padding: 2em;
   margin: auto;
   border-radius: 3px;
-  border: 2px solid white;
+  border: 1px solid white;
   box-shadow: 5px 5px rgba(40, 50, 100, 0.7),
               10px 10px rgba(40, 50, 100, 0.5),
               15px 15px rgba(40, 50, 100, 0.3);
@@ -180,7 +197,8 @@
 }
 
 .Module-popup h2 {
-  margin: 0;
+  position: relative;
+  margin-top: -0.3em;
 }
 
 .Module-popup input[type="submit"] {

@@ -2,18 +2,16 @@
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
-  margin: 0.5em;
 }
 
 .Users-table-search {
-  margin-bottom: 0.8em;
+  margin-bottom: 0.4em;
 }
 
 .Users-table-last-updated {
   font-style: italic;
   font-size: 0.8em;
   margin: 0.4em 0.2em;
-  color: #D5D5D5;
   float: bottom;
 }
 
@@ -21,11 +19,9 @@
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
-  background-color: rgba(0, 0, 0, 0.1);
 }
 
 .Users-table-table-table {
-  color: #D5D5D5;
   border-radius: 2px;
   overflow-x: auto;
 }
@@ -36,18 +32,23 @@
   box-sizing: border-box;
 }
 
-.Users-table-table-table tr:nth-child(odd) {
-  background-color: rgba(0, 0, 0, 0.2);
+.Users-table-table-table th {
+  color: var(--main-header-color);
+  font-family: var(--bold-text-font);
 }
 
+.Users-table-table-table tr:nth-child(even),
 .Users-table-table-table th {
-  background-color: rgba(0, 0, 0, 0.2);
-  color: #EEEEEE;
+  background-color: rgba(0, 0, 0, 0.01);
+}
+
+.Users-table-table-table tbody tr:hover {
+  background-color: var(--main-bg-color);
 }
 
 .Users-table-table-table td, .Users-table-table-table th {
   padding: 0.4em;
-  border: 1px solid #494A66;
+  border: 1px solid var(--darker-bg-color);
   margin: 0;
   box-sizing: border-box;
 }
@@ -62,10 +63,15 @@
 }
 
 .Users-table-contributor {
-  color: #35E575;
+  color: var(--contributor-green);
   font-weight: bold;
 }
 
 .Users-table-username {
   width: 100%;
+  max-width: 75%;
+}
+
+.Users-table-contribution {
+  min-width: 8em;
 }

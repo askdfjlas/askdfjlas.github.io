@@ -12,6 +12,7 @@ import RecentNotesList from './Misc/RecentNotesList';
 import './css/App.css';
 import './css/Module.css';
 import './css/Form.css';
+import './css/Username.css';
 
 function App() {
   return (

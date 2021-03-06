@@ -30,7 +30,7 @@ function Paginator({ currentPage, totalPages, callback }) {
   let paginatorButtons = [];
   for(const pageIndex of pageIndices) {
     const buttonClassName = (pageIndex === currentPage) ?
-      'Paginator-list-selected' : 'Askd-form-link';
+      'Paginator-list-selected' : 'Paginator-list-free';
     const buttonOnClick = (pageIndex === currentPage) ?
       null : () => callback(pageIndex);
 

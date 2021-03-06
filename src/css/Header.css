@@ -2,7 +2,7 @@
   display: flex;
   position: relative;
   font-family: 'Mosk Medium 500';
-  background-color: rgba(30, 30, 100, 0.9);
+  background-color: var(--main-header-color);
   width: 100%;
 }
 
@@ -27,7 +27,7 @@
   top: 0;
   left: 0;
   right: 0;
-  opacity: 0.6;
+  opacity: 0.4;
   background-image: url('../img/header_bg.jpg');
   background-size: 100%;
   background-position: center;
@@ -117,19 +117,9 @@
 .Header-bottom {
   position: absolute;
   bottom: 0;
-  background-color: darkgray;
+  background-color: rgba(0, 0, 255, 0.25);
   width: 100%;
-  height: 0.2em;
-}
-
-.Header .Header-bottom {
-  opacity: 1;
-  transition: 0.5s;
-}
-
-.Header-small .Header-bottom {
-  opacity: 0;
-  transition: 0.5s;
+  height: 0.1em;
 }
 
 button.Header-menu-button {

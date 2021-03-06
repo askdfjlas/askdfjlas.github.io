@@ -28,12 +28,13 @@
 }
 
 .User-notes-organize {
-  display: inline-block;
+  display: block;
   width: 100%;
   vertical-align: middle;
   font-family: Arial;
   color: white;
-  margin: 0.2em;
+  padding: 0;
+  margin-bottom: 0.2em;
 }
 
 .User-notes-organize:last-child {
@@ -41,7 +42,11 @@
 }
 
 .User-notes-organize label {
-  margin-right: 0.3em;
+  margin-right: 0.5em;
+}
+
+.User-notes-organize input[type="checkbox"] {
+  margin: 0 0.2em 0 0;
 }
 
 .User-notes-list {

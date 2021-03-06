@@ -1,0 +1,10 @@
+.Username {
+  color: var(--username-black);
+  font-weight: bold;
+  font-family: var(--bold-text-font);
+  text-decoration: none;
+}
+
+.Username:hover {
+  cursor: pointer;
+}
