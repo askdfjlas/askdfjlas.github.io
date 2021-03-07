@@ -31,6 +31,9 @@ function UsersList({ otherProps, info, loadInfo, screen, currentParams }) {
   else if(screen === LoadState.LOADING) {
     return (
       <>
+        <h2 className="Module-heading">
+          Top contributors
+        </h2>
         <SearchUserSelect callback={loadUserProfile} />
         <div className="Module-space">
           <LoadingSpinner />
@@ -46,9 +49,11 @@ function UsersList({ otherProps, info, loadInfo, screen, currentParams }) {
 
     return (
       <>
+        <h2 className="Module-heading">
+          Top contributors
+        </h2>
         <SearchUserSelect callback={loadUserProfile} />
         <div className="Module-space">
-          { paginator }
           <UsersTable currentPage={currentParams} users={usersInfo.users}
                       lastUpdated={usersInfo.lastUpdated} />
           { paginator }

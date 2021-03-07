@@ -5,14 +5,13 @@
 }
 
 .Users-table-search {
-  margin-bottom: 0.4em;
+  margin-bottom: 0.5em;
 }
 
 .Users-table-last-updated {
   font-style: italic;
   font-size: 0.8em;
-  margin: 0.4em 0.2em;
-  float: bottom;
+  margin: 1.4em 0.2em 0.2em 0.2em;
 }
 
 .Users-table-table {

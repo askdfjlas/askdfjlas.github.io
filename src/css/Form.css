@@ -1,7 +1,5 @@
 .Askd-form {
   width: 100%;
-  font-family: 'Arial';
-  font-weight: bold;
 }
 
 .Askd-form input,
@@ -14,7 +12,7 @@
 }
 
 .Askd-form input::placeholder {
-  color: #AAAAAA;
+  color: var(super-dark-bg-color);
 }
 
 .Askd-form input:not(.Askd-not-fullwidth),
@@ -29,7 +27,6 @@ input.Askd-not-fullwidth {
 }
 
 .Askd-form label {
-  color: #DDDDDD;
   margin-top: 1em;
 }
 
@@ -48,23 +45,27 @@ input.Askd-not-fullwidth {
 .Askd-form input, .Askd-form textarea, .Askd-form select {
   box-sizing: border-box;
   padding: 0.5em;
-  background-color: #444466;
-  color: #DDDDDD;
+  border: 1px solid var(--super-dark-bg-color);
+  background-color: rgba(0, 0, 0, 0);
   appearance: none;
 }
 
 .Askd-form :disabled {
-  background-color: #303060;
+  background-color: var(--super-dark-bg-color);
+  transition: background-color 0.15s ease-out;
 }
 
 .Askd-form input[type="submit"]:enabled,
 .Askd-form input[type="button"]:enabled {
-  background-color: #606080;
+  background-color: var(--recent-actions-color);
+  color: var(--main-bg-color);
+  transition: background-color 0.15s ease-out;
 }
 
 .Askd-form input[type="submit"]:hover:enabled,
 .Askd-form input[type="button"]:hover:enabled {
-  background-color: #707090;
+  background-color: var(--recent-actions-color-light);
+  transition: background-color 0.15s ease-out;
 }
 
 .Askd-form .Search-select {
@@ -96,7 +97,7 @@ input.Askd-not-fullwidth {
 
 .Askd-form-link {
   font-weight: normal;
-  color: #77AAFF;
+  color: var(--recent-actions-color);
   text-align: left;
   text-decoration: none;
 }

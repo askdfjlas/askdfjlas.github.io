@@ -3,7 +3,6 @@ import { useLocation, Link } from 'react-router-dom';
 import CreateLoadingComponent from '../HOC/CreateLoadingComponent';
 import LoadingSpinner from './LoadingSpinner';
 import NotesApi from '../Api/NotesApi';
-import LoadState from '../Enum/LoadState';
 import SimpleBar from 'simplebar-react';
 import 'simplebar/dist/simplebar.min.css';
 

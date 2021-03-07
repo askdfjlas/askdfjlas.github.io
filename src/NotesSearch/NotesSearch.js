@@ -47,7 +47,7 @@ function NotesSearch({ history }) {
     if(newPage === 1) {
       newPage = null;
     }
-    
+
     changeSearchAttributes({
       page: newPage
     });
@@ -98,6 +98,7 @@ function NotesSearch({ history }) {
     }
   };
 
+  const headingText = sortByRecent ? 'Most recent notes' : 'Most liked notes';
   const toggleFilterFormText = showFilterForm ? 'Want to hide this?' :
     'Want to filter by username, platform, contest, or problem?';
 
@@ -105,9 +106,12 @@ function NotesSearch({ history }) {
 
   return (
     <div className="Notes-search">
+      <h2 className="Module-heading">
+        {headingText}
+      </h2>
       <button onClick={toggleFilterForm} disabled={sortByRecent}
               className="Notes-search-filter Askd-form-link">
-        { toggleFilterFormText }
+        {toggleFilterFormText}
       </button>
       <div className="Notes-search-sort">
         <label htmlFor="search-sort">Sort by</label>

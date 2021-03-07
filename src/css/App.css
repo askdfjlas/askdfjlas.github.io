@@ -1,13 +1,26 @@
+@keyframes fade-in {
+  from { opacity: 0 }
+  to { opacity: 1 }
+}
+
+@keyframes focus-input-fade-in {
+  from { box-shadow: none }
+  to { box-shadow: 0 0 1px 1px var(--recent-actions-alpha) }
+}
+
 html {
   --main-bg-color: #E8EAED;
   --darker-bg-color: #EAE2E4;
+  --super-dark-bg-color: #D8DCDE;
   --main-content-color: #F0F2F5;
   --main-text-color: black;
   --bright-heading-color: #FF5A5F;
   --main-header-color: #4C4B63;
   --recent-actions-color: #608FE6;
+  --recent-actions-color-light: #729CE9;
+  --recent-actions-alpha: rgba(96, 143, 230, 0.6);
   --username-black: #2C2B43;
-  --contributor-green: #35E5A5;
+  --contributor-green: #35C585;
   --main-text-font: 'Mosk Medium 500';
   --bold-text-font: 'Mosk Bold 700';
 }
@@ -19,6 +32,16 @@ html, body {
   margin: 0;
   width: 100%;
   height: 100%;
+}
+
+.Askd-form :focus {
+  box-shadow: 0 0 1px 1px var(--recent-actions-alpha);
+  outline: none;
+  animation: focus-input-fade-in 0.3s;
+}
+
+button:focus, a:focus {
+  outline: 1px solid var(--bright-heading-color);;
 }
 
 body.Global-mouse-click *:not(input):focus {

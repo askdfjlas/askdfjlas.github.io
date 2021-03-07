@@ -52,19 +52,25 @@
 .User-notes-list {
   list-style-type: none;
   flex: 1 0 auto;
-  width: 100%;
   padding: 0;
-  margin: 0;
+  margin: 2px 0;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.25);
+  box-sizing: border-box;
 }
 
 .User-note-info {
   position: relative;
-  border: 1px solid #494A78;
+  border-bottom: 1px solid var(--super-dark-bg-color);
   padding: 0.5em;
-  margin: 0.5em;
   box-sizing: border-box;
-  border-radius: 2px;
-  background-color: #323252;
+}
+
+.User-note-info:nth-child(even) {
+  background-color: rgba(0, 0, 0, 0.015)
+}
+
+.User-note-info:last-child {
+  border-bottom: none;
 }
 
 .User-note-info h5 {
@@ -119,6 +125,10 @@
   animation-duration: 0.4s;
 }
 
+.User-note-info:hover {
+  background-color: var(--main-bg-color);
+}
+
 .User-note-info-tags {
   display: inline-block;
   list-style-type: none;
@@ -136,10 +146,11 @@
   padding: 0.5em;
   border-radius: 4px;
   vertical-align: middle;
+  color: var(--main-content-color);
 }
 
 .User-note-tag-published {
-  background-color: #5555E5;
+  background-color: var(--recent-actions-color);
 }
 
 .User-note-tag-published::before {

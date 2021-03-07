@@ -27,7 +27,8 @@
   flex: 1 0 auto;
   width: 77%;
   box-sizing: border-box;
-  padding: 0.4em;
+  padding: 0.7em 1em;
+  overflow: visible;
 }
 
 .Module-recent-notes {
@@ -43,6 +44,7 @@
 @media screen and (max-width: 1000px) {
   .Module-content-left {
     width: 75%;
+    padding: 0.7em 0.5em;
   }
 
   .Module-recent-notes {
@@ -53,6 +55,7 @@
 @media screen and (max-width: 727px) {
   .Module.content-left {
     width: 100%;
+    padding: 0.4em;
   }
 
   .Module-recent-notes {
@@ -99,9 +102,10 @@
 }
 
 .Module-wrapper .Module-heading {
-  margin: 0 0 0.4em 0;
+  margin: 0 0 0.3em 0;
   padding-bottom: 0.2em;
-  border-bottom: 2px solid #494A66;
+  border-bottom: 2px solid var(--darker-bg-color);
+  color: var(--username-black);
 }
 
 .Module-description {
@@ -136,7 +140,6 @@
   box-sizing: border-box;
   overflow-wrap: anywhere;
   width: 100%;
-  border-radius: 3px;
 }
 
 .Module-padding-box {
@@ -178,21 +181,17 @@
 }
 
 .Module-popup {
-  background-color: #222233;
+  background-color: var(--main-bg-color);
+  color: var(--Username-black);
   display: flex;
   flex-direction: column;
   padding: 2em;
   margin: auto;
   border-radius: 3px;
-  border: 1px solid white;
-  box-shadow: 5px 5px rgba(40, 50, 100, 0.7),
-              10px 10px rgba(40, 50, 100, 0.5),
-              15px 15px rgba(40, 50, 100, 0.3);
+  box-shadow: 0 1px 2px 1px var(--super-dark-bg-color);
 }
 
 .Module-popup h2, .Module-popup p {
-  color: #DDDDDD;
-  font-family: Arial;
   margin-bottom: 0;
 }
 
@@ -205,16 +204,12 @@
   margin-top: 2em;
 }
 
-@keyframes fade-in {
-  from { opacity: 0 }
-  to { opacity: 1 }
-}
-
 .Module-blocker {
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.8);
+  box-shadow: 0 0 100vw 0 solid rgba(0, 0, 0, 0.8);
   position: fixed;
   overflow: auto;
   top: 0;
