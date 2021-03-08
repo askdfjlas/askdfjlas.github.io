@@ -51,7 +51,7 @@ input.Askd-not-fullwidth {
 }
 
 .Askd-form :disabled {
-  background-color: var(--super-dark-bg-color);
+  background-color: rgba(0, 0, 0, 0.03);
   transition: background-color 0.15s ease-out;
 }
 

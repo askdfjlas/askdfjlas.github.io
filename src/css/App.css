@@ -20,9 +20,14 @@ html {
   --recent-actions-color-light: #729CE9;
   --recent-actions-alpha: rgba(96, 143, 230, 0.6);
   --username-black: #2C2B43;
+  --username-gray: #65686B;
   --contributor-green: #35C585;
+  --unsolved-tag-color: #E52540;
+  --upsolved-tag-color: #8545E5;
+  --upsolved-help-tag-color: #E5A575;
   --main-text-font: 'Mosk Medium 500';
   --bold-text-font: 'Mosk Bold 700';
+  --main-content-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.15);
 }
 
 html, body {
@@ -34,7 +39,7 @@ html, body {
   height: 100%;
 }
 
-.Askd-form :focus {
+.Askd-form :focus:not(button) {
   box-shadow: 0 0 1px 1px var(--recent-actions-alpha);
   outline: none;
   animation: focus-input-fade-in 0.3s;

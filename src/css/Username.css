@@ -1,5 +1,5 @@
 .Username {
-  color: var(--username-black);
+  color: var(--username-gray);
   font-weight: bold;
   font-family: var(--bold-text-font);
   text-decoration: none;

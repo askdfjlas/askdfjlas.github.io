@@ -99,7 +99,7 @@ function NotesSearch({ history }) {
   };
 
   const headingText = sortByRecent ? 'Most recent notes' : 'Most liked notes';
-  const toggleFilterFormText = showFilterForm ? 'Want to hide this?' :
+  const toggleFilterFormText = showFilterForm ? 'Hide this' :
     'Want to filter by username, platform, contest, or problem?';
 
   const skipContestSearch = !!problemId && !contestId;

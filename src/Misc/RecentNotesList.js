@@ -36,8 +36,8 @@ function RecentNotesList({ otherProps, loadInfo, info, screen }) {
             {note.username}
           </Link>
           {` - `}
-          <Link className="Askd-button Askd-button-generic" to={noteLink}>
-            { displayName }
+          <Link className="Askd-form-link" to={noteLink}>
+            {displayName}
           </Link>
         </li>
       );

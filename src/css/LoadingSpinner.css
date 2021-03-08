@@ -6,6 +6,7 @@
 .Loading-spinner {
   display: flex;
   flex: 1 0 auto;
+  height: 100%;
   background-image: url('../img/spinner.gif');
   background-blend-mode: darken;
   background-size: 2em;

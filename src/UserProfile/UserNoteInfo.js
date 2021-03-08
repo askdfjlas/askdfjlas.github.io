@@ -44,12 +44,12 @@ class UserNoteInfo extends Component {
               +{info.likeCount}
             </span>
           }
-          { problemDisplayName }
+          {problemDisplayName}
         </h5>
         <h6 className="User-note-info-title">
           {
             this.props.mostLikedMode &&
-            <Link className="Askd-form-link" to={profileLink}>
+            <Link className="Username" to={profileLink}>
               {authorUsername}
             </Link>
           }

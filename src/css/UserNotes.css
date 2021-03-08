@@ -25,6 +25,7 @@
 
 .User-notes-add:hover {
   opacity: 1;
+  transition: opacity 0.5s;
 }
 
 .User-notes-organize {
@@ -54,7 +55,7 @@
   flex: 1 0 auto;
   padding: 0;
   margin: 2px 0;
-  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: var(--main-content-shadow);
   box-sizing: border-box;
 }
 
@@ -69,19 +70,16 @@
   background-color: rgba(0, 0, 0, 0.015)
 }
 
-.User-note-info:last-child {
-  border-bottom: none;
-}
-
 .User-note-info h5 {
   margin: 0;
 }
 
 .User-note-info-title {
-  color: #CCCCCC;
+  color: gray;
   margin: 0.15em 0;
   font-weight: normal;
   font-style: italic;
+  font-size: 0.7em;
 }
 
 .User-note-info-timestamp {
@@ -113,16 +111,7 @@
   display: inline;
   text-align: right;
   font-size: 0.8em;
-  opacity: 0;
-  transition: opacity 0.25s;
   margin-left: 1em;
-}
-
-.User-note-info:hover .User-note-info-links li {
-  opacity: 1;
-  transition: opacity 0.25s;
-  animation-name: slowly-enable-pointer;
-  animation-duration: 0.4s;
 }
 
 .User-note-info:hover {
@@ -158,7 +147,7 @@
 }
 
 .User-note-tag-unpublished {
-  background-color: #E53555;
+  background-color: var(--bright-heading-color);
 }
 
 .User-note-tag-unpublished::before {
@@ -166,7 +155,7 @@
 }
 
 .User-note-info-solved .User-note-solved-indicator {
-  background-color: #359575;
+  background-color: var(--contributor-green);
 }
 
 .User-note-info-solved .User-note-solved-indicator::before {
@@ -174,7 +163,7 @@
 }
 
 .User-note-info-upsolved .User-note-solved-indicator {
-  background-color: #6525C5;
+  background-color: var(--upsolved-tag-color);
 }
 
 .User-note-info-upsolved .User-note-solved-indicator::before {
@@ -182,7 +171,7 @@
 }
 
 .User-note-info-upsolved-help .User-note-solved-indicator {
-  background-color: #D59565;
+  background-color: var(--upsolved-help-tag-color);
 }
 
 .User-note-info-upsolved-help .User-note-solved-indicator::before {
@@ -190,7 +179,7 @@
 }
 
 .User-note-info-unsolved .User-note-solved-indicator {
-  background-color: #D51530;
+  background-color: var(--unsolved-tag-color);
 }
 
 .User-note-info-unsolved .User-note-solved-indicator::before {
@@ -255,19 +244,19 @@
 }
 
 .User-note-contest-solved {
-  background-color: #359575;
+  background-color: var(--contributor-green);
 }
 
 .User-note-contest-upsolved {
-  background-color: #6525C5;
+  background-color: var(--upsolved-tag-color);
 }
 
 .User-note-contest-upsolved-help {
-  background-color: #D59565;
+  background-color: var(--upsolved-help-tag-color);
 }
 
 .User-note-contest-unsolved {
-  background-color: #D51530;
+  background-color: var(--unsolved-tag-color);
 }
 
 .User-notes-title-dropdown {

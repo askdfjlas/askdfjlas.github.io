@@ -7,7 +7,7 @@
 
 .Notes-search .Module-outer-space {
   padding: 1.2em;
-  margin-top: 0.4em;
+  margin-top: 0.3em;
 }
 
 .Notes-search-filter {
@@ -25,7 +25,7 @@
   padding: 0;
   font-size: 0.8em;
   font-weight: bold;
-  margin-right: 0.3em;
+  margin-right: 0.4em;
 }
 
 .Notes-search label[for="username"] {
@@ -37,5 +37,5 @@
 }
 
 .Notes-search .Module-space {
-  margin-top: 0.4em;
+  margin-top: 0.5em;
 }
