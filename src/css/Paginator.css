@@ -5,6 +5,7 @@
 
 .Paginator-list {
   display: flex;
+  flex-wrap: wrap;
   flex: 0 1 auto;
   height: 1.8em;
   margin: 0;
@@ -66,6 +67,6 @@
   margin-bottom: 0.4em;
 }
 
-.Module-space .Paginator:last-child {
+.Module-space .Paginator:last-child, .Paginator-bottom {
   margin-top: 0.4em;
 }

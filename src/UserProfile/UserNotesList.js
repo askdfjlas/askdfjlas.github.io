@@ -195,10 +195,16 @@ class UserNotesList extends Component {
             this.forceUpdate();
           };
 
+          let solvedStateCssClass = null;
+          if(attributeString === 'solved') {
+            solvedStateCssClass = ProblemsApi.getSolvedStateCssClass(key);
+          }
+
           noteInfoElements.push(
             <UserNotesTitleDropdown key={key} title={title}
                                     innerContent={innerContent} showing={showing}
-                                    toggleCallback={toggleCallback} />
+                                    toggleCallback={toggleCallback}
+                                    colorClass={solvedStateCssClass} />
           );
         }
       }
@@ -254,16 +260,16 @@ class UserNotesList extends Component {
 
     const noteItems = this.virtualPaginator.getContent(this.state.page);
     const totalPages = this.virtualPaginator.getPageCount();
-    const paginator = (
+    const paginator = (bottom) => (
       <Paginator currentPage={this.state.page} totalPages={totalPages}
-                 callback={this.updatePage} />
+                 callback={this.updatePage} bottom={bottom} />
     );
 
     return (
       <>
-        { paginator }
+        { paginator(false) }
         { this.renderNoteItems(noteItems) }
-        { paginator }
+        { paginator(true) }
       </>
     );
   }

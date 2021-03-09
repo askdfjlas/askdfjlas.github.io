@@ -127,19 +127,13 @@ button.Askd-form-link {
 }
 
 .Askd-button-circular {
-  background-color: #DDDDDD;
   text-align: center;
-  color: black;
   font-size: 1.5em;
   width: 1.8em;
   height: 1.8em;
   padding: 0;
   margin: 0;
   border-radius: 100%;
-}
-
-.Askd-button-circular:hover {
-  background-color: #BBBBBB;
 }
 
 .Askd-button:hover:enabled {
@@ -181,4 +175,8 @@ button.Askd-form-link {
   position: fixed;
   top: 1em;
   right: 1.5em;
+}
+
+.Askd-form-close:hover {
+  background-color: var(--super-dark-bg-color);
 }

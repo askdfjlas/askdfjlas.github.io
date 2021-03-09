@@ -77,12 +77,12 @@ class UserNotes extends Component {
   render() {
     return (
       <>
-        <h2 className="Module-heading">Notes</h2>
         {
           this.state.showAddProblemForm &&
           <AddProblemForm callback={this.addProblem} />
         }
         <div className="User-notes-outer Module-outer-space">
+          <h2 className="Module-heading">Notes</h2>
           <form>
             <div className="User-notes-organize">
               <label>

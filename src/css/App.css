@@ -10,7 +10,8 @@
 
 html {
   --main-bg-color: #E8EAED;
-  --darker-bg-color: #EAE2E4;
+  --darker-bg-color: #E6E2E4;
+  --lighter-bg-color: #EDEFF0;
   --super-dark-bg-color: #D8DCDE;
   --main-content-color: #F0F2F5;
   --main-text-color: black;
@@ -22,12 +23,16 @@ html {
   --username-black: #2C2B43;
   --username-gray: #65686B;
   --contributor-green: #35C585;
+  --contributor-green-alpha: rgba(53, 197, 133, 0.6);
   --unsolved-tag-color: #E52540;
+  --unsolved-tag-alpha: rgba(229, 37, 64, 0.6);
   --upsolved-tag-color: #8545E5;
+  --upsolved-tag-alpha: rgba(133, 69, 229, 0.6);
   --upsolved-help-tag-color: #E5A575;
+  --upsolved-help-tag-alpha: rgba(229, 165, 117, 0.6);
   --main-text-font: 'Mosk Medium 500';
   --bold-text-font: 'Mosk Bold 700';
-  --main-content-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.15);
+  --main-content-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2);
 }
 
 html, body {
@@ -46,7 +51,7 @@ html, body {
 }
 
 button:focus, a:focus {
-  outline: 1px solid var(--bright-heading-color);;
+  outline: 1px solid var(--bright-heading-color);
 }
 
 body.Global-mouse-click *:not(input):focus {

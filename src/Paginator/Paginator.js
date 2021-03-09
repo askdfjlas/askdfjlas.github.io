@@ -1,7 +1,7 @@
 import React from 'react';
 import '../css/Paginator.css';
 
-function Paginator({ currentPage, totalPages, callback }) {
+function Paginator({ currentPage, totalPages, bottom, callback }) {
   let pageIndices = [ currentPage ];
 
   let after = currentPage + 1;
@@ -43,8 +43,13 @@ function Paginator({ currentPage, totalPages, callback }) {
     );
   }
 
+  let outerClassName = 'Paginator';
+  if(bottom) {
+    outerClassName += ' Paginator-bottom';
+  }
+
   return (
-    <div className="Paginator">
+    <div className={outerClassName}>
       <ul className="Paginator-list">
         { paginatorButtons }
       </ul>

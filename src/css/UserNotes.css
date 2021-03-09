@@ -5,8 +5,7 @@
 }
 
 .User-notes-outer {
-  flex-direction: column;
-  flex: 1 0 auto;
+  margin-top: 0.8em;
 }
 
 .User-notes-nothing {
@@ -14,13 +13,16 @@
   flex: 1 0 auto;
   align-items: center;
   justify-content: center;
+  font-family: var(--bold-text-font);
 }
 
 .User-notes-add {
   position: absolute;
   right: 0.3em;
   bottom: 0.3em;
-  opacity: 0.7;
+  opacity: 0.6;
+  background-color: var(--username-black);
+  color: var(--main-content-color);
 }
 
 .User-notes-add:hover {
@@ -32,14 +34,15 @@
   display: block;
   width: 100%;
   vertical-align: middle;
-  font-family: Arial;
-  color: white;
   padding: 0;
   margin-bottom: 0.2em;
+  color: var(--username-black);
 }
 
 .User-notes-organize:last-child {
-  margin-bottom: 1em;
+  margin: 0 0 0.5em 0;
+  padding-bottom: 0.8em;
+  border-bottom: 2px solid var(--darker-bg-color);
 }
 
 .User-notes-organize label {
@@ -51,12 +54,15 @@
 }
 
 .User-notes-list {
-  list-style-type: none;
+  display: flex;
+  flex-direction: column;
   flex: 1 0 auto;
+  list-style-type: none;
   padding: 0;
-  margin: 2px 0;
+  margin: 0;
   box-shadow: var(--main-content-shadow);
   box-sizing: border-box;
+  background-color: var(--main-content-color);
 }
 
 .User-note-info {
@@ -188,7 +194,8 @@
 
 .User-note-contest-notes {
   display: flex;
-  background-color: #555575;
+  flex-wrap: wrap;
+  background-color: var(--darker-bg-color);
   margin-top: 0.2em;
   padding: 0;
   border-radius: 2px;
@@ -200,9 +207,10 @@
   margin: 0.3em;
   width: 2.5em;
   height: 2.5em;
-  border: 1px solid #DDDDDD;
+  box-shadow: var(--main-content-shadow);
   justify-content: center;
   align-items: center;
+  color: var(--main-content-color);
 }
 
 .User-note-contest-timestamp {
@@ -261,21 +269,57 @@
 
 .User-notes-title-dropdown {
   position: relative;
-  margin: 0.5em;
-  margin-bottom: 0.4em;
-  padding: 0.2em;
+  margin: 0 0.8em 0.8em 0.8em;
   box-sizing: border-box;
-  background-color: rgba(0, 0, 0, 0.2);
   border-radius: 4px;
+}
+
+.User-notes-title-dropdown:first-child {
+  margin-top: 0.8em;
 }
 
 .User-notes-title-dropdown-showhide {
   position: absolute;
   top: 0.5em;
   right: 1em;
+  border: none;
+  background: none;
+  padding: 0;
+  color: var(--main-content-color);
+}
+
+.User-notes-title-dropdown-showhide:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 .User-notes-title-dropdown-heading {
-  margin: 0.5em;
-  margin-top: 0.3em;
+  padding: 0.5em;
+  margin: 0;
+  color: var(--main-content-color);
+}
+
+.User-notes-title-dropdown-heading-default {
+  background-color: var(--recent-actions-color);
+  box-shadow: 0 0 4px 0px var(--recent-actions-alpha);
+}
+
+.User-notes-title-dropdown-heading-solved {
+  background-color: var(--contributor-green);
+  box-shadow: 0 0 4px 0px var(--contributor-green-alpha);
+}
+
+.User-notes-title-dropdown-heading-upsolved {
+  background-color: var(--upsolved-tag-color);
+  box-shadow: 0 0 4px 0px var(--upsolved-tag-alpha);
+}
+
+.User-notes-title-dropdown-heading-upsolved-help {
+  background-color: var(--upsolved-help-tag-color);
+  box-shadow: 0 0 4px 0px var(--upsolved-help-tag-alpha);
+}
+
+.User-notes-title-dropdown-heading-unsolved {
+  background-color: var(--unsolved-tag-color);
+  box-shadow: 0 0 4px 0px var(--unsolved-tag-alpha);
 }

@@ -3,7 +3,7 @@
   margin: auto;
   width: 85%;
   box-sizing: border-box;
-  background-color: var(--main-content-color);
+  background-color: var(--lighter-bg-color);
   flex: 1 0 auto;
   overflow: hidden;
   box-shadow: 0 0 3px 1px rgba(0, 0, 0, 0.1);
@@ -101,10 +101,13 @@
   margin: 0.5em 0;
 }
 
-.Module-wrapper .Module-heading {
+.Module-heading {
   margin: 0 0 0.3em 0;
   padding-bottom: 0.2em;
   border-bottom: 2px solid var(--darker-bg-color);
+}
+
+.Module-heading:not(.Username) {
   color: var(--username-black);
 }
 
@@ -119,17 +122,22 @@
 }
 
 .Module-outer-space {
-  display: flex;
   width: 100%;
   padding: 1em;
   box-sizing: border-box;
   border-radius: 1px;
   box-shadow: var(--main-content-shadow);
+  background-color: var(--main-content-color);
+}
+
+.Module-outer-space .Module-heading:first-child {
+  position: relative;
+  top: -0.2em;
 }
 
 @media screen and (max-width: 750px) {
   .Module-outer-space {
-    padding: 0.3em;
+    padding: 0.7em;
   }
 }
 

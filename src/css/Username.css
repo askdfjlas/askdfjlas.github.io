@@ -5,6 +5,10 @@
   text-decoration: none;
 }
 
-.Username:hover {
+.Username:not(h2) {
+  font-weight: bold;
+}
+
+.Username:not(h2):hover {
   cursor: pointer;
 }

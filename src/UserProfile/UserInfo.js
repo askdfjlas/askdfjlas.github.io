@@ -60,26 +60,28 @@ function UserInfo({ info }) {
 
   return (
     <>
-      <h2 className="Module-heading">{info.username}</h2>
-      <div className="Module-outer-space User-info">
-        <div className="User-info-info">
-          {
-            info.email &&
-            <p>Email: {info.email} (only visible to you)</p>
-          }
-          <p>Contribution:
-            <span className={contributionClassName}>
-              {info.contribution}
-            </span>
-          </p>
-          <p>{`Total notes: ${info.totalNotes}`}</p>
-          <p>Registered: ?</p>
-          { error && <p className="User-info-info-error">{error}</p> }
-        </div>
-        <div className="User-info-avatar-outer">
-          <div className="User-info-avatar">
-            <div className="User-info-avatar-box">
-              { avatarContent }
+      <div className="Module-outer-space">
+        <h2 className="Module-heading Username">{info.username}</h2>
+        <div className="User-info">
+          <div className="User-info-info">
+            {
+              info.email &&
+              <p>Email: {info.email} (only visible to you)</p>
+            }
+            <p>Contribution:
+              <span className={contributionClassName}>
+                {info.contribution}
+              </span>
+            </p>
+            <p>{`Total notes: ${info.totalNotes}`}</p>
+            <p>Registered: ?</p>
+            { error && <p className="User-info-info-error">{error}</p> }
+          </div>
+          <div className="User-info-avatar-outer">
+            <div className="User-info-avatar">
+              <div className="User-info-avatar-box">
+                { avatarContent }
+              </div>
             </div>
           </div>
         </div>
