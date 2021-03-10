@@ -22,7 +22,7 @@ function PublicNoteInfo({ info }) {
   };
 
   return (
-    <div className="Public-note-info Module-space Module-padding-box">
+    <div className="Public-note-info Module-outer-space">
       <h3 className="Module-space-heading">
         <span className={`Public-note-solved-tag User-note-info-${solvedClass}`}>
           <span className="User-note-info-tag User-note-solved-indicator" />
@@ -30,7 +30,7 @@ function PublicNoteInfo({ info }) {
         {info.title}
       </h3>
       <p className="Module-space-text">
-        Written by <Link className="Askd-form-link" to={`/users/${info.username}`}>
+        Written by <Link className="Username" to={`/users/${info.username}`}>
           {info.username}
         </Link>
       </p>

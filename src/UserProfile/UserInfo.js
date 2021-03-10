@@ -59,34 +59,32 @@ function UserInfo({ info }) {
   const avatarContent = imageLoading ? <LoadingSpinner /> : imageContent;
 
   return (
-    <>
-      <div className="Module-outer-space">
-        <h2 className="Module-heading Username">{info.username}</h2>
-        <div className="User-info">
-          <div className="User-info-info">
-            {
-              info.email &&
-              <p>Email: {info.email} (only visible to you)</p>
-            }
-            <p>Contribution:
-              <span className={contributionClassName}>
-                {info.contribution}
-              </span>
-            </p>
-            <p>{`Total notes: ${info.totalNotes}`}</p>
-            <p>Registered: ?</p>
-            { error && <p className="User-info-info-error">{error}</p> }
-          </div>
-          <div className="User-info-avatar-outer">
-            <div className="User-info-avatar">
-              <div className="User-info-avatar-box">
-                { avatarContent }
-              </div>
+    <div className="Module-outer-space">
+      <h2 className="Module-heading Username">{info.username}</h2>
+      <div className="User-info">
+        <div className="User-info-info">
+          {
+            info.email &&
+            <p>Email: {info.email} (only visible to you)</p>
+          }
+          <p>Contribution:
+            <span className={contributionClassName}>
+              {info.contribution}
+            </span>
+          </p>
+          <p>{`Total notes: ${info.totalNotes}`}</p>
+          <p>Registered: ?</p>
+          { error && <p className="User-info-info-error">{error}</p> }
+        </div>
+        <div className="User-info-avatar-outer">
+          <div className="User-info-avatar">
+            <div className="User-info-avatar-box">
+              { avatarContent }
             </div>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

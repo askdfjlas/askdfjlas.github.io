@@ -4,6 +4,13 @@
   margin-right: 0.4em;
 }
 
+.Public-note-info {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  margin-top: 0.7em;
+}
+
 .Public-note-info .Like-button {
   margin-top: 0.5em;
 }

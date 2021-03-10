@@ -131,7 +131,7 @@ class EditNoteForm extends Component {
                       platform={this.props.platform} history={this.props.history}
                       problemInfo={this.props.problemInfo} />
         }
-        <form className="Edit-note-form Askd-form">
+        <form className="Edit-note-form Askd-form Module-outer-space">
           <input className="Edit-note-title" name="title" type="text"
                  defaultValue={this.title} placeholder="Title"
                  onChange={this.handleTitleChange} />

@@ -8,7 +8,7 @@ class ProblemInfo extends Component {
 
     return (
       <div className="Edit-note-problem-info">
-        <div className="Module-info-box">
+        <div className="Module-info-box Module-outer-space">
           <h4>
             { problemDisplayName }
           </h4>

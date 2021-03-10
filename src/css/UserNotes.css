@@ -33,7 +33,6 @@
 .User-notes-organize {
   display: block;
   width: 100%;
-  vertical-align: middle;
   padding: 0;
   margin-bottom: 0.2em;
   color: var(--username-black);
@@ -301,25 +300,25 @@
 
 .User-notes-title-dropdown-heading-default {
   background-color: var(--recent-actions-color);
-  box-shadow: 0 0 4px 0px var(--recent-actions-alpha);
+  box-shadow: 0 0 4px 0 var(--recent-actions-alpha);
 }
 
 .User-notes-title-dropdown-heading-solved {
   background-color: var(--contributor-green);
-  box-shadow: 0 0 4px 0px var(--contributor-green-alpha);
+  box-shadow: 0 0 4px 0 var(--contributor-green-alpha);
 }
 
 .User-notes-title-dropdown-heading-upsolved {
   background-color: var(--upsolved-tag-color);
-  box-shadow: 0 0 4px 0px var(--upsolved-tag-alpha);
+  box-shadow: 0 0 4px 0 var(--upsolved-tag-alpha);
 }
 
 .User-notes-title-dropdown-heading-upsolved-help {
   background-color: var(--upsolved-help-tag-color);
-  box-shadow: 0 0 4px 0px var(--upsolved-help-tag-alpha);
+  box-shadow: 0 0 4px 0 var(--upsolved-help-tag-alpha);
 }
 
 .User-notes-title-dropdown-heading-unsolved {
   background-color: var(--unsolved-tag-color);
-  box-shadow: 0 0 4px 0px var(--unsolved-tag-alpha);
+  box-shadow: 0 0 4px 0 var(--unsolved-tag-alpha);
 }

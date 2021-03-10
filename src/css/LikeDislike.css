@@ -5,14 +5,12 @@
   border: none;
   background: none;
   padding: 0;
-  color: #EEEEEE;
+  color: var(--username-gray);
   transition: color 0.3s;
 }
 
 .Like-button:hover {
   cursor: pointer;
-  color: var(--contributor-green);
-  transition: color 0.3s;
 }
 
 .Like-button-liked {
@@ -21,6 +19,9 @@
 }
 
 .Like-dislike-score {
-  color: var(--contributor-green);
   margin-right: 0.5em;
+}
+
+.User-notes-list .Like-dislike-score {
+  color: var(--contributor-green);
 }

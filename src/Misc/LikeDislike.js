@@ -33,7 +33,7 @@ function LikeDislike({ initialScore, initialStatus, likeCallback }) {
   return (
     <div className="Like-dislike">
       <button className={likeButtonClass} onClick={toggleStatus}>
-        <span className="Like-dislike-score">+{score}</span> I like this!
+        I like this! <span className="Like-dislike-score">+{score}</span>
       </button>
     </div>
   );

@@ -12,7 +12,7 @@ function UserNotesTitleDropdown({ title, innerContent, showing,
     `User-notes-title-dropdown-heading-${colorClass}`;
 
   return (
-    <li className='User-notes-title-dropdown'>
+    <li className="User-notes-title-dropdown">
       <button className="User-notes-title-dropdown-showhide"
               onClick={toggleCallback}>
         { showText }

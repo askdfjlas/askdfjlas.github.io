@@ -167,26 +167,16 @@
   font-size: 0.8em;
 }
 
-.Module-info-box {
-  background-color: rgba(0, 0, 30, 0.3);
-  font-family: 'Arial';
-  width: 100%;
-  padding: 0.6em 1em;
-  margin-bottom: 0.3em;
-  box-sizing: border-box;
-  border-radius: 3px;
-}
-
 .Module-info-box h4 {
-  margin: 0.2em 0 0.4em 0;
+  margin: 0 0 0.2em 0;
 }
 
 .Module-info-box p, .Module-info-box a  {
-  margin: 0.4em 0;
+  margin: 0.3em 0;
 }
 
 .Module-info-box a {
-  font-size: 0.8em;
+  font-size: 0.9em;
 }
 
 .Module-popup {
