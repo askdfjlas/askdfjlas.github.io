@@ -1,12 +1,16 @@
 .Like-button {
-  font-family: 'Verdana';
   font-weight: bold;
-  font-size: 0.9em;
+  font-size: 1.1em;
   border: none;
   background: none;
   padding: 0;
   color: var(--username-gray);
   transition: color 0.3s;
+}
+
+.Like-button span:before {
+  position: relative;
+  top: 1px;
 }
 
 .Like-button:hover {
@@ -19,9 +23,16 @@
 }
 
 .Like-dislike-score {
+  margin-left: 0.3em;
   margin-right: 0.5em;
 }
 
 .User-notes-list .Like-dislike-score {
   color: var(--contributor-green);
+}
+
+.User-notes-list .Like-dislike-score span:before {
+  position: relative;
+  top: 1.7px;
+  margin-right: 0.1em;
 }

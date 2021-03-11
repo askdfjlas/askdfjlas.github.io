@@ -21,10 +21,18 @@ function TextEditorContent({ content, id, editable, caretInfo, handleBlur, handl
     );
   });
 
+  let outerClassName = 'Askd-text-editor-text';
+  if(editable) {
+    outerClassName += ' Askd-text-editor-editable';
+  }
+  else {
+    outerClassName += ' Askd-text-editor-uneditable';
+  }
+
   return (
-    <div className="Askd-text-editor-text" id={id} tabIndex="0"
-         contentEditable={editable} suppressContentEditableWarning="true"
-         spellCheck="false" onBlur={handleBlur} onFocus={handleFocus}>
+    <div className={outerClassName} id={id} contentEditable={editable}
+        suppressContentEditableWarning="true" spellCheck="false"
+        onBlur={handleBlur} onFocus={handleFocus}>
          { contentElements }
     </div>
   );

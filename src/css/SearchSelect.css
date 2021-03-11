@@ -1,26 +1,24 @@
 .Search-select-options {
   position: absolute;
   list-style-type: none;
-  background-color: #222233;
+  background-color: var(--main-content-color);
   border-radius: 2px;
-  border: 2px solid white;
+  box-shadow: var(--main-content-shadow);
   padding: 0;
   margin: 0;
-  max-height: 11em;
+  max-height: 12em;
   overflow: auto;
   box-sizing: border-box;
   z-index: 1;
 }
 
 .Search-select-options li {
-  color: #DDDDDD;
   font-size: 0.9em;
-  padding: 0.3em;
-  border: 1px solid rgba(0, 0, 0, 0);
+  font-family: var(--bold-text-font);
+  padding: 0.4em;
 }
 
 .Search-select-options li:hover {
   cursor: pointer;
-  border: 1px solid white;
-  background-color: rgba(0, 0, 0, 0.2);
+  background-color: rgba(0, 0, 0, 0.07);
 }

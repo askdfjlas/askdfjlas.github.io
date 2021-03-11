@@ -4,20 +4,18 @@
   flex: 1 0 auto;
   width: 100%;
   margin: 1em 0;
-  padding: 1em 0;
   box-sizing: border-box;
   color: black;
   font-family: Arial;
   font-weight: normal;
-  border-bottom: 1px solid var(--super-dark-bg-color);
-  border-top: 1px solid var(--super-dark-bg-color);
 }
 
 .Askd-text-editor-toolbar {
-  background-color: #CCCCCC;
+  background-color: var(--main-bg-color);
   height: 2.1em;
   width: 100%;
-  border-bottom: 2px solid #AAAAAA;
+  border: 1px solid var(--super-dark-bg-color);
+  border-bottom: none;
   box-sizing: border-box;
 }
 
@@ -48,11 +46,31 @@
   white-space: pre-wrap;
 }
 
+.Askd-text-editor-uneditable {
+  padding: 1em 0;
+  border-bottom: 1px solid var(--super-dark-bg-color);
+  border-top: 1px solid var(--super-dark-bg-color);
+}
+
+.Askd-text-editor-editable {
+  padding: 0.7em;
+  border: 1px solid var(--super-dark-bg-color);
+}
+
+.Askd-text-editor-editable:focus {
+  outline: none;
+  border: 1px solid var(--recent-actions-color);
+  box-shadow: inset 0 0 1px 0 var(--recent-actions-color);
+  transition: border 0.3s, box-shadow 0.3s;
+}
+
 /* Toolbar icon styles */
-.Askd-tb-selected-true button {
-  color: #5577FF;
-  background-color: #BBBBCC;
+.Askd-tb-selected-true button,
+.Askd-tb-selected-true button:hover {
+  color: var(--recent-actions-color);
+  background-color: rgba(0, 0, 0, 0.05);
   border-radius: 3px;
+  transition: background-color 0.1s;
 }
 
 .Askd-tb-icon {
@@ -64,12 +82,14 @@
   padding: 0;
   border: none;
   background: none;
+  transition: background-color 0.1s;
 }
 
 .Askd-tb-icon:hover {
   border-radius: 3px;
-  background-color: #BBBBBB;
+  background-color: rgba(0, 0, 0, 0.025);
   cursor: pointer;
+  transition: background-color 0.1s;
 }
 
 .Askd-tb-MATH::after {
@@ -106,7 +126,7 @@
   background-color: rgba(0, 255, 0, 0.2);
 }
 
-.Askd-te-MATHJAX:hover {
+.Askd-text-editor-editable .Askd-te-MATHJAX:hover {
   cursor: pointer;
 }
 

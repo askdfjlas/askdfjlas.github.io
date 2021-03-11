@@ -59,7 +59,11 @@
 }
 
 .Users-table-contributor:before {
-  content: '+';
+  position: relative;
+  top: 2.2px;
+  margin-right: 0.1em;
+  font-family: 'icomoon';
+  content: "\e901";
 }
 
 .Users-table-contributor {

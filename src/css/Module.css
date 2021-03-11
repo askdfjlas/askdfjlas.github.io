@@ -38,7 +38,22 @@
   background-color: var(--main-content-color);
   box-sizing: border-box;
   box-shadow: var(--main-content-shadow);
-  min-height: 35em;
+  min-height: 40em;
+}
+
+.Module-recent-notes .icon-long-arrow-right {
+  font-size: 0.8em;
+  color: var(--username-black);
+}
+
+.Module-recent-notes .icon-note-text {
+  font-size: 0.9em;
+  color: var(--bright-heading-color);
+}
+
+.Module-recent-notes span:before {
+  position: relative;
+  top: 1px;
 }
 
 @media screen and (max-width: 1000px) {
@@ -125,7 +140,7 @@
   width: 100%;
   padding: 1em;
   box-sizing: border-box;
-  border-radius: 1px;
+  border-radius: 2px;
   box-shadow: var(--main-content-shadow);
   background-color: var(--main-content-color);
 }

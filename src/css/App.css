@@ -3,11 +3,6 @@
   to { opacity: 1 }
 }
 
-@keyframes focus-input-fade-in {
-  from { box-shadow: none }
-  to { box-shadow: 0 0 1px 1px var(--recent-actions-alpha) }
-}
-
 html {
   --main-bg-color: #E8EAED;
   --darker-bg-color: #E6E2E4;
@@ -35,6 +30,10 @@ html {
   --main-content-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2);
 }
 
+html {
+  overflow-y: scroll;
+}
+
 html, body {
   background-color: var(--main-bg-color);
   font-family: var(--main-text-font);
@@ -44,10 +43,10 @@ html, body {
   height: 100%;
 }
 
-.Askd-form :focus:not(button) {
+.Askd-form :focus:not(button):not(.Askd-text-editor-text) {
   box-shadow: 0 0 1px 1px var(--recent-actions-alpha);
   outline: none;
-  animation: focus-input-fade-in 0.3s;
+  transition: box-shadow 0.3s;
 }
 
 button:focus, a:focus {

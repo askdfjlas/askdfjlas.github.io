@@ -35,10 +35,14 @@ function RecentNotesList({ otherProps, loadInfo, info, screen }) {
                 to={`/users/${note.username}`}>
             {note.username}
           </Link>
-          {` - `}
+          {' '}
+          <span className="icon-long-arrow-right" />
+          {' '}
           <Link className="Askd-form-link" to={noteLink}>
             {displayName}
           </Link>
+          {' '}
+          <span className="icon-note-text" />
         </li>
       );
     }

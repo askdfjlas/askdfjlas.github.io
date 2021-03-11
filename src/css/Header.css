@@ -28,7 +28,7 @@
   top: 0;
   left: 0;
   right: 0;
-  opacity: 0.3;
+  opacity: 0.2;
   background-image: url('../img/header_bg.jpg');
   background-size: 100%;
   background-position: center;
@@ -110,7 +110,7 @@
 
 .Header-user-menu {
   position: absolute;
-  top: 3em;
+  top: 2.7em;
   right: 1em;
   z-index: 2;
 }

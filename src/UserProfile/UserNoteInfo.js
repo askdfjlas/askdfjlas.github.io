@@ -41,7 +41,8 @@ class UserNoteInfo extends Component {
           {
             info.published && (info.likeCount > 0) &&
             <span className="Like-dislike-score">
-              +{info.likeCount}
+              <span className="icon-thumb_up_alt" />
+              {info.likeCount}
             </span>
           }
           {problemDisplayName}
