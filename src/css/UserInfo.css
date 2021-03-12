@@ -78,11 +78,31 @@
 
 .User-info-info p {
   margin: 0 0 0.8em 0;
-  font-size: 1.1em;
+  font-size: 1.2em;
 }
 
 .User-info-info p:last-child {
   margin: 0;
+}
+
+.User-info-info p span:first-child:not(.icon-envelope) {
+  position: relative;
+  top: 1.5px;
+  margin-right: 0.3em;
+}
+
+.User-info-info .icon-envelope {
+  position: relative;
+  left: 1px;
+  bottom: 0.5px;
+  font-size: 0.8em;
+  margin-right: 0.6em;
+}
+
+.User-info-info .Users-table-contributor {
+  position: relative;
+  bottom: 1px;
+  font-size: 0.9em;
 }
 
 .User-info-info-error {
@@ -90,6 +110,6 @@
   font-size: 0.8em;
 }
 
-.User-info-info span {
+.User-info-info .Users-table-contributor {
   margin-left: 0.3em;
 }

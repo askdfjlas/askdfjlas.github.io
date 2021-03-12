@@ -215,7 +215,7 @@ class RegisterForm extends Component {
     return (
       <div className="Module-blocker">
         <button onClick={this.close}
-                className="Askd-form-close Askd-button Askd-button-circular">X</button>
+                className="Askd-form-close Askd-button Askd-button-circular" />
         { currentForm }
       </div>
     );

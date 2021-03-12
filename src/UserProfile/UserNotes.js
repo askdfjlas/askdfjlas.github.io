@@ -119,7 +119,7 @@ class UserNotes extends Component {
               this.props.userInfo.email &&
               <button onClick={this.toggleAddProblemForm}
                       className="User-notes-add Askd-button Askd-button-circular">
-                +
+                <span className="icon-plus" />
               </button>
             }
           </div>

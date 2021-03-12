@@ -61,9 +61,7 @@ class DeleteMenu extends Component {
     return (
       <div className="Module-blocker">
         <button onClick={this.close}
-                className="Askd-form-close Askd-button Askd-button-circular">
-          X
-        </button>
+                className="Askd-form-close Askd-button Askd-button-circular" />
         <div className="Edit-note-delete-menu Module-popup">
           { this.state.error && <h2>{this.state.error}</h2> }
           <h2>Are you sure you want to permanently delete this note?</h2>

@@ -65,15 +65,26 @@ function UserInfo({ info }) {
         <div className="User-info-info">
           {
             info.email &&
-            <p>Email: {info.email} (only visible to you)</p>
+            <p>
+              <span className="icon-envelope" />
+              Email: {info.email} (only visible to you)
+            </p>
           }
-          <p>Contribution:
+          <p>
+            <span className="icon-thumb_up_alt" />
+            Contribution:
             <span className={contributionClassName}>
               {info.contribution}
             </span>
           </p>
-          <p>{`Total notes: ${info.totalNotes}`}</p>
-          <p>Registered: ?</p>
+          <p>
+            <span className="icon-note-text" />
+            {`Total notes: ${info.totalNotes}`}
+          </p>
+          <p>
+            <span className="icon-account_box" />
+            Registered: ?
+          </p>
           { error && <p className="User-info-info-error">{error}</p> }
         </div>
         <div className="User-info-avatar-outer">

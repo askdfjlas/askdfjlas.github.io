@@ -59,9 +59,7 @@ class AddProblemForm extends Component {
     return (
       <div className="Module-blocker">
         <button onClick={this.close}
-                className="Askd-form-close Askd-button Askd-button-circular">
-                X
-        </button>
+                className="Askd-form-close Askd-button Askd-button-circular" />
         <div className="Add-problem-form Module-popup">
           { this.state.error && <h2>{this.state.error}</h2> }
           <h2>Add a problem!</h2>

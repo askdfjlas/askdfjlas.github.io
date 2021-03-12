@@ -77,7 +77,8 @@
   height: 100%;
   width: 100%;
   text-align: center;
-  font-size: 1.1em;
+  font-size: 1.05em;
+  font-family: 'icomoon';
   margin: 0;
   padding: 0;
   border: none;
@@ -93,26 +94,22 @@
 }
 
 .Askd-tb-MATH::after {
-  content: 'x';
-  font-style: italic;
+  content: "\f12b";
 }
 
 .Askd-tb-BOLD::after {
-  content: 'B';
-  font-weight: bold;
+  content: "\ea62";
 }
 
 .Askd-tb-ITALIC::after {
-  text-align: left;
-  content: 'I';
-  font-style: italic;
-  font-weight: bold;
-  padding-right: 1px;
+  content: "\ea64";
+  font-size: 0.96em;
 }
 
 .Askd-tb-UNDERLINE::after {
-  content: 'U';
-  text-decoration: underline;
+  position: relative;
+  top: 1.1px;
+  content: "\ea63";
 }
 
 /* User-inputted text styles */
