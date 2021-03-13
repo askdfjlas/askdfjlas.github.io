@@ -97,11 +97,15 @@
 }
 
 .Module-recent-notes-list {
+  position: relative;
   display: flex;
   flex-direction: column;
-  flex: 1 1;
-  flex-basis: 0;
+  flex: 1 0 auto;
   overflow: auto;
+}
+
+.Module-recent-notes-list ol {
+  position: absolute;
   padding: 0.2em 0.5em;
   list-style-type: none;
   margin: 0;

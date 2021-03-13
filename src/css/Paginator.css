@@ -17,14 +17,14 @@
 
 .Paginator-list li {
   display: inline-block;
-  min-width: 1.8em;
 }
 
 .Paginator-list button {
   margin: 0;
   padding: 0;
   width: 100%;
-  height: 2.1em;
+  height: 2.2em;
+  min-width: 2.2em;
   border-top: 1px solid var(--darker-bg-color);
   border-bottom: 1px solid var(--darker-bg-color);
   border-right: 1px solid var(--darker-bg-color);

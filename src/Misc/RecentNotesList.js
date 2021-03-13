@@ -54,9 +54,11 @@ function RecentNotesList({ otherProps, loadInfo, info, screen }) {
     );
 
     innerContent = (
-      <ol className="Module-recent-notes-list">
-        { noteListItems }
-      </ol>
+      <div className="Module-recent-notes-list">
+        <ol>
+          { noteListItems }
+        </ol>
+      </div>
     );
   }
 
@@ -66,7 +68,7 @@ function RecentNotesList({ otherProps, loadInfo, info, screen }) {
         <h4>Recent actions</h4>
       </div>
       <div className="Module-recent-notes-divider" />
-        { innerContent }
+      { innerContent }
     </div>
   );
 }
