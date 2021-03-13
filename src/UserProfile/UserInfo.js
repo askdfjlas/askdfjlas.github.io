@@ -11,9 +11,6 @@ function UserInfo({ info }) {
   ));
   let [ error, setError ] = useState('');
 
-  const contributionClassName = info.contribution > 0 ?
-    'Users-table-contributor' : '';
-
   let handleUpload = async (event) => {
     const file = event.target.files[0];
     const avatarData = await Utils.convertFileToBase64(file);
@@ -40,6 +37,9 @@ function UserInfo({ info }) {
       avatarData, avatarExtension
     ));
   }
+
+  const contributionClassName = info.contribution > 0 ?
+    'Users-table-contributor' : '';
 
   const imageContent = (
     <>
@@ -70,7 +70,7 @@ function UserInfo({ info }) {
               Email: {info.email} (only visible to you)
             </p>
           }
-          <p>
+          <p className="User-info-info-contribution">
             <span className="icon-thumb_up_alt" />
             Contribution:
             <span className={contributionClassName}>

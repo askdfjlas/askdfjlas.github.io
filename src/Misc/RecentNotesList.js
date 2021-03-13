@@ -3,8 +3,6 @@ import { useLocation, Link } from 'react-router-dom';
 import CreateLoadingComponent from '../HOC/CreateLoadingComponent';
 import LoadingSpinner from './LoadingSpinner';
 import NotesApi from '../Api/NotesApi';
-import SimpleBar from 'simplebar-react';
-import 'simplebar/dist/simplebar.min.css';
 
 async function getMostRecentNotes(props, params) {
   return await NotesApi.getMostRecentNotes(1);
@@ -56,7 +54,7 @@ function RecentNotesList({ otherProps, loadInfo, info, screen }) {
     );
 
     innerContent = (
-      <ol>
+      <ol className="Module-recent-notes-list">
         { noteListItems }
       </ol>
     );
@@ -68,9 +66,7 @@ function RecentNotesList({ otherProps, loadInfo, info, screen }) {
         <h4>Recent actions</h4>
       </div>
       <div className="Module-recent-notes-divider" />
-      <SimpleBar className="Module-recent-notes-list">
         { innerContent }
-      </SimpleBar>
     </div>
   );
 }

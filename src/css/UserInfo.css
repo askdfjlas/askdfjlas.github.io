@@ -105,6 +105,10 @@
   font-size: 0.9em;
 }
 
+.User-info-info-contribution span:last-child:not(.Users-table-contributor) {
+  margin-left: 0.18em;
+}
+
 .User-info-info-error {
   color: #D51530;
   font-size: 0.8em;

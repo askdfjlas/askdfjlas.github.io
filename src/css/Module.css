@@ -38,7 +38,7 @@
   background-color: var(--main-content-color);
   box-sizing: border-box;
   box-shadow: var(--main-content-shadow);
-  min-height: 40em;
+  min-height: 35em;
 }
 
 .Module-recent-notes .icon-long-arrow-right {
@@ -103,17 +103,26 @@
   flex-basis: 0;
   overflow: auto;
   padding: 0.2em 0.5em;
-}
-
-.Module-recent-notes-list ol {
   list-style-type: none;
-  padding: 0;
   margin: 0;
 }
 
 .Module-recent-notes-list li {
   white-space: pre-wrap;
-  margin: 0.5em 0;
+  margin: 0.3em 0;
+}
+
+.Module-recent-notes-list::-webkit-scrollbar {
+  background-color: rgba(0, 0, 0, 0);
+  width: 0.5em;
+}
+
+.Module-recent-notes-list::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0);
+}
+
+.Module-recent-notes-list:hover::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.4);
 }
 
 .Module-heading {
