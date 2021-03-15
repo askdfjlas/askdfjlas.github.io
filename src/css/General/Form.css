@@ -36,7 +36,7 @@ input.Askd-not-fullwidth {
 }
 
 .Askd-form select {
-  background-image: url('../img/dropdown.png');
+  background-image: url('../../img/dropdown.png');
   background-size: auto 70%;
   background-repeat: no-repeat;
   background-position: right 0.5em bottom 50%;
@@ -158,7 +158,7 @@ button.Askd-form-link {
 }
 
 .Askd-form-loading {
-  background-image: url('../img/spinner.gif');
+  background-image: url('../../img/spinner.gif');
   background-size: auto 60%;
   background-position: right 0.5em bottom 50%;
   background-repeat: no-repeat;

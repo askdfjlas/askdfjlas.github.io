@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import UserAuthApi from '../Api/UserAuthApi';
-import '../css/LikeDislike.css';
+import '../css/Misc/LikeDislike.css';
 
 function LikeDislike({ initialScore, initialStatus, likeCallback }) {
   let [ score, setScore ] = useState(initialScore);

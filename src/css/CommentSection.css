@@ -1,0 +1,6 @@
+.Comment-section {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  margin-top: 0.7em;
+}

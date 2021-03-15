@@ -9,10 +9,10 @@ import UsersList from './UsersList/UsersList';
 import NotesSearch from './NotesSearch/NotesSearch';
 import RecentNotesList from './Misc/RecentNotesList';
 
-import './css/App.css';
-import './css/Module.css';
-import './css/Form.css';
-import './css/Username.css';
+import './css/General/App.css';
+import './css/General/Module.css';
+import './css/General/Form.css';
+import './css/Misc/Username.css';
 
 function App() {
   return (
