@@ -240,6 +240,10 @@ class TextEditor extends Component {
     this.textEditor = document.getElementById(this.id);
     this.outerTextEditor = document.getElementById(this.id + '!');
     this.handleSelectionChange = registerEventHandlers(this);
+
+    if(this.props.focusOnMount) {
+      this.textEditor.focus();
+    }
   }
 
   componentDidUpdate() {

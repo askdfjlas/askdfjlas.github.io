@@ -1,13 +1,19 @@
 import CommentsApi from '../Api/CommentsApi';
 import CreateCommentComponent from '../HOC/CreateCommentComponent';
+import UserAuthApi from '../Api/UserAuthApi';
 
-async function getNoteComments(props, params) {
+function getParamsFromProps(props) {
   const noteAuthor = props.match.params.ownerUsername;
   const platform = props.match.params.platform;
   const contestId = props.match.params.contestId;
   const problemCode = props.match.params.problemCode;
   const problemId = `${contestId}#${problemCode}`;
 
+  return [ noteAuthor, platform, problemId ];
+}
+
+async function getNoteComments(props, params) {
+  const [ noteAuthor, platform, problemId ] = getParamsFromProps(props);
   const comments = await CommentsApi.getNoteComments(
     noteAuthor, platform, problemId
   );
@@ -17,6 +23,23 @@ async function getNoteComments(props, params) {
   };
 }
 
-const addNoteComment = null;
+async function addNoteComment(props, newCommentContent, replyId) {
+  const username = await UserAuthApi.getUsername();
+
+  if(!username) {
+    window.suggestUserRegister();
+    return;
+  }
+
+  const [ noteAuthor, platform, problemId ] = getParamsFromProps(props);
+  const newCommentId = await CommentsApi.addNoteComment(
+    username, noteAuthor, platform, problemId, replyId, newCommentContent
+  );
+
+  props.history.replace(
+    `/notes/${noteAuthor}/${platform}/${problemId.replace('#', '/')}` +
+    `?linkedComment=${newCommentId}`
+  );
+}
 
 export default CreateCommentComponent(getNoteComments, addNoteComment);

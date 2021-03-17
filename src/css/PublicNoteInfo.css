@@ -7,15 +7,10 @@
 .Public-note-info {
   display: flex;
   flex-direction: column;
-  flex: 2 0 auto;
+  flex: 1 0 auto;
   margin-top: 0.7em;
 }
 
 .Public-note-info .Like-button {
   margin-top: 0.5em;
-}
-
-.Public-note-loading-spinner {
-  display: flex;
-  flex: 2 0 auto;
 }

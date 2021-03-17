@@ -19,7 +19,7 @@ class CommentsApi {
       platform: platform,
       problemId: problemId,
       replyId: replyId,
-      content: content
+      content: JSON.stringify(content)
     };
 
     return await Api.postJson('comments', options);

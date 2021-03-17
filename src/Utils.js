@@ -1,3 +1,9 @@
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
+
+TimeAgo.addDefaultLocale(en);
+const timeAgo = new TimeAgo('en-US');
+
 class Utils {
   static async setStatePromise(component, stateObject) {
     return new Promise((resolve, reject) => {
@@ -66,6 +72,11 @@ class Utils {
     }
 
     return inputString.substring(zeroCount, inputString.length);
+  }
+
+  static getTimeAgoString(timestamp) {
+    const timeDate = new Date(timestamp);
+    return timeAgo.format(timeDate);
   }
 
   static renderMathJax(selectors) {

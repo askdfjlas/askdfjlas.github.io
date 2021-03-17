@@ -45,7 +45,7 @@ class EditNoteForm extends Component {
     const problemId = this.props.problemInfo.problemId;
     const title = this.title;
     const solved = this.solved;
-    const content = JSON.stringify(this.content);
+    const content = this.content;
 
     await NotesApi.editNote(username, platform, problemId, title, solved,
                             content, published);

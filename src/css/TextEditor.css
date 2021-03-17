@@ -5,8 +5,6 @@
   width: 100%;
   margin: 1em 0;
   box-sizing: border-box;
-  color: black;
-  font-family: Arial;
   font-weight: normal;
 }
 
@@ -37,8 +35,13 @@
 
 .Askd-text-editor-text {
   width: 100%;
-  min-height: 25em;
   box-sizing: border-box;
+  color: black;
+  font-family: Arial;
+}
+
+.Askd-text-editor .Askd-text-editor-text {
+  min-height: 25em;
 }
 
 .Askd-text-editor-text div {
@@ -46,10 +49,10 @@
   white-space: pre-wrap;
 }
 
-.Askd-text-editor-uneditable {
-  padding: 1em 0;
+.Askd-text-editor .Askd-text-editor-uneditable {
   border-bottom: 1px solid var(--super-dark-bg-color);
   border-top: 1px solid var(--super-dark-bg-color);
+  padding: 1em 0;
 }
 
 .Askd-text-editor-editable {

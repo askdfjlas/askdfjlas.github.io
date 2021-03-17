@@ -3,4 +3,83 @@
   flex-direction: column;
   flex: 1 0 auto;
   margin-top: 0.7em;
+  min-height: 30em;
+}
+
+.Comment-section .User-notes-nothing {
+  min-height: 15em;
+}
+
+.Comment-section-add {
+  margin-bottom: 1.4em;
+}
+
+.Comment-section-add input[type="text"] {
+  width: 100%;
+  background: none;
+  padding: 0.3em 0;
+  box-sizing: border-box;
+  border: none;
+  border-bottom: 2px solid var(--super-dark-bg-color);
+  font-size: 0.9em;
+}
+
+.Comment-section-add input:focus {
+  outline: none;
+}
+
+.Comment-section-add .Askd-form .Askd-button[type="button"] {
+  margin: 0.4em 0.4em 0 0;
+  border: none;
+  box-shadow: none;
+}
+
+.Comment-section-add .Askd-form .Askd-button:first-child {
+  background-color: var(--main-content-color);
+  color: var(--main-text-color);
+  min-width: 5em;
+}
+
+.Comment-section-add .Askd-form .Askd-button:first-child:hover {
+  background-color: var(--main-bg-color);
+}
+
+.Comment-section-add .Askd-form .Askd-button:last-child {
+  min-width: 6em;
+}
+
+.Comment-section-add .Askd-text-editor {
+  margin: 0;
+}
+
+.Comment-section-add .Askd-text-editor .Askd-text-editor-text {
+  min-height: 10em;
+}
+
+.Comment-section-comments {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+}
+
+.Comment-section-comments li {
+  margin-bottom: 0.6em;
+  padding: 0.6em 0.8em;
+}
+
+.Comment-section-comments li:last-child {
+  margin-bottom: 0;
+}
+
+.Comment-section-comments .Askd-text-editor-text {
+  padding-top: 0.5em;
+  padding-bottom: 0.2em;
+  margin-top: 0.3em;
+  border-top: 1px solid var(--super-dark-bg-color);
+}
+
+.Comment-section-timestamp {
+  font-size: 0.8em;
+  margin-left: 0.4em;
+  color: gray;
 }

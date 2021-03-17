@@ -112,7 +112,7 @@ class NotesApi {
       problemId: problemId,
       title: title,
       solved: solved,
-      content: content,
+      content: JSON.stringify(content),
       published: published
     };
 

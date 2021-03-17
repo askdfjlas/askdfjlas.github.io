@@ -29,7 +29,7 @@ function PublicNote({ otherProps, info, screen }) {
   const doNotShowComments = !(screen === LoadState.DONE);
   const commentsComponent = (
     <PublicNoteComments match={otherProps.match} doNotShow={doNotShowComments}
-                        key="comments" />
+                        history={otherProps.history} key="comments" />
   );
 
   if(screen === LoadState.NOT_FOUND) {
