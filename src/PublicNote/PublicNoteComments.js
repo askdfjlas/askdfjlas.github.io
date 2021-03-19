@@ -23,7 +23,7 @@ async function getNoteComments(props, params) {
   };
 }
 
-async function addNoteComment(props, newCommentContent, replyId) {
+async function addNoteComment(props, newCommentContent, rootReplyId, replyId) {
   const username = await UserAuthApi.getUsername();
 
   if(!username) {
@@ -33,13 +33,15 @@ async function addNoteComment(props, newCommentContent, replyId) {
 
   const [ noteAuthor, platform, problemId ] = getParamsFromProps(props);
   const newCommentId = await CommentsApi.addNoteComment(
-    username, noteAuthor, platform, problemId, replyId, newCommentContent
+    username, noteAuthor, platform, problemId, rootReplyId, replyId, newCommentContent
   );
 
   props.history.replace(
     `/notes/${noteAuthor}/${platform}/${problemId.replace('#', '/')}` +
     `?linkedComment=${newCommentId}`
   );
+
+  return true;
 }
 
 export default CreateCommentComponent(getNoteComments, addNoteComment);

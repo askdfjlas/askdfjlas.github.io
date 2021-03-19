@@ -39,6 +39,7 @@
   box-sizing: border-box;
   box-shadow: var(--main-content-shadow);
   min-height: 35em;
+  font-size: 0.9em;
 }
 
 .Module-recent-notes .icon-long-arrow-right {
@@ -86,6 +87,7 @@
 .Module-recent-actions h4 {
   color: white;
   font-family: var(--bold-text-font);
+  font-size: 1.2em;
   padding: 0;
   margin: 0;
 }
@@ -113,7 +115,7 @@
 
 .Module-recent-notes-list li {
   white-space: pre-wrap;
-  margin: 0.3em 0;
+  margin: 0.4em 0;
 }
 
 .Module-recent-notes-list::-webkit-scrollbar {

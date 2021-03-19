@@ -40,7 +40,8 @@
   min-width: 5em;
 }
 
-.Comment-section-add .Askd-form .Askd-button:first-child:hover {
+.Comment-section-add .Askd-form .Askd-button:first-child:hover,
+.Comment-section-reply-button:hover {
   background-color: var(--main-bg-color);
 }
 
@@ -62,16 +63,45 @@
   list-style-type: none;
 }
 
-.Comment-section-comments li {
-  margin-bottom: 0.6em;
-  padding: 0.6em 0.8em;
+.Comment-section-replies {
+  margin: 0;
+  padding-left: 2.5em;
+  list-style-type: none;
 }
 
-.Comment-section-comments li:last-child {
-  margin-bottom: 0;
+.Comment-section-root-comment {
+  margin-top: 0.8em;
 }
 
-.Comment-section-comments .Askd-text-editor-text {
+.Comment-section-root-comment:first-child {
+  margin-top: 0;
+}
+
+.Comment-section-reply-comment {
+  margin-top: 0.6em;
+}
+
+.Comment-section-comments .Comment-section-comment {
+  padding: 0.6em 0.8em 0.5em 0.8em;
+}
+
+.Comment-section-reply-username {
+  position: relative;
+  bottom: 0.5em;
+  font-size: 0.8em;
+  float: right;
+}
+
+.Comment-section-reply-username .icon-reply {
+  margin-left: 0.2em;
+  color: var(--bright-heading-color);
+}
+
+.Comment-section-reply-form .Comment-section-reply-username {
+  margin-top: 0.3em;
+}
+
+.Comment-section-comments .Askd-text-editor-uneditable {
   padding-top: 0.5em;
   padding-bottom: 0.2em;
   margin-top: 0.3em;
@@ -82,4 +112,21 @@
   font-size: 0.8em;
   margin-left: 0.4em;
   color: gray;
+}
+
+.Comment-section-comment-buttons {
+  margin-top: 0.2em;
+}
+
+.Comment-section-comment .icon-thumb_up_alt {
+  position: relative;
+  top: 1px;
+  margin: 0.4em 0.3em 0.4em 0;
+}
+
+.Comment-section-reply-button {
+  padding: 0.4em;
+  border-radius: 2px;
+  min-width: 3em;
+  background: none;
 }

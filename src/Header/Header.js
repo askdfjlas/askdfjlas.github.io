@@ -23,7 +23,6 @@ function Header() {
         </li>
       </ul>
       <HeaderAuth />
-      <span className="Header-bottom"></span>
     </div>
   );
 }

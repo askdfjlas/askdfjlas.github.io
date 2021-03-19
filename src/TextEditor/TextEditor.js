@@ -6,14 +6,14 @@ import TextEditorContent from './TextEditorContent';
 import MaskManager from './MaskManager';
 import Utils from '../Utils';
 import registerEventHandlers from './registerEventHandlers';
+import { v4 as uuidv4 } from 'uuid';
 import '../css/TextEditor.css';
 
 class TextEditor extends Component {
   constructor(props) {
     super(props);
 
-    this.id = this.props.uniqueKey ?
-                `Askd-text-editor${this.props.uniqueKey}` : 'Askd-text-editor';
+    this.id = `Askd-text-editor-${uuidv4()}`;
     this.virtualTextEditor = new VirtualTextEditor(this.props.initialContent);
     this.caret = new Caret(this.id);
 

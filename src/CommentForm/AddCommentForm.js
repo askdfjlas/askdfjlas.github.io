@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import CommentForm from './CommentForm';
 import UserAuthApi from '../Api/UserAuthApi';
 
 function AddCommentForm({ addCallback }) {
   const [ editorActive, setEditorActive ] = useState(false);
+  const editorContent = useRef(null);
   const inputRef = React.createRef();
 
   const handleInactiveFocus = async (event) => {
@@ -21,6 +22,10 @@ function AddCommentForm({ addCallback }) {
     setEditorActive(false);
   }
 
+  const updateCallback = (newContent) => {
+    editorContent.current = newContent;
+  }
+
   if(!editorActive) {
     return (
       <div className="Comment-section-add">
@@ -31,7 +36,9 @@ function AddCommentForm({ addCallback }) {
   }
   else {
     return (
-      <CommentForm cancelCallback={handleCancelEditor} addCallback={addCallback} />
+      <CommentForm cancelCallback={handleCancelEditor} addCallback={addCallback}
+                   initialContent={editorContent.current}
+                   updateCallback={updateCallback} />
     );
   }
 }

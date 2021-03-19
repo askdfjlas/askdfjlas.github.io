@@ -1,10 +1,8 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import CreateLoadingComponent from './CreateLoadingComponent';
 import LoadState from '../Enum/LoadState';
-import TextEditorContent from '../TextEditor/TextEditorContent';
+import RootComment from '../CommentForm/RootComment';
 import AddCommentForm from '../CommentForm/AddCommentForm';
-import Utils from '../Utils';
 import queryString from 'query-string';
 import '../css/CommentSection.css';
 
@@ -19,6 +17,14 @@ function CreateCommentComponent(getComments, addComment) {
         }
       }
     });
+
+    const addCallback = async (newCommentContent) => {
+      return await addComment(otherProps, newCommentContent, null, null);
+    };
+
+    const replyCallback = async (newCommentContent, rootReplyId, replyId) => {
+      return await addComment(otherProps, newCommentContent, rootReplyId, replyId);
+    }
 
     if(screen === LoadState.LOADING || otherProps.doNotShow) {
       return null;
@@ -37,21 +43,9 @@ function CreateCommentComponent(getComments, addComment) {
         let commentListItems = [];
         for(let i = 0; i < comments.length; i++) {
           const comment = comments[i];
-          const id = comment.commentId;
-          const authorUsername = comment.username;
-          const timeAgoString = Utils.getTimeAgoString(comment.creationTime);
-          const content = JSON.parse(comment.content);
-
           commentListItems.push(
-            <li key={i} id={id} className="Module-outer-space">
-              <Link className="Username" to={`/users/${authorUsername}`}>
-                {authorUsername}
-              </Link>
-              <span className="Comment-section-timestamp">
-                {timeAgoString}
-              </span>
-              <TextEditorContent id={id + 'Z'} content={content}
-                                 editable={false} />
+            <li key={i} className="Comment-section-root-comment">
+              <RootComment info={comment} replyCallback={replyCallback} />
             </li>
           );
         }
@@ -62,10 +56,6 @@ function CreateCommentComponent(getComments, addComment) {
           </ol>
         );
       }
-
-      const addCallback = async (newCommentContent) => {
-        await addComment(otherProps, newCommentContent, null);
-      };
 
       return (
         <div className="Module-outer-space Comment-section">

@@ -1,26 +1,31 @@
 import React, { useState } from 'react';
 import TextEditor from '../TextEditor/TextEditor';
 
-function CommentForm({ cancelCallback, addCallback}) {
-  const [ commentContent, setCommentContent ] = useState(null);
+function CommentForm({ cancelCallback, addCallback, initialContent, updateCallback }) {
+  const [ commentContent, setCommentContent ] = useState(initialContent);
   const [ addCommentLoading, setAddCommentLoading ] = useState(false);
 
   const handleEditorChange = (newContent) => {
     setCommentContent(newContent);
+    if(updateCallback) {
+      updateCallback(newContent);
+    }
   };
 
   const handleAddComment = async () => {
     setAddCommentLoading(true);
-    await addCallback(commentContent);
-    setAddCommentLoading(false);
+    const success = await addCallback(commentContent);
+    if(!success) {
+      setAddCommentLoading(false);
+    }
   };
 
   const textEmpty = !commentContent || commentContent[0].c.length === 0;
 
   return (
     <div className="Comment-section-add">
-      <TextEditor id="Comment-section-add-new" focusOnMount={true}
-                  initialContent={commentContent} onChange={handleEditorChange} />
+      <TextEditor focusOnMount={true} initialContent={commentContent}
+                  onChange={handleEditorChange} />
       <div className="Askd-form">
         <input type="button" value="Cancel" className="Askd-button Askd-not-fullwidth"
                onClick={cancelCallback} />

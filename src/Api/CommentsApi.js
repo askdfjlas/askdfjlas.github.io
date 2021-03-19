@@ -12,12 +12,13 @@ class CommentsApi {
   }
 
   static async addNoteComment(username, noteAuthor, platform, problemId,
-                              replyId, content) {
+                              rootReplyId, replyId, content) {
     const options = {
       username: username,
       noteAuthor: noteAuthor,
       platform: platform,
       problemId: problemId,
+      rootReplyId: rootReplyId,
       replyId: replyId,
       content: JSON.stringify(content)
     };

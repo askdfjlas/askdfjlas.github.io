@@ -73,11 +73,11 @@ src: local('Mosk Normal 400 Regular'), url('Mosk Normal 400.woff') format('woff'
 
 @font-face {
   font-family: 'icomoon';
-  src:  url('icomoon.eot?nto7e2');
-  src:  url('icomoon.eot?nto7e2#iefix') format('embedded-opentype'),
-    url('icomoon.ttf?nto7e2') format('truetype'),
-    url('icomoon.woff?nto7e2') format('woff'),
-    url('icomoon.svg?nto7e2#icomoon') format('svg');
+  src:  url('icomoon.eot?yfqi2e');
+  src:  url('icomoon.eot?yfqi2e#iefix') format('embedded-opentype'),
+    url('icomoon.ttf?yfqi2e') format('truetype'),
+    url('icomoon.woff?yfqi2e') format('woff'),
+    url('icomoon.svg?yfqi2e#icomoon') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: block;
@@ -98,6 +98,9 @@ src: local('Mosk Normal 400 Regular'), url('Mosk Normal 400.woff') format('woff'
   -moz-osx-font-smoothing: grayscale;
 }
 
+.icon-note-text:before {
+  content: "\e905";
+}
 .icon-x:before {
   content: "\e903";
 }
@@ -110,8 +113,23 @@ src: local('Mosk Normal 400 Regular'), url('Mosk Normal 400.woff') format('woff'
 .icon-thumb_up_alt:before {
   content: "\e901";
 }
-.icon-note-text:before {
-  content: "\e905";
+.icon-link:before {
+  content: "\e9cb";
+}
+.icon-bold:before {
+  content: "\ea62";
+}
+.icon-underline:before {
+  content: "\ea63";
+}
+.icon-italic:before {
+  content: "\ea64";
+}
+.icon-strikethrough:before {
+  content: "\ea65";
+}
+.icon-reply:before {
+  content: "\e96a";
 }
 .icon-plus:before {
   content: "\f067";
@@ -148,19 +166,4 @@ src: local('Mosk Normal 400 Regular'), url('Mosk Normal 400.woff') format('woff'
 }
 .icon-long-arrow-right:before {
   content: "\e902";
-}
-.icon-link:before {
-  content: "\e9cb";
-}
-.icon-bold:before {
-  content: "\ea62";
-}
-.icon-underline:before {
-  content: "\ea63";
-}
-.icon-italic:before {
-  content: "\ea64";
-}
-.icon-strikethrough:before {
-  content: "\ea65";
 }
