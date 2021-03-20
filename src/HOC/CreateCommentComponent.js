@@ -60,7 +60,7 @@ function CreateCommentComponent(getComments, addComment) {
       return (
         <div className="Module-outer-space Comment-section">
           <h2 className="Module-heading">
-            Comments ({comments.length})
+            Comments
           </h2>
           <AddCommentForm addCallback={addCallback} />
           { commentsContent }

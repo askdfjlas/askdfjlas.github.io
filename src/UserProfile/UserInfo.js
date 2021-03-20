@@ -6,9 +6,7 @@ import '../css/UserInfo.css';
 
 function UserInfo({ info }) {
   let [ imageLoading, setImageLoading ] = useState(false);
-  let [ imageSource, setImageSource ] = useState(Utils.getImageSourceFromBase64(
-    info.avatarData, info.avatarExtension
-  ));
+  let [ imageSource, setImageSource ] = useState(info.avatarData);
   let [ error, setError ] = useState('');
 
   let handleUpload = async (event) => {
@@ -16,26 +14,22 @@ function UserInfo({ info }) {
     const avatarData = await Utils.convertFileToBase64(file);
 
     let avatarExtension;
-    if(file.type === 'image/png') avatarExtension = 'png';
-    else if(file.type === 'image/jpeg') avatarExtension = 'jpg';
-    else {
-      setError('Error: You may only choose .png or .jpg images!');
+    if(file.type !== 'image/png' && file.type !== 'image/jpeg') {
+      setError('Error: You may only choose .png or .jpeg images!');
       return;
     }
 
     try {
       setImageLoading(true);
       setError('');
-      await UsersApi.updateUserInfo(info.username, avatarData, avatarExtension);
+      await UsersApi.updateUserInfo(info.username, avatarData);
     }
     catch(err) {
       setError('Error: ' + err.message);
     }
 
     setImageLoading(false);
-    setImageSource(Utils.getImageSourceFromBase64(
-      avatarData, avatarExtension
-    ));
+    setImageSource(avatarData);
   }
 
   const contributionClassName = info.contribution > 0 ?

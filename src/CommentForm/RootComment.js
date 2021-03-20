@@ -2,6 +2,7 @@ import React, { useState, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import Comment from './Comment';
 import CommentForm from './CommentForm';
+import UserAuthApi from '../Api/UserAuthApi';
 
 function RootComment({ info, replyCallback }) {
   let replyListItems = [];
@@ -33,16 +34,22 @@ function RootComment({ info, replyCallback }) {
   };
 
   const createReplyHandler = (replyId, replyUsername) => {
-    return () => {
-      setEditorActive(true);
+    return async () => {
+      const username = await UserAuthApi.getUsername();
+      if(!username) {
+        window.suggestUserRegister();
+        return;
+      }
+      
       editorReplyInfo.current.replyId = replyId;
       editorReplyInfo.current.replyUsername = replyUsername;
+      setEditorActive(true);
     };
   }
 
   for(let i = 0; i < info.replies.length; i++) {
     const reply = info.replies[i];
-    const replyUsername = reply.replyId ? replyIdToUsername[reply.replyId] : null;
+    const replyUsername = replyIdToUsername[reply.replyId];
     const replyCallback = createReplyHandler(reply.commentId, reply.username);
 
     replyListItems.push(
@@ -53,10 +60,6 @@ function RootComment({ info, replyCallback }) {
     );
     replyIdToUsername[reply.commentId] = reply.username;
   }
-
-  const rootCommentReplyCallback = createReplyHandler(
-    info.commentId, info.username
-  );
 
   const replyUsername = editorReplyInfo.current.replyUsername;
   const replyCommentForm = (
@@ -74,6 +77,10 @@ function RootComment({ info, replyCallback }) {
                      initialContent={editorReplyInfo.current.content} />
       </li>
     </div>
+  );
+
+  const rootCommentReplyCallback = createReplyHandler(
+    info.commentId, info.username
   );
 
   return (

@@ -47,17 +47,12 @@ class Utils {
     }
   }
 
-  static getImageSourceFromBase64(data, extension) {
-    return `data:image/${extension};base64,${data}`;
-  }
-
   static convertFileToBase64(file) {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        const data = reader.result.split('base64,')[1];
-        resolve(data);
+        resolve(reader.result);
       }
       reader.onerror = (err) => reject(err);
     });
