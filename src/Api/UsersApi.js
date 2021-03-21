@@ -1,9 +1,10 @@
 import Api from './Api';
 
 class UsersApi {
-  static async getUserInfo(username) {
+  static async getUserInfo(username, basicInfoOnly) {
     const options = {
-      username: username
+      username: username,
+      basicInfoOnly: basicInfoOnly
     };
 
     return await Api.getJson('users', options);

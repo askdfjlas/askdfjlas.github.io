@@ -13,7 +13,6 @@ function UserInfo({ info }) {
     const file = event.target.files[0];
     const avatarData = await Utils.convertFileToBase64(file);
 
-    let avatarExtension;
     if(file.type !== 'image/png' && file.type !== 'image/jpeg') {
       setError('Error: You may only choose .png or .jpeg images!');
       return;

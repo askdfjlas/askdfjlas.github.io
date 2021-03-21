@@ -4,12 +4,7 @@ import Comment from './Comment';
 import CommentForm from './CommentForm';
 import UserAuthApi from '../Api/UserAuthApi';
 
-function RootComment({ info, replyCallback }) {
-  let replyListItems = [];
-  let replyIdToUsername = {
-    [ info.commentId ]: info.username
-  };
-
+function RootComment({ info, addAvatarSubscriptions, replyCallback }) {
   const [ editorActive, setEditorActive ] = useState(false);
   const editorReplyInfo = useRef({
     content: null,
@@ -40,21 +35,28 @@ function RootComment({ info, replyCallback }) {
         window.suggestUserRegister();
         return;
       }
-      
+
       editorReplyInfo.current.replyId = replyId;
       editorReplyInfo.current.replyUsername = replyUsername;
       setEditorActive(true);
     };
   }
 
+  let replyListItems = [];
+  let replyIdToUsername = {
+    [ info.commentId ]: info.username
+  };
+
   for(let i = 0; i < info.replies.length; i++) {
     const reply = info.replies[i];
     const replyUsername = replyIdToUsername[reply.replyId];
     const replyCallback = createReplyHandler(reply.commentId, reply.username);
+    const subscribeToAvatar = addAvatarSubscriptions[reply.username];
 
     replyListItems.push(
       <li key={i} className="Comment-section-reply-comment">
         <Comment info={reply} replyUsername={replyUsername}
+                 subscribeToAvatar={subscribeToAvatar}
                  replyCallback={replyCallback} />
       </li>
     );
@@ -82,10 +84,12 @@ function RootComment({ info, replyCallback }) {
   const rootCommentReplyCallback = createReplyHandler(
     info.commentId, info.username
   );
+  const rootCommentSubscribeToAvatar = addAvatarSubscriptions[info.username];
 
   return (
     <>
-      <Comment info={info} replyCallback={rootCommentReplyCallback} />
+      <Comment info={info} replyCallback={rootCommentReplyCallback}
+               subscribeToAvatar={rootCommentSubscribeToAvatar} />
       <ol className="Comment-section-replies">
         { replyListItems }
         { editorActive && replyCommentForm }

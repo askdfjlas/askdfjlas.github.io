@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { useLocation, Link } from 'react-router-dom';
+import React from 'react';
+import { Link } from 'react-router-dom';
 import CreateLoadingComponent from '../HOC/CreateLoadingComponent';
 import LoadingSpinner from './LoadingSpinner';
 import NotesApi from '../Api/NotesApi';
@@ -9,11 +9,6 @@ async function getMostRecentNotes(props, params) {
 }
 
 function RecentNotesList({ otherProps, loadInfo, info, screen }) {
-  const location = useLocation();
-  useEffect(() => {
-    loadInfo();
-  }, [loadInfo, location]);
-
   let innerContent;
   if(!info) {
     innerContent = (

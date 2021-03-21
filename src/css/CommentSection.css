@@ -97,6 +97,18 @@
   color: var(--bright-heading-color);
 }
 
+.Comment-section-avatar {
+  position: absolute;
+  width: 3em;
+  height: 3em;
+  border-radius: 2px;
+  object-fit: cover;
+}
+
+.Comment-section-comment-body {
+  margin-left: 3.9em;
+}
+
 .Comment-section-reply-form .Comment-section-reply-username {
   margin-top: 0.3em;
 }

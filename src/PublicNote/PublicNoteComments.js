@@ -36,7 +36,7 @@ async function addNoteComment(props, newCommentContent, rootReplyId, replyId) {
     username, noteAuthor, platform, problemId, rootReplyId, replyId, newCommentContent
   );
 
-  props.history.replace(
+  props.history.push(
     `/notes/${noteAuthor}/${platform}/${problemId.replace('#', '/')}` +
     `?linkedComment=${newCommentId}`
   );
