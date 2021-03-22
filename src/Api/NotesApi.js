@@ -2,6 +2,9 @@ import Api from './Api';
 import ProblemsApi from './ProblemsApi';
 
 const LIKED_NOTES_PAGE_SIZE = 50;
+const RECENT_NOTES_SIDE_EXPIRATION = 2 * 60 * 1000;
+let lastRecentNotesSideUpdate = null;
+let oldRecentNotesSide = null;
 
 class NotesApi {
   static getNoteEditLink(note) {
@@ -75,12 +78,22 @@ class NotesApi {
   }
 
   static async getMostRecentNotes(page) {
+    if(page === 1 && Date.now() - lastRecentNotesSideUpdate < RECENT_NOTES_SIDE_EXPIRATION) {
+      return oldRecentNotesSide;
+    }
+
     const options = {
       page: page,
       recent: true
     };
 
-    return await Api.getJson('notes', options);
+    const mostRecentNotes = await Api.getJson('notes', options);
+    if(page === 1) {
+      oldRecentNotesSide = mostRecentNotes;
+      lastRecentNotesSideUpdate = Date.now();
+    }
+
+    return mostRecentNotes;
   }
 
   static async getNoteInfo(username, platform, problemId, forcePublished) {

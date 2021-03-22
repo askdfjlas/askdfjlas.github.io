@@ -10,6 +10,9 @@ import '../css/CommentSection.css';
 function CreateCommentComponent(getComments, addComment) {
   function CommentComponent({ otherProps, info, screen }) {
     let mounted = useRef(true);
+    let userAvatars = useRef({});
+    let userAvatarSubscriptions = useRef({});
+    let addAvatarSubscriptions = useRef({});
 
     useEffect(() => {
       const urlParams = queryString.parse(window.location.search);
@@ -28,6 +31,51 @@ function CreateCommentComponent(getComments, addComment) {
       };
     });
 
+    useEffect(() => {
+      if(!info) {
+        return;
+      }
+
+      userAvatars.current = {};
+      userAvatarSubscriptions.current = {};
+      addAvatarSubscriptions.current = {};
+
+      const getUserAvatarData = async (username) => {
+        const userInfo = await UsersApi.getUserInfo(username, true);
+        userAvatars.current[username] = userInfo.avatarData;
+        for(const callback of userAvatarSubscriptions.current[username]) {
+          if(mounted.current) {
+            callback(userInfo.avatarData);
+          }
+        }
+      };
+
+      const initializeAvatarSystem = (username) => {
+        userAvatars.current[username] = null;
+        userAvatarSubscriptions.current[username] = [];
+        addAvatarSubscriptions.current[username] = (callback) => {
+          if(userAvatars.current[username] && mounted.current) {
+            callback(userAvatars.current[username]);
+          }
+          else {
+            userAvatarSubscriptions.current[username].push(callback);
+          }
+        };
+        getUserAvatarData(username);
+      };
+
+      for(const comment of info.comments) {
+        if(!(comment.username in userAvatars.current)) {
+          initializeAvatarSystem(comment.username);
+        }
+        for(const reply of comment.replies) {
+          if(!(reply.username in userAvatars.current)) {
+            initializeAvatarSystem(reply.username);
+          }
+        }
+      }
+    }, [info]);
+
     const addCallback = async (newCommentContent) => {
       return await addComment(otherProps, newCommentContent, null, null);
     };
@@ -40,47 +88,9 @@ function CreateCommentComponent(getComments, addComment) {
       return null;
     }
     else {
-      let userAvatars = {};
-      let userAvatarSubscriptions = {};
-      let addAvatarSubscriptions = {};
-
-      const getUserAvatarData = async (username) => {
-        const userInfo = await UsersApi.getUserInfo(username, true);
-        userAvatars[username] = userInfo.avatarData;
-        for(const callback of userAvatarSubscriptions[username]) {
-          if(mounted.current) {
-            callback(userInfo.avatarData);
-          }
-        }
-      };
-
-      const initializeAvatarSystem = (username) => {
-        userAvatars[username] = null;
-        userAvatarSubscriptions[username] = [];
-        addAvatarSubscriptions[username] = (callback) => {
-          if(userAvatars[username] && mounted.current) {
-            callback(userAvatars[username]);
-          }
-          else {
-            userAvatarSubscriptions[username].push(callback);
-          }
-        };
-        getUserAvatarData(username);
-      };
-
-      const comments = info.comments;
-      for(const comment of comments) {
-        if(!(comment.username in userAvatars)) {
-          initializeAvatarSystem(comment.username);
-        }
-        for(const reply of comment.replies) {
-          if(!(reply.username in userAvatars)) {
-            initializeAvatarSystem(reply.username);
-          }
-        }
-      }
-
       let commentsContent;
+      const comments = info.comments;
+
       if(comments.length === 0) {
         commentsContent = (
           <p className="User-notes-nothing">
@@ -95,7 +105,7 @@ function CreateCommentComponent(getComments, addComment) {
           commentListItems.push(
             <li key={i} className="Comment-section-root-comment">
               <RootComment info={comment} replyCallback={replyCallback}
-                           addAvatarSubscriptions={addAvatarSubscriptions} />
+                           addAvatarSubscriptions={addAvatarSubscriptions.current} />
             </li>
           );
         }
