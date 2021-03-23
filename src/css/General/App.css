@@ -28,6 +28,7 @@ html {
   --main-text-font: 'Mosk Medium 500';
   --bold-text-font: 'Mosk Bold 700';
   --main-content-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2);
+  --highlighted-content-shadow: 0 0 2px 1px var(--recent-actions-alpha);
 }
 
 html {

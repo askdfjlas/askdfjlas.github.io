@@ -25,6 +25,14 @@ class CommentsApi {
 
     return await Api.postJson('comments', options);
   }
+
+  static async deleteComment(commentId) {
+    const options = {
+      commentId: commentId
+    };
+
+    return await Api.deleteJson('comments', options);
+  }
 }
 
 export default CommentsApi;

@@ -1,8 +1,21 @@
 import React, { Component } from 'react';
-import UserAuthApi from '../Api/UserAuthApi';
-import NotesApi from '../Api/NotesApi';
 import Utils from '../Utils';
-import { v4 as uuidv4 } from 'uuid';
+
+const confirmationTextOptions = [
+  'dijkstra',
+  'aho-corasick',
+  'dynamic programming',
+  'fast matrix exponentiation',
+  'sieve of eratosthenes',
+  'fenwick tree',
+  'fast fourier transform',
+  'disjoint set union',
+  'square root decomposition',
+  'burnside\'s lemma',
+  'ford-fulkerson maximum flow',
+  'topological sort',
+  '0-1 breadth-first-search'
+];
 
 class DeleteMenu extends Component {
   constructor(props) {
@@ -11,10 +24,12 @@ class DeleteMenu extends Component {
     this.state = {
       error: ''
     };
-    this.randomCode = uuidv4();
+
+    const randomIndex = Math.floor(confirmationTextOptions.length * Math.random());
+    this.randomCode = confirmationTextOptions[randomIndex];
 
     this.close = this.close.bind(this);
-    this.deleteNote = this.deleteNote.bind(this);
+    this.delete = this.delete.bind(this);
     this.setLoading = this.setLoading.bind(this);
   }
 
@@ -22,7 +37,7 @@ class DeleteMenu extends Component {
     this.props.exitCallback();
   }
 
-  async deleteNote(event) {
+  async delete(event) {
     event.preventDefault();
 
     const confirmCode = event.target.confirmCode.value;
@@ -32,13 +47,8 @@ class DeleteMenu extends Component {
     }
 
     try {
-      const username = await UserAuthApi.getUsername();
-      const platform = this.props.platform;
-      const problemId = this.props.problemInfo.problemId;
-
       await this.setLoading(true);
-      await NotesApi.deleteNote(username, platform, problemId);
-      this.props.history.push(`/users/${username}`);
+      await this.props.deleteCallback();
     }
     catch(err) {
       await Utils.componentSetError(this, err.message);
@@ -64,12 +74,14 @@ class DeleteMenu extends Component {
                 className="Askd-form-close Askd-button Askd-button-circular" />
         <div className="Edit-note-delete-menu Module-popup">
           { this.state.error && <h2>{this.state.error}</h2> }
-          <h2>Are you sure you want to permanently delete this note?</h2>
+          <h2>Are you sure you want to permanently delete this
+              {' ' + this.props.entityName}?
+          </h2>
           <p>
             This action cannot be undone! Please enter the following
-            code as confirmation.
+            text as confirmation.
           </p>
-          <form className="Askd-form" onSubmit={this.deleteNote}>
+          <form className="Askd-form" onSubmit={this.delete}>
             <label htmlFor="confirmCode">{this.randomCode}</label>
             <input autoComplete="off" type="text" name="confirmCode"
                    key="confirmCode" id="confirmCode" />

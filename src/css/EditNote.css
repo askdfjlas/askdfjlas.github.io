@@ -19,6 +19,11 @@
   flex: 1 0 auto;
 }
 
+.Edit-note-form .Askd-text-editor .Askd-text-editor-text {
+  display: flex;
+  flex: 1 0 auto;
+}
+
 .Edit-note-saved-text {
   font-size: 0.8em;
   font-style: italic;

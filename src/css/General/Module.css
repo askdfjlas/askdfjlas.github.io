@@ -238,7 +238,6 @@
   align-items: center;
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.8);
-  box-shadow: 0 0 100vw 0 solid rgba(0, 0, 0, 0.8);
   position: fixed;
   overflow: auto;
   top: 0;

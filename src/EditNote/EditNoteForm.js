@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Prompt } from 'react-router';
 import TextEditor from '../TextEditor/TextEditor';
-import DeleteMenu from './DeleteMenu';
+import DeleteMenu from '../Misc/DeleteMenu';
 import SolvedState from '../Enum/SolvedState';
 import UserAuthApi from '../Api/UserAuthApi';
 import NotesApi from '../Api/NotesApi';
@@ -32,6 +32,7 @@ class EditNoteForm extends Component {
     };
 
     this.saveNote = this.saveNote.bind(this);
+    this.deleteNote = this.deleteNote.bind(this);
     this.togglePublishNote = this.togglePublishNote.bind(this);
     this.toggleDeleteMenu = this.toggleDeleteMenu.bind(this);
     this.handleTitleChange = this.handleTitleChange.bind(this);
@@ -69,6 +70,15 @@ class EditNoteForm extends Component {
     });
 
     await this.saveOrPublishNote(this.state.published);
+  }
+
+  async deleteNote() {
+    const username = await UserAuthApi.getUsername();
+    const platform = this.props.platform;
+    const problemId = this.props.problemInfo.problemId;
+
+    await NotesApi.deleteNote(username, platform, problemId);
+    this.props.history.push(`/users/${username}`);
   }
 
   async togglePublishNote(event) {
@@ -128,8 +138,7 @@ class EditNoteForm extends Component {
         {
           this.state.showDeleteMenu &&
           <DeleteMenu exitCallback={this.toggleDeleteMenu}
-                      platform={this.props.platform} history={this.props.history}
-                      problemInfo={this.props.problemInfo} />
+                      deleteCallback={this.deleteNote} entityName="note" />
         }
         <form className="Edit-note-form Askd-form Module-outer-space">
           <input className="Edit-note-title" name="title" type="text"

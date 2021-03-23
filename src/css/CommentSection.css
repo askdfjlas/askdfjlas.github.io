@@ -70,7 +70,7 @@
 }
 
 .Comment-section-root-comment {
-  margin-top: 0.8em;
+  margin-top: 0.9em;
 }
 
 .Comment-section-root-comment:first-child {
@@ -82,7 +82,12 @@
 }
 
 .Comment-section-comments .Comment-section-comment {
+  position: relative;
   padding: 0.6em 0.8em 0.5em 0.8em;
+}
+
+.Comment-section-comments .Comment-section-own-comment {
+  box-shadow: var(--highlighted-content-shadow);
 }
 
 .Comment-section-reply-username {
@@ -127,7 +132,7 @@
 }
 
 .Comment-section-comment-buttons {
-  margin-top: 0.2em;
+  margin-top: 0.1em;
 }
 
 .Comment-section-comment .icon-thumb_up_alt {
@@ -137,8 +142,23 @@
 }
 
 .Comment-section-reply-button {
-  padding: 0.4em;
+  position: relative;
+  right: 0.3em;
+  padding: 0.4em 0.5em;
   border-radius: 2px;
-  min-width: 3em;
   background: none;
+}
+
+.Comment-section-deleted {
+  color: var(--bright-heading-color);
+  margin-top: 0.4em;
+  margin-bottom: 0.2em;
+  font-size: 0.9em;
+  font-style: italic;
+}
+
+.Comment-section-personal-buttons {
+  position: absolute;
+  bottom: 0.5em;
+  right: 0.8em;
 }

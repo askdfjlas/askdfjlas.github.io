@@ -7,12 +7,19 @@ import UsersApi from '../Api/UsersApi';
 import queryString from 'query-string';
 import '../css/CommentSection.css';
 
-function CreateCommentComponent(getComments, addComment) {
+function CreateCommentComponent(getComments, addComment, deleteComment) {
   function CommentComponent({ otherProps, info, screen }) {
     let mounted = useRef(true);
     let userAvatars = useRef({});
     let userAvatarSubscriptions = useRef({});
     let addAvatarSubscriptions = useRef({});
+
+    useEffect(() => {
+      mounted.current = true;
+      return () => {
+        mounted.current = false;
+      };
+    });
 
     useEffect(() => {
       const urlParams = queryString.parse(window.location.search);
@@ -22,13 +29,6 @@ function CreateCommentComponent(getComments, addComment) {
           commentElement.scrollIntoView();
         }
       }
-    });
-
-    useEffect(() => {
-      mounted.current = true;
-      return () => {
-        mounted.current = false;
-      };
     });
 
     useEffect(() => {
@@ -77,19 +77,23 @@ function CreateCommentComponent(getComments, addComment) {
     }, [info]);
 
     const addCallback = async (newCommentContent) => {
-      return await addComment(otherProps, newCommentContent, null, null);
+      await addComment(otherProps, newCommentContent, null, null);
     };
 
     const replyCallback = async (newCommentContent, rootReplyId, replyId) => {
-      return await addComment(otherProps, newCommentContent, rootReplyId, replyId);
+      await addComment(otherProps, newCommentContent, rootReplyId, replyId);
     }
+
+    const deleteCallback = async (problemId) => {
+      await deleteComment(otherProps, problemId);
+    };
 
     if(screen === LoadState.LOADING || otherProps.doNotShow) {
       return null;
     }
     else {
-      let commentsContent;
       const comments = info.comments;
+      let commentsContent;
 
       if(comments.length === 0) {
         commentsContent = (
@@ -105,6 +109,8 @@ function CreateCommentComponent(getComments, addComment) {
           commentListItems.push(
             <li key={i} className="Comment-section-root-comment">
               <RootComment info={comment} replyCallback={replyCallback}
+                           deleteCallback={deleteCallback}
+                           loggedInUsername={info.loggedInUsername}
                            addAvatarSubscriptions={addAvatarSubscriptions.current} />
             </li>
           );

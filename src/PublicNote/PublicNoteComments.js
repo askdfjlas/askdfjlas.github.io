@@ -12,14 +12,22 @@ function getParamsFromProps(props) {
   return [ noteAuthor, platform, problemId ];
 }
 
+function getNoteLinkFromProps(props) {
+  const [ noteAuthor, platform, problemId ] = getParamsFromProps(props);
+  return `/notes/${noteAuthor}/${platform}/${problemId.replace('#', '/')}`;
+}
+
 async function getNoteComments(props, params) {
   const [ noteAuthor, platform, problemId ] = getParamsFromProps(props);
   const comments = await CommentsApi.getNoteComments(
     noteAuthor, platform, problemId
   );
 
+  const loggedInUsername = await UserAuthApi.getUsername();
+
   return {
-    comments: comments
+    comments: comments,
+    loggedInUsername: loggedInUsername
   };
 }
 
@@ -36,12 +44,13 @@ async function addNoteComment(props, newCommentContent, rootReplyId, replyId) {
     username, noteAuthor, platform, problemId, rootReplyId, replyId, newCommentContent
   );
 
-  props.history.replace(
-    `/notes/${noteAuthor}/${platform}/${problemId.replace('#', '/')}` +
-    `?linkedComment=${newCommentId}`
-  );
-
-  return true;
+  props.history.replace(getNoteLinkFromProps(props) + `?linkedComment=${newCommentId}`);
 }
 
-export default CreateCommentComponent(getNoteComments, addNoteComment);
+async function deleteNoteComment(props, commentId) {
+  await CommentsApi.deleteComment(commentId);
+
+  props.history.replace(getNoteLinkFromProps(props) + `?linkedComment=${commentId}`);
+}
+
+export default CreateCommentComponent(getNoteComments, addNoteComment, deleteNoteComment);

@@ -14,8 +14,10 @@ function CommentForm({ cancelCallback, addCallback, initialContent, updateCallba
 
   const handleAddComment = async () => {
     setAddCommentLoading(true);
-    const success = await addCallback(commentContent);
-    if(!success) {
+    try {
+      await addCallback(commentContent);
+    }
+    catch(err) {
       setAddCommentLoading(false);
     }
   };
