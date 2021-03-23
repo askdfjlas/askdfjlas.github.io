@@ -3,11 +3,13 @@ import CreateLoadingComponent from './CreateLoadingComponent';
 import LoadState from '../Enum/LoadState';
 import RootComment from '../CommentForm/RootComment';
 import AddCommentForm from '../CommentForm/AddCommentForm';
+import CommentsApi from '../Api/CommentsApi';
 import UsersApi from '../Api/UsersApi';
+import UserAuthApi from '../Api/UserAuthApi';
 import queryString from 'query-string';
 import '../css/CommentSection.css';
 
-function CreateCommentComponent(getComments, addComment, deleteComment) {
+function CreateCommentComponent(getComments, addComment) {
   function CommentComponent({ otherProps, info, screen }) {
     let mounted = useRef(true);
     let userAvatars = useRef({});
@@ -76,16 +78,43 @@ function CreateCommentComponent(getComments, addComment, deleteComment) {
       }
     }, [info]);
 
+    const redirectToCommentId = (commentId) => {
+      const basePath = window.location.pathname;
+      otherProps.history.replace(`${basePath}?linkedComment=${commentId}`);
+    }
+
+    const verifyUserIsSignedIn = async () => {
+      const username = await UserAuthApi.getUsername();
+      if(!username) {
+        window.suggestUserRegister();
+        return false;
+      }
+      return true;
+    }
+
     const addCallback = async (newCommentContent) => {
-      await addComment(otherProps, newCommentContent, null, null);
+      const signedIn = await verifyUserIsSignedIn();
+      if(!signedIn) return;
+
+      const newCommentId = await addComment(
+        otherProps, newCommentContent, null, null
+      );
+      redirectToCommentId(newCommentId);
     };
 
     const replyCallback = async (newCommentContent, rootReplyId, replyId) => {
-      await addComment(otherProps, newCommentContent, rootReplyId, replyId);
+      const signedIn = await verifyUserIsSignedIn();
+      if(!signedIn) return;
+
+      const newCommentId = await addComment(
+        otherProps, newCommentContent, rootReplyId, replyId
+      );
+      redirectToCommentId(newCommentId);
     }
 
-    const deleteCallback = async (problemId) => {
-      await deleteComment(otherProps, problemId);
+    const deleteCallback = async (commentId) => {
+      await CommentsApi.deleteComment(commentId);
+      redirectToCommentId(commentId);
     };
 
     if(screen === LoadState.LOADING || otherProps.doNotShow) {

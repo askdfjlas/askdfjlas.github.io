@@ -30,6 +30,7 @@ function Comment({ info, replyUsername, subscribeToAvatar, replyCallback,
 
   const authorUsername = info.username;
   const timeAgoString = Utils.getTimeAgoString(info.creationTime);
+  const textContentId = `Z${id}Z`;
   const content = info.content ? JSON.parse(info.content) : null;
 
   let commentClassName = 'Module-outer-space Comment-section-comment';
@@ -41,7 +42,7 @@ function Comment({ info, replyUsername, subscribeToAvatar, replyCallback,
     <div id={id} className={commentClassName}>
       { deleteMenuOpen &&
         <DeleteMenu exitCallback={closeDeleteMenu} deleteCallback={deleteComment}
-                    entityName="comment"/>
+                    entityName="comment" />
       }
       {
         replyUsername &&
@@ -65,7 +66,7 @@ function Comment({ info, replyUsername, subscribeToAvatar, replyCallback,
         </span>
         {
           content &&
-          <TextEditorContent id={id + 'Z'} content={content} editable={false} />
+          <TextEditorContent id={textContentId} content={content} editable={false} />
         }
         {
           !content &&

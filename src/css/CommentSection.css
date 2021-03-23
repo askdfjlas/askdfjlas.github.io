@@ -65,7 +65,7 @@
 
 .Comment-section-replies {
   margin: 0;
-  padding-left: 2.5em;
+  padding-left: calc(min(2.5em, 8%));
   list-style-type: none;
 }
 

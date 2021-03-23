@@ -7,10 +7,10 @@ import UserAuthApi from '../Api/UserAuthApi';
 function RootComment({ info, addAvatarSubscriptions, replyCallback,
                        deleteCallback, loggedInUsername }) {
   const [ editorActive, setEditorActive ] = useState(false);
+  const [ replyUsername, setReplyUsername ] = useState(null);
   const editorReplyInfo = useRef({
     content: null,
-    replyId: null,
-    replyUsername: null
+    replyId: null
   });
 
   const handleCancelEditor = () => {
@@ -29,7 +29,7 @@ function RootComment({ info, addAvatarSubscriptions, replyCallback,
     );
   };
 
-  const createReplyHandler = (replyId, replyUsername) => {
+  const createReplyHandler = (commentReplyId, commentReplyUsername) => {
     return async () => {
       const username = await UserAuthApi.getUsername();
       if(!username) {
@@ -37,8 +37,8 @@ function RootComment({ info, addAvatarSubscriptions, replyCallback,
         return;
       }
 
-      editorReplyInfo.current.replyId = replyId;
-      editorReplyInfo.current.replyUsername = replyUsername;
+      editorReplyInfo.current.replyId = commentReplyId;
+      setReplyUsername(commentReplyUsername);
       setEditorActive(true);
     };
   }
@@ -50,13 +50,13 @@ function RootComment({ info, addAvatarSubscriptions, replyCallback,
 
   for(let i = 0; i < info.replies.length; i++) {
     const reply = info.replies[i];
-    const replyUsername = replyIdToUsername[reply.replyId];
+    const commentReplyUsername = replyIdToUsername[reply.replyId];
     const replyCallback = createReplyHandler(reply.commentId, reply.username);
     const subscribeToAvatar = addAvatarSubscriptions[reply.username];
 
     replyListItems.push(
       <li key={i} className="Comment-section-reply-comment">
-        <Comment info={reply} replyUsername={replyUsername}
+        <Comment info={reply} replyUsername={commentReplyUsername}
                  subscribeToAvatar={subscribeToAvatar}
                  replyCallback={replyCallback} deleteCallback={deleteCallback}
                  loggedInUsername={loggedInUsername} />
@@ -65,7 +65,6 @@ function RootComment({ info, addAvatarSubscriptions, replyCallback,
     replyIdToUsername[reply.commentId] = reply.username;
   }
 
-  const replyUsername = editorReplyInfo.current.replyUsername;
   const replyCommentForm = (
     <div className="Comment-section-reply-form">
       <span className="Comment-section-reply-username">
