@@ -5,7 +5,7 @@ import CommentForm from './CommentForm';
 import UserAuthApi from '../Api/UserAuthApi';
 
 function RootComment({ info, addAvatarSubscriptions, replyCallback,
-                       deleteCallback, loggedInUsername }) {
+                       editCallback, deleteCallback, loggedInUsername }) {
   const [ editorActive, setEditorActive ] = useState(false);
   const [ replyUsername, setReplyUsername ] = useState(null);
   const editorReplyInfo = useRef({
@@ -58,7 +58,8 @@ function RootComment({ info, addAvatarSubscriptions, replyCallback,
       <li key={i} className="Comment-section-reply-comment">
         <Comment info={reply} replyUsername={commentReplyUsername}
                  subscribeToAvatar={subscribeToAvatar}
-                 replyCallback={replyCallback} deleteCallback={deleteCallback}
+                 replyCallback={replyCallback} editCallback={editCallback}
+                 deleteCallback={deleteCallback}
                  loggedInUsername={loggedInUsername} />
       </li>
     );

@@ -26,6 +26,15 @@ class CommentsApi {
     return await Api.postJson('comments', options);
   }
 
+  static async editComment(commentId, content) {
+    const options = {
+      commentId: commentId,
+      content: JSON.stringify(content)
+    };
+
+    return await Api.putJson('comments', options);
+  }
+
   static async deleteComment(commentId) {
     const options = {
       commentId: commentId

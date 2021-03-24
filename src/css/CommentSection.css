@@ -143,7 +143,7 @@
 
 .Comment-section-reply-button {
   position: relative;
-  right: 0.3em;
+  right: 0.5em;
   padding: 0.4em 0.5em;
   border-radius: 2px;
   background: none;
@@ -161,4 +161,8 @@
   position: absolute;
   bottom: 0.5em;
   right: 0.8em;
+}
+
+.Comment-section-personal-buttons button:first-child {
+  margin-right: 1em;
 }

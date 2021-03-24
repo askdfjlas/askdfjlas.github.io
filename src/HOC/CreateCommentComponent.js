@@ -112,6 +112,14 @@ function CreateCommentComponent(getComments, addComment) {
       redirectToCommentId(newCommentId);
     }
 
+    const editCallback = async (commentId, newCommentContent) => {
+      const signedIn = await verifyUserIsSignedIn();
+      if(!signedIn) return;
+
+      await CommentsApi.editComment(commentId, newCommentContent);
+      redirectToCommentId(commentId);
+    };
+
     const deleteCallback = async (commentId) => {
       await CommentsApi.deleteComment(commentId);
       redirectToCommentId(commentId);
@@ -138,7 +146,7 @@ function CreateCommentComponent(getComments, addComment) {
           commentListItems.push(
             <li key={i} className="Comment-section-root-comment">
               <RootComment info={comment} replyCallback={replyCallback}
-                           deleteCallback={deleteCallback}
+                           editCallback={editCallback} deleteCallback={deleteCallback}
                            loggedInUsername={info.loggedInUsername}
                            addAvatarSubscriptions={addAvatarSubscriptions.current} />
             </li>
