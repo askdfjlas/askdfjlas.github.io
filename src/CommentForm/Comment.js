@@ -67,7 +67,7 @@ function Comment({ info, replyUsername, subscribeToAvatar, replyCallback,
 
   if(editFormOpen) {
     return (
-      <CommentForm cancelCallback={closeEditForm} addCallback={submitEditedContent} 
+      <CommentForm cancelCallback={closeEditForm} addCallback={submitEditedContent}
                    initialContent={editedContent.current}
                    updateCallback={updateEditedContent} />
     );

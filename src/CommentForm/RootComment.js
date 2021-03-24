@@ -90,9 +90,9 @@ function RootComment({ info, addAvatarSubscriptions, replyCallback,
 
   return (
     <>
-      <Comment info={info} replyCallback={rootCommentReplyCallback}
-               subscribeToAvatar={rootCommentSubscribeToAvatar}
-               deleteCallback={deleteCallback}
+      <Comment info={info} subscribeToAvatar={rootCommentSubscribeToAvatar}
+               replyCallback={rootCommentReplyCallback}
+               editCallback={editCallback} deleteCallback={deleteCallback}
                loggedInUsername={loggedInUsername} />
       <ol className="Comment-section-replies">
         { replyListItems }

@@ -21,6 +21,7 @@ function RecentNotesList({ otherProps, loadInfo, info, screen }) {
       const note = info.notes[i];
       const noteLink = NotesApi.getNotePublishedLink(note);
       const displayName = NotesApi.getNoteDisplayName(note);
+      const commentIcon = (note.editedTime !== note.activityTime);
 
       noteListItems.push(
         <li key={i}>
@@ -35,7 +36,8 @@ function RecentNotesList({ otherProps, loadInfo, info, screen }) {
             {displayName}
           </Link>
           {' '}
-          <span className="icon-note-text" />
+          { !commentIcon && <span className="icon-note-text" /> }
+          { commentIcon && <span className="icon-comments" /> }
         </li>
       );
     }

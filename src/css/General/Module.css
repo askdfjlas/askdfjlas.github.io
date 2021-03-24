@@ -47,7 +47,13 @@
   color: var(--username-black);
 }
 
-.Module-recent-notes .icon-note-text {
+.Module-recent-notes .icon-comments {
+  position: relative;
+  left: 1px;
+}
+
+.Module-recent-notes .icon-note-text,
+.Module-recent-notes .icon-comments {
   font-size: 0.9em;
   color: var(--bright-heading-color);
 }
@@ -116,6 +122,10 @@
 .Module-recent-notes-list li {
   white-space: pre-wrap;
   margin: 0.4em 0;
+}
+
+.Module-recent-notes-list li:first-child {
+  margin-top: 0;
 }
 
 .Module-recent-notes-list::-webkit-scrollbar {
