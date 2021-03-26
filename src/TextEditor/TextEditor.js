@@ -172,30 +172,13 @@ class TextEditor extends Component {
     }
 
     if(this.caretInfo.rangeSelect) {
-      let updateCaret = false;
-      const leftElement = document.getElementById(this.id + this.caretInfo.leftIndex);
-      const rightElement = document.getElementById(this.id + this.caretInfo.rightIndex);
-
-      const leftElementLength = this.state.content[this.caretInfo.leftIndex].c.length;
-      const atLeftElementEnd = (this.caretInfo.leftPosition === leftElementLength);
-      const atRightElementBegin = (this.caretInfo.rightPosition === 0);
-
-      if(leftElement.classList.contains('Askd-te-MATHJAX') && !atLeftElementEnd)
-        updateCaret = true;
-      if(rightElement.classList.contains('Askd-te-MATHJAX') && !atRightElementBegin)
-        updateCaret = true;
-
-      let leftCharacterMask = this.virtualTextEditor.getCharacterMask(
+      const leftCharacterMask = this.virtualTextEditor.getCharacterMask(
         this.caretInfo.leftIndex, this.caretInfo.leftPosition, true
       );
       await this.updateMask(leftCharacterMask);
-
-      if(updateCaret) {
-        this.caret.setInfo(this.caretInfo, this.state.editorMask);
-      }
     }
     else {
-      let leftCharacterMask = this.virtualTextEditor.getCharacterMask(
+      const leftCharacterMask = this.virtualTextEditor.getCharacterMask(
         this.caretInfo.index, this.caretInfo.position, false
       );
       await this.updateMask(leftCharacterMask);
@@ -242,7 +225,7 @@ class TextEditor extends Component {
   componentDidMount() {
     this.textEditor = document.getElementById(this.id);
     this.outerTextEditor = document.getElementById(this.id + '!');
-    this.handleSelectionChange = registerEventHandlers(this);
+    [ this.handleSelectionChange, this.handleBlur ] = registerEventHandlers(this);
 
     if(this.props.focusOnMount) {
       this.textEditor.focus();
@@ -270,38 +253,11 @@ class TextEditor extends Component {
   }
 
   render() {
-    let handleBlur = (event) => {
-      /* Don't blur if event.relatedTarget is one of the toolbar buttons or
-      contained within the 'textarea' */
-      if(event.relatedTarget) {
-        let isIcon = event.relatedTarget.classList.contains('Askd-tb-icon') &&
-           this.outerTextEditor.contains(event.relatedTarget);
-        let contained = this.textEditor.contains(event.relatedTarget);
-
-        if(isIcon || contained) {
-          return;
-        }
-      }
-
-      if(this.caretInfo.editorSelected) {
-        this.caretInfo.editorSelected = false;
-        if(this.caretInfo.insideCaretBlock) {
-          this.caretInfo.insideCaretBlock = false;
-          this.caret.removeCaretBlock();
-          this.virtualTextEditor.removeCaretBlock();
-          this.updateContent();
-        }
-        else {
-          this.forceUpdate();
-        }
-      }
-    };
-
     return (
       <div className="Askd-text-editor" id={this.id + '!'}>
         <Toolbar mask={this.state.editorMask} callback={this.toolbarUpdate} />
         <TextEditorContent content={this.state.content} id={this.id}
-                           editable={true} handleBlur={handleBlur}
+                           editable={true} handleBlur={this.handleBlur}
                            handleFocus={this.handleSelectionChange}
                            caretInfo={this.caretInfo} />
       </div>

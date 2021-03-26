@@ -39,7 +39,7 @@
   box-sizing: border-box;
   box-shadow: var(--main-content-shadow);
   min-height: 35em;
-  font-size: 0.9em;
+  font-size: 0.8em;
 }
 
 .Module-recent-notes .icon-long-arrow-right {
@@ -87,13 +87,12 @@
 
 .Module-recent-actions {
   background-color: var(--recent-actions-color);
-  padding: 0.4em;
+  padding: 0.4em 0.6em;
 }
 
 .Module-recent-actions h4 {
   color: white;
   font-family: var(--bold-text-font);
-  font-size: 1.2em;
   padding: 0;
   margin: 0;
 }
@@ -114,14 +113,14 @@
 
 .Module-recent-notes-list ol {
   position: absolute;
-  padding: 0.2em 0.5em;
+  padding: 0.2em 0.6em;
   list-style-type: none;
   margin: 0;
 }
 
 .Module-recent-notes-list li {
   white-space: pre-wrap;
-  margin: 0.4em 0;
+  margin: 0.5em 0;
 }
 
 .Module-recent-notes-list li:first-child {

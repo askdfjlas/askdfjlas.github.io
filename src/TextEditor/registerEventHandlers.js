@@ -118,7 +118,34 @@ const registerEventHandlers = (that) => {
 
   document.addEventListener('selectionchange', handleSelectionChange);
 
-  return handleSelectionChange;
+  let handleBlur = (event) => {
+    /* Don't blur if event.relatedTarget is one of the toolbar buttons or
+    contained within the 'textarea' */
+    if(event.relatedTarget) {
+      let isIcon = event.relatedTarget.classList.contains('Askd-tb-icon') &&
+         that.outerTextEditor.contains(event.relatedTarget);
+      let contained = that.textEditor.contains(event.relatedTarget);
+
+      if(isIcon || contained) {
+        return;
+      }
+    }
+
+    if(that.caretInfo.editorSelected) {
+      that.caretInfo.editorSelected = false;
+      if(that.caretInfo.insideCaretBlock) {
+        that.caretInfo.insideCaretBlock = false;
+        that.caret.removeCaretBlock();
+        that.virtualTextEditor.removeCaretBlock();
+        that.updateContent();
+      }
+      else {
+        that.forceUpdate();
+      }
+    }
+  };
+
+  return [ handleSelectionChange, handleBlur ];
 }
 
 export default registerEventHandlers;
