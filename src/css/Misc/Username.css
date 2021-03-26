@@ -1,12 +1,7 @@
 .Username {
   color: var(--username-gray);
-  font-weight: bold;
   font-family: var(--bold-text-font);
   text-decoration: none;
-}
-
-.Username:not(h2) {
-  font-weight: bold;
 }
 
 .Username:not(h2):hover {

@@ -1,4 +1,5 @@
 import ContentType from './ContentType';
+import sanitizeTextArea from './sanitizeTextArea';
 
 const registerEventHandlers = (that) => {
   that.textEditor.addEventListener('keydown', async (event) => {
@@ -14,6 +15,9 @@ const registerEventHandlers = (that) => {
     }
     else if(event.key === 'Enter' && !that.composing && !mathSelected) {
       await that.insert(String.fromCharCode(10));
+      event.preventDefault();
+    }
+    else if(event.key === 'Enter') {
       event.preventDefault();
     }
   });
@@ -35,6 +39,25 @@ const registerEventHandlers = (that) => {
        drag and drop are TBD */
     else if(event.data) {
       await that.insert(event.data);
+    }
+  });
+
+  /* An equivalent handler to beforeinput, but with text sanitization - this is
+  for browsers which don't have the beforeinput event */
+  that.textEditor.addEventListener('input', async (event) => {
+    if(event.isComposing || that.composing) {
+      return;
+    }
+
+    if(event.inputType === 'insertReplacementText') {
+      sanitizeTextArea(that.textEditor, that.state.content);
+      that.caretInfo.rangeSelect = true;
+      const insertedString = event.dataTransfer.getData('text');
+      await that.insert(insertedString);
+    }
+    else if(event.data) {
+      sanitizeTextArea(that.textEditor, that.state.content);
+      await that.insert(event.data, true);
     }
   });
 

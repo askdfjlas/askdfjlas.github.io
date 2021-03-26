@@ -6,6 +6,7 @@ import TextEditorContent from './TextEditorContent';
 import MaskManager from './MaskManager';
 import Utils from '../Utils';
 import registerEventHandlers from './registerEventHandlers';
+import sanitizeTextArea from './sanitizeTextArea';
 import { v4 as uuidv4 } from 'uuid';
 import '../css/TextEditor.css';
 
@@ -56,8 +57,10 @@ class TextEditor extends Component {
     await this.insertionUpdate();
   }
 
-  async insert(newString) {
-    this.updateCaretInfo();
+  async insert(newString, useLastKnownCaretInfo) {
+    if(!useLastKnownCaretInfo) {
+      this.updateCaretInfo();
+    }
 
     if(this.caretInfo.rangeSelect) {
       await this.delete();
@@ -251,29 +254,7 @@ class TextEditor extends Component {
       return;
     }
 
-    /* The rendered text must be manually sanitized */
-    let junkNodes = [];
-    for(const node of this.textEditor.childNodes) {
-      if(node.nodeType === Node.TEXT_NODE || node.nodeName === 'BR' ||
-         node.nodeName === 'SPAN') {
-        junkNodes.push(node);
-      }
-    }
-
-    for(const node of junkNodes) {
-      this.textEditor.removeChild(node);
-    }
-
-    for(let i = 0; i < this.state.content.length; i++) {
-      let childElement = this.textEditor.children[i];
-      if(childElement.classList.contains('Askd-te-MATHJAX')) {
-        continue;
-      }
-
-      if(childElement.innerHTML !== this.state.content[i].c) {
-        childElement.childNodes[0].nodeValue = this.state.content[i].c;
-      }
-    }
+    sanitizeTextArea(this.textEditor, this.state.content);
 
     /* Callback with new content */
     if(this.props.onChange) {

@@ -125,7 +125,7 @@
 }
 
 .Module-recent-notes-list li:first-child {
-  margin-top: 0;
+  margin-top: 0.2em;
 }
 
 .Module-recent-notes-list::-webkit-scrollbar {

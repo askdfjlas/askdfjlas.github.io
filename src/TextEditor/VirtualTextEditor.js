@@ -91,7 +91,11 @@ class VirtualTextEditor {
   }
 
   getCharacterMask(index, position, rangeSelect) {
-    const globalIndex = this.getGlobalIndex(index, position);
+    let globalIndex = this.getGlobalIndex(index, position);
+
+    if(rangeSelect && globalIndex >= this.characters.length) {
+      globalIndex = this.characters.length - 1;
+    }
 
     if(globalIndex === 0) {
       if(this.characters.length > 0)
