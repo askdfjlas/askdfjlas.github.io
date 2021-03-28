@@ -14,7 +14,11 @@ const sanitizeTextArea = (textEditor, content) => {
 
   for(let i = 0; i < content.length; i++) {
     let childElement = textEditor.children[i];
-    if(childElement.classList.contains('Askd-te-MATHJAX')) {
+
+    const childIsMath = childElement.classList.contains('Askd-te-MATHJAX');
+    const childIsImage = childElement.classList.contains('Askd-te-IMAGE');
+
+    if(childIsMath || childIsImage) {
       continue;
     }
 

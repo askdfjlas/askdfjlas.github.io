@@ -14,12 +14,15 @@ function MathBlock({ id, index, content, rendered }) {
   }, [ id, rendered, content.length ]);
 
   /* Render MathJax and put a zero-width space before and after,
-  in order to help caret selection */
+  in order to help caret selection; also disable tabIndex */
   useEffect(() => {
     if(changeKey.rendered) {
       Utils.renderMathJax([`#${changeKey.id}`]);
 
       let blockElement = document.getElementById(changeKey.id);
+
+      blockElement.children[0].removeAttribute('tabIndex');
+
       blockElement.innerHTML = String.fromCharCode(8203) +
         blockElement.innerHTML + String.fromCharCode(8203);
     }

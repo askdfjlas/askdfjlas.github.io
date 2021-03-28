@@ -1,7 +1,8 @@
 import React from 'react';
 import Block from './Block/Block';
 
-function TextEditorContent({ content, id, editable, caretInfo, handleBlur, handleFocus }) {
+function TextEditorContent({ content, id, editable, caretInfo, handleBlur,
+                             handleFocus, handleBlockUpdate }) {
   let contentElements = [];
 
   content.forEach((block, i) => {
@@ -17,7 +18,8 @@ function TextEditorContent({ content, id, editable, caretInfo, handleBlur, handl
     }
 
     contentElements.push(
-      <Block block={block} id={id} index={i} key={i} selected={selected} />
+      <Block block={block} id={id} index={i} key={i} selected={selected}
+             handleBlockUpdate={handleBlockUpdate} />
     );
   });
 

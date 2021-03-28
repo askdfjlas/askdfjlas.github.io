@@ -233,11 +233,12 @@ class VirtualTextEditor {
         character.c = ' ';
       }
 
-      let caretBlockIncoming = this.blocks.length === this.caretBlockIndex &&
-        blockPosition === this.caretBlockPosition;
+      const caretBlockIncoming = (this.blocks.length === this.caretBlockIndex) &&
+                                 (blockPosition === this.caretBlockPosition);
+      const isImageBlock = (character.m === ContentType.IMAGE);
 
       /* End of this block */
-      if(character.m !== currentMask || caretBlockIncoming) {
+      if(character.m !== currentMask || caretBlockIncoming || isImageBlock) {
         if(characterBuffer.length === 0) {
           currentMask = 0;
         }

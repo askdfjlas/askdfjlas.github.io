@@ -87,7 +87,12 @@ const registerEventHandlers = (that) => {
     await that.compositionInsert(event.data);
   });
 
-  let handleSelectionChange = (event) => {
+  const handleSelectionChange = (event) => {
+    if(that.ignoreNextSelectionChange) {
+      that.ignoreNextSelectionChange = false;
+      return;
+    }
+
     if(that.composing) {
       return;
     }
@@ -118,19 +123,7 @@ const registerEventHandlers = (that) => {
 
   document.addEventListener('selectionchange', handleSelectionChange);
 
-  let handleBlur = (event) => {
-    /* Don't blur if event.relatedTarget is one of the toolbar buttons or
-    contained within the 'textarea' */
-    if(event.relatedTarget) {
-      let isIcon = event.relatedTarget.classList.contains('Askd-tb-icon') &&
-         that.outerTextEditor.contains(event.relatedTarget);
-      let contained = that.textEditor.contains(event.relatedTarget);
-
-      if(isIcon || contained) {
-        return;
-      }
-    }
-
+  const handleBlur = (event) => {
     if(that.caretInfo.editorSelected) {
       that.caretInfo.editorSelected = false;
       if(that.caretInfo.insideCaretBlock) {

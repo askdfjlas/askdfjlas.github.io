@@ -115,6 +115,11 @@
   content: "\ea63";
 }
 
+.Askd-tb-IMAGE::after {
+  content: "\f03e";
+  font-size: 0.92em;
+}
+
 /* User-inputted text styles */
 .Askd-te-MATH {
   color: green;
@@ -140,4 +145,14 @@
 
 .Askd-te-UNDERLINE {
   text-decoration: underline;
+}
+
+.Askd-text-editor-text .Askd-te-IMAGE {
+  display: block;
+  background-color: var(--recent-actions-color);
+  min-height: 15em;
+}
+
+.Askd-text-editor-text .Askd-te-IMAGE:hover {
+  cursor: pointer;
 }

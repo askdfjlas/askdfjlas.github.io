@@ -34,6 +34,10 @@ class Toolbar extends Component {
             <button type="button" className="Askd-tb-icon Askd-tb-MATH"
                     onPointerDown={selectHandler(ContentType.MATH)} />
           </li>
+          <li className={`Askd-tb-selected-false`}>
+            <button type="button" className="Askd-tb-icon Askd-tb-IMAGE"
+                    onPointerDown={selectHandler(ContentType.IMAGE)} />
+          </li>
         </ul>
       </div>
     );
