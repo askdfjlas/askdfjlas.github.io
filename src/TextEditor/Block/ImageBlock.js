@@ -1,29 +1,49 @@
 import React, { useState } from 'react';
 
-function ImageBlock({ id, index, link, handleBlockUpdate }) {
+function ImageBlock({ id, index, initialLink, handleBlockUpdate }) {
   let [ selected, setSelected ] = useState(false);
-  const blockRef = React.createRef();
+  let [ imageLink, setImageLink ] = useState(initialLink);
 
-  const handleClick = (event) => {
-    event.preventDefault();
+  const handleFocus = (event) => {
+    if(selected) {
+      return;
+    }
 
     handleBlockUpdate({
-      ignoreNextSelectionChange: true
+      disableSelectionChange: true
     });
-
     setSelected(true);
-    blockRef.current.focus();
   };
 
   const handleBlur = (event) => {
+    if(event.currentTarget.contains(event.relatedTarget)) {
+      event.preventDefault();
+      return;
+    }
+
+    handleBlockUpdate({
+      disableSelectionChange: false
+    });
     setSelected(false);
   }
 
+  const handleLinkChange = (event) => {
+    setImageLink(event.target.value);
+  };
+
   return (
     <div className="Askd-te-IMAGE" id={id} index={index} tabIndex="-1"
-         onPointerDown={handleClick} onBlur={handleBlur} ref={blockRef}>
+         contentEditable={false} onFocus={handleFocus} onBlur={handleBlur}>
       !
-      { selected && "this is the menubar"}
+      <img src={imageLink} alt="Text editor block" />
+      {
+        selected &&
+        <div className="Askd-te-IMAGE-toolbar">
+          <label htmlFor="Askd-te-IMAGE-link">Link</label>
+          <input type="text" name="Askd-te-IMAGE-link"
+                 onChange={handleLinkChange} value={imageLink} />
+        </div>
+      }
     </div>
   );
 }

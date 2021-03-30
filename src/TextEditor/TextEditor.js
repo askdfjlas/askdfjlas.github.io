@@ -115,6 +115,7 @@ class TextEditor extends Component {
     this.contentChanged = true;
     this.caret.removeCaretBlock();
     this.caretInfo.insideCaretBlock = false;
+    await this.checkCaretNextToImage();
 
     await this.updateContent();
     this.caret.setInfo(this.caretInfo, this.state.editorMask);
@@ -175,8 +176,33 @@ class TextEditor extends Component {
   }
 
   blockUpdate(params) {
-    if(params.ignoreNextSelectionChange) {
-      this.ignoreNextSelectionChange = true;
+    /* When an image block gets clicked, the selectionchange handler should be
+    temporarily disabled, since it can't tell that the thing which got clicked
+    on should be counted as outside of the textarea. When the block gets
+    blurred, selectionchange should be re-enabled. */
+    if(params.disableSelectionChange === true) {
+      this.disableSelectionChange = true;
+    }
+    else if(params.disableSelectionChange === false) {
+      this.disableSelectionChange = false;
+    }
+  }
+
+  async checkCaretNextToImage() {
+    if(!this.caretInfo.rangeSelect) {
+      const leftCharacterMask = this.virtualTextEditor.getCharacterMask(
+        this.caretInfo.index, this.caretInfo.position, false
+      );
+
+      if(leftCharacterMask & ContentType.IMAGE) {
+        this.caretInfo.insideCaretBlock = true;
+        this.virtualTextEditor.addCaretBlock(
+          this.caretInfo.index, this.caretInfo.position, 0
+        );
+
+        await this.updateContent();
+        this.caret.setInfo(this.caretInfo, this.state.editorMask);
+      }
     }
   }
 
@@ -203,17 +229,11 @@ class TextEditor extends Component {
       );
     }
 
-    /* If the caret is in front of an image, set the mask to 0, and add a
-    caret block */
+    /* If the caret is in front of an image, set the mask to 0, and see if
+    adding a caret block is necessary */
     if(leftCharacterMask & ContentType.IMAGE) {
       leftCharacterMask = 0;
-      if(!this.caretInfo.rangeSelect) {
-        this.caretInfo.insideCaretBlock = true;
-        this.virtualTextEditor.addCaretBlock(
-          this.caretInfo.index, this.caretInfo.position, 0
-        );
-        await this.updateContent();
-      }
+      await this.checkCaretNextToImage();
     }
 
     await this.updateMask(leftCharacterMask);

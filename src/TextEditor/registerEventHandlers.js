@@ -3,7 +3,11 @@ import sanitizeTextArea from './sanitizeTextArea';
 
 const registerEventHandlers = (that) => {
   that.textEditor.addEventListener('keydown', async (event) => {
-    let mathSelected = (that.state.editorMask & ContentType.MATH) > 0;
+    if(!that.caretInfo.editorSelected) {
+      return;
+    }
+
+    const mathSelected = (that.state.editorMask & ContentType.MATH) > 0;
 
     /* TBD, bro who even uses that button lol */
     if(event.key === 'Delete') {
@@ -23,7 +27,7 @@ const registerEventHandlers = (that) => {
   });
 
   that.textEditor.addEventListener('beforeinput', async (event) => {
-    if(event.isComposing || that.composing) {
+    if(event.isComposing || that.composing || !that.caretInfo.editorSelected) {
       return;
     }
 
@@ -45,7 +49,7 @@ const registerEventHandlers = (that) => {
   /* An equivalent handler to beforeinput, but with text sanitization - this is
   for browsers which don't have the beforeinput event */
   that.textEditor.addEventListener('input', async (event) => {
-    if(event.isComposing || that.composing) {
+    if(event.isComposing || that.composing || !that.caretInfo.editorSelected) {
       return;
     }
 
@@ -62,6 +66,10 @@ const registerEventHandlers = (that) => {
   });
 
   that.textEditor.addEventListener('paste', async (event) => {
+    if(!that.caretInfo.editorSelected) {
+      return;
+    }
+
     event.preventDefault();
 
     const pasteText = event.clipboardData.getData('Text');
@@ -69,6 +77,10 @@ const registerEventHandlers = (that) => {
   });
 
   that.textEditor.addEventListener('compositionstart', async (event) => {
+    if(!that.caretInfo.editorSelected) {
+      return;
+    }
+
     if(that.caretInfo.rangeSelect) {
       await that.delete();
     }
@@ -79,7 +91,7 @@ const registerEventHandlers = (that) => {
   });
 
   that.textEditor.addEventListener('compositionend', async (event) => {
-    if(!that.composing) {
+    if(!that.composing || !that.caretInfo.editorSelected) {
       return;
     }
 
@@ -88,12 +100,7 @@ const registerEventHandlers = (that) => {
   });
 
   const handleSelectionChange = (event) => {
-    if(that.ignoreNextSelectionChange) {
-      that.ignoreNextSelectionChange = false;
-      return;
-    }
-
-    if(that.composing) {
+    if(that.composing || that.disableSelectionChange) {
       return;
     }
 

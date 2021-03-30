@@ -148,11 +148,21 @@
 }
 
 .Askd-text-editor-text .Askd-te-IMAGE {
+  position: relative;
   display: block;
   background-color: var(--recent-actions-color);
   min-height: 15em;
+  user-select: none;
 }
 
 .Askd-text-editor-text .Askd-te-IMAGE:hover {
   cursor: pointer;
+}
+
+.Askd-te-IMAGE-toolbar {
+  position: absolute;
+  width: 100%;
+  bottom: -4em;
+  padding: 0.4em;
+  background-color: green;
 }
