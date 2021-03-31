@@ -56,7 +56,7 @@
 }
 
 .Askd-text-editor-editable {
-  padding: 0.7em;
+  padding: 0.7em 0.7em 6em 0.7em;
   border: 1px solid var(--super-dark-bg-color);
 }
 
@@ -149,9 +149,12 @@
 
 .Askd-text-editor-text .Askd-te-IMAGE {
   position: relative;
-  display: block;
-  background-color: var(--recent-actions-color);
-  min-height: 15em;
+  display: flex;
+  flex: 0 1 auto;
+  flex-direction: column;
+  width: 70%;
+  margin: auto;
+  color: rgba(0, 0, 0, 0);
   user-select: none;
 }
 
@@ -159,10 +162,44 @@
   cursor: pointer;
 }
 
+.Askd-text-editor-text .Askd-te-IMAGE .Askd-te-IMAGE-toolbar:hover {
+  cursor: default;
+}
+
+.Askd-te-IMAGE-ignore {
+  position: absolute;
+}
+
+.Askd-te-IMAGE img {
+  width: 100%;
+}
+
+.Askd-te-IMAGE .Askd-te-IMAGE-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--main-text-color);
+  height: 5em;
+  font-size: 3em;
+  border: 1px solid var(--super-dark-bg-color);
+  border-radius: 2px;
+}
+
 .Askd-te-IMAGE-toolbar {
   position: absolute;
   width: 100%;
-  bottom: -4em;
-  padding: 0.4em;
-  background-color: green;
+  bottom: -5em;
+  left: 0;
+  box-sizing: border-box;
+  padding: 0.6em 0.8em 0.8em 0.8em;
+  color: var(--main-text-color);
+  background-color: var(--main-content-color);
+  box-shadow: var(--main-content-shadow);
+  border-radius: 2px;
+  z-index: 1;
+}
+
+.Askd-te-IMAGE .Askd-te-IMAGE-toolbar label {
+  font-family: var(--main-text-font);
+  margin-top: 0;
 }

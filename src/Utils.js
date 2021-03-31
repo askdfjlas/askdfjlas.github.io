@@ -74,6 +74,15 @@ class Utils {
     return timeAgo.format(timeDate);
   }
 
+  static async isImageLinkValid(link) {
+    return new Promise((resolve, reject) => {
+      let img = new Image();
+      img.onload = () => resolve(true);
+      img.onerror = () => resolve(false);
+      img.src = link;
+    });
+  }
+
   static renderMathJax(selectors) {
     if(window.MathJax) {
       window.MathJax.typeset(selectors);

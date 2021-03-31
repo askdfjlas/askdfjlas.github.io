@@ -21,9 +21,8 @@ class Block extends Component {
     }
     else if(block.m === ContentType.IMAGE) {
       return (
-        <ImageBlock id={blockId} link={block.l} selected={selected}
-                    index={index}
-                    handleBlockUpdate={this.props.handleBlockUpdate} />
+        <ImageBlock id={blockId} initialLink={block.l} selected={selected}
+                    index={index} handleBlockUpdate={this.props.handleBlockUpdate} />
       );
     }
 

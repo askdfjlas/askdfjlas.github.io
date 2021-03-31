@@ -43,7 +43,7 @@
 
 .User-notes-organize:last-child {
   margin: 0 0 0.5em 0;
-  padding-bottom: 0.8em;
+  padding-bottom: 0.9em;
   border-bottom: 2px solid var(--darker-bg-color);
 }
 
@@ -323,4 +323,12 @@
 .User-notes-title-dropdown-heading-unsolved {
   background-color: var(--unsolved-tag-color);
   box-shadow: 0 0 4px 0 var(--unsolved-tag-alpha);
+}
+
+.User-notes-outer .Paginator-list-free {
+  background-color: var(--lighter-content-color);
+}
+
+.User-notes-outer .Paginator-list-free:hover {
+  background-color: var(--main-bg-color);
 }

@@ -164,6 +164,13 @@ class VirtualTextEditor {
     return [ newLeftIndex, newLeftPosition, newRightIndex, newRightPosition ];
   }
 
+  updateImageLink(index, newLink) {
+    const imageGlobalIndex = this.getGlobalIndex(index, 0);
+    if(this.characters[imageGlobalIndex].m & ContentType.IMAGE) {
+      this.characters[imageGlobalIndex].l = newLink;
+    }
+  }
+
   addCaretBlock(index, position) {
     this.caretBlockIndex = index;
     this.caretBlockPosition = position;
@@ -220,11 +227,28 @@ class VirtualTextEditor {
     return false;
   }
 
+  createBlock(mask, content, link) {
+    if(link) {
+      return {
+        m: mask,
+        c: content,
+        l: link
+      };
+    }
+    else {
+      return {
+        m: mask,
+        c: content
+      };
+    }
+  }
+
   updateBlocks() {
     this.blocks = [];
     this.blockStarts = [];
 
     let currentMask = this.characters.length > 0 ? this.characters[0].m : 0;
+    let currentLink = null;
     let characterBuffer = [];
     let blockPosition = 0;
     this.characters.forEach((character, i) => {
@@ -243,26 +267,26 @@ class VirtualTextEditor {
           currentMask = 0;
         }
 
-        this.blocks.push({
-          m: currentMask,
-          c: characterBuffer.join('')
-        });
+        this.blocks.push(this.createBlock(
+          currentMask, characterBuffer.join(''), currentLink
+        ));
         this.blockStarts.push(i - characterBuffer.length);
 
         blockPosition = character.c.length;
         currentMask = character.m;
+        currentLink = character.l;
         characterBuffer = [ character.c ];
       }
       else {
         characterBuffer.push(character.c);
+        currentLink = character.l;
         blockPosition += character.c.length;
       }
     });
 
-    this.blocks.push({
-      m: currentMask,
-      c: characterBuffer.join('')
-    });
+    this.blocks.push(this.createBlock(
+      currentMask, characterBuffer.join(''), currentLink
+    ));
     this.blockStarts.push(this.characters.length - characterBuffer.length);
 
     /* Extra newline character sets correct caret positioning */

@@ -186,6 +186,12 @@ class TextEditor extends Component {
     else if(params.disableSelectionChange === false) {
       this.disableSelectionChange = false;
     }
+
+    if(params.imageUpdate) {
+      this.virtualTextEditor.updateImageLink(
+        params.imageUpdate.index, params.imageUpdate.link
+      );
+    }
   }
 
   async checkCaretNextToImage() {
@@ -201,7 +207,7 @@ class TextEditor extends Component {
         );
 
         await this.updateContent();
-        this.caret.setInfo(this.caretInfo, this.state.editorMask);
+        this.caret.setInfo(this.caretInfo, 0);
       }
     }
   }
