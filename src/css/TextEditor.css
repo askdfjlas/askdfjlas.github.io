@@ -158,7 +158,7 @@
   user-select: none;
 }
 
-.Askd-text-editor-text .Askd-te-IMAGE:hover {
+.Askd-text-editor-editable .Askd-te-IMAGE:hover {
   cursor: pointer;
 }
 
@@ -183,6 +183,17 @@
   font-size: 3em;
   border: 1px solid var(--super-dark-bg-color);
   border-radius: 2px;
+}
+
+.Askd-te-IMAGE-focused {
+  box-shadow: var(--input-focused-shadow);
+}
+
+.Askd-te-IMAGE-blue {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: var(--recent-actions-alpha);
 }
 
 .Askd-te-IMAGE-toolbar {

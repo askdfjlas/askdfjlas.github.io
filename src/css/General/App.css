@@ -30,6 +30,7 @@ html {
   --bold-text-font: 'Mosk Bold 700';
   --main-content-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2);
   --highlighted-content-shadow: 0 0 2px 0px rgba(255, 90, 95, 0.8);
+  --input-focused-shadow: 0 0 1px 1px var(--recent-actions-alpha);
 }
 
 html {
@@ -46,7 +47,7 @@ html, body {
 }
 
 .Askd-form :focus:not(button):not(.Askd-text-editor-text) {
-  box-shadow: 0 0 1px 1px var(--recent-actions-alpha);
+  box-shadow: var(--input-focused-shadow);
   outline: none;
   transition: box-shadow 0.3s;
 }

@@ -14,7 +14,7 @@
   margin-bottom: 1.4em;
 }
 
-.Comment-section-add input[type="text"] {
+.Comment-section-add-placeholder {
   width: 100%;
   background: none;
   padding: 0.3em 0;
@@ -24,7 +24,7 @@
   font-size: 0.9em;
 }
 
-.Comment-section-add input:focus {
+.Comment-section-add-placeholder:focus {
   outline: none;
 }
 

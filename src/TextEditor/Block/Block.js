@@ -10,6 +10,7 @@ class Block extends Component {
     const editorId = this.props.id;
     const selected = this.props.selected;
     const index = this.props.index;
+    const editable = this.props.editable;
     const content = block.c;
     const blockId = editorId + index;
 
@@ -21,8 +22,9 @@ class Block extends Component {
     }
     else if(block.m === ContentType.IMAGE) {
       return (
-        <ImageBlock id={blockId} initialLink={block.l} selected={selected}
-                    index={index} handleBlockUpdate={this.props.handleBlockUpdate} />
+        <ImageBlock id={blockId} index={index} caretSelected={selected}
+                    editable={editable}  initialLink={block.l}
+                    handleBlockUpdate={this.props.handleBlockUpdate} />
       );
     }
 

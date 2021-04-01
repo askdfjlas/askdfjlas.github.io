@@ -1,5 +1,6 @@
 import React from 'react';
 import Block from './Block/Block';
+import ContentType from './ContentType';
 
 function TextEditorContent({ content, id, editable, caretInfo, handleBlur,
                              handleFocus, handleBlockUpdate }) {
@@ -9,8 +10,13 @@ function TextEditorContent({ content, id, editable, caretInfo, handleBlur,
     let selected = false;
 
     if(editable && caretInfo.editorSelected) {
-      if(caretInfo.rangeSelect && caretInfo.leftIndex <= i && i <= caretInfo.rightIndex) {
-        selected = true;
+      if(caretInfo.rangeSelect) {
+        if(block.m & ContentType.IMAGE) {
+          selected = caretInfo.leftIndex < i && i <= caretInfo.rightIndex;
+        }
+        else {
+          selected = caretInfo.leftIndex <= i && i <= caretInfo.rightIndex;
+        }
       }
       if(!caretInfo.rangeSelect && caretInfo.index === i && !caretInfo.insideCaretBlock) {
         selected = true;
@@ -19,7 +25,7 @@ function TextEditorContent({ content, id, editable, caretInfo, handleBlur,
 
     contentElements.push(
       <Block block={block} id={id} index={i} key={i} selected={selected}
-             handleBlockUpdate={handleBlockUpdate} />
+             editable={editable} handleBlockUpdate={handleBlockUpdate} />
     );
   });
 

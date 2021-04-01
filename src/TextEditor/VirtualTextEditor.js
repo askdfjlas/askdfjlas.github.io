@@ -20,11 +20,11 @@ class VirtualTextEditor {
     if(initialContent) {
       for(const block of initialContent) {
         const mask = block.m;
+        const imageLink = block.l;
         for(const char of block.c) {
-          this.characters.push({
-            m: mask,
-            c: char
-          });
+          this.characters.push(this.createBlock(
+            char, mask, imageLink
+          ));
         }
       }
 
@@ -169,6 +169,7 @@ class VirtualTextEditor {
     if(this.characters[imageGlobalIndex].m & ContentType.IMAGE) {
       this.characters[imageGlobalIndex].l = newLink;
     }
+    this.updateBlocks();
   }
 
   addCaretBlock(index, position) {
@@ -227,7 +228,7 @@ class VirtualTextEditor {
     return false;
   }
 
-  createBlock(mask, content, link) {
+  createBlock(content, mask, link) {
     if(link) {
       return {
         m: mask,
@@ -263,12 +264,8 @@ class VirtualTextEditor {
 
       /* End of this block */
       if(character.m !== currentMask || caretBlockIncoming || isImageBlock) {
-        if(characterBuffer.length === 0) {
-          currentMask = 0;
-        }
-
         this.blocks.push(this.createBlock(
-          currentMask, characterBuffer.join(''), currentLink
+          characterBuffer.join(''), currentMask, currentLink
         ));
         this.blockStarts.push(i - characterBuffer.length);
 
@@ -285,7 +282,7 @@ class VirtualTextEditor {
     });
 
     this.blocks.push(this.createBlock(
-      currentMask, characterBuffer.join(''), currentLink
+      characterBuffer.join(''), currentMask, currentLink
     ));
     this.blockStarts.push(this.characters.length - characterBuffer.length);
 

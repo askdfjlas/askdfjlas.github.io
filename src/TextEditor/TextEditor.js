@@ -89,9 +89,16 @@ class TextEditor extends Component {
 
   async imageInsert() {
     if(!this.caretInfo.rangeSelect) {
+      /* Always add a newline preceding an image */
+      [ this.caretInfo.index, this.caretInfo.position ] = this.virtualTextEditor.insert(
+        this.caretInfo.index, this.caretInfo.position,
+        String.fromCharCode(10), this.state.editorMask
+      );
+
       [ this.caretInfo.index, this.caretInfo.position] = this.virtualTextEditor.insert(
         this.caretInfo.index, this.caretInfo.position, '!', ContentType.IMAGE
       );
+
       await this.insertionUpdate();
     }
   }
@@ -175,7 +182,7 @@ class TextEditor extends Component {
     }
   }
 
-  blockUpdate(params) {
+  async blockUpdate(params) {
     /* When an image block gets clicked, the selectionchange handler should be
     temporarily disabled, since it can't tell that the thing which got clicked
     on should be counted as outside of the textarea. When the block gets
@@ -191,6 +198,12 @@ class TextEditor extends Component {
       this.virtualTextEditor.updateImageLink(
         params.imageUpdate.index, params.imageUpdate.link
       );
+
+      if(this.props.onChange) {
+        this.props.onChange(this.virtualTextEditor.getContent());
+      }
+
+      await this.updateContent();
     }
   }
 

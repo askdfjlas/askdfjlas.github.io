@@ -1,18 +1,20 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Utils from '../../Utils';
 
-function ImageBlock({ id, index, initialLink, handleBlockUpdate }) {
+function ImageBlock({ id, index, caretSelected, editable,
+                      initialLink, handleBlockUpdate }) {
   let [ selected, setSelected ] = useState(false);
   let [ imageLink, setImageLink ] = useState(initialLink || '');
-  let [ validImageLink, setValidImageLink ] = useState(initialLink);
+  let [ validImageLink, setValidImageLink ] = useState(initialLink || null);
   let lastValidImageLinkTime = useRef(0);
+  let blockRef = React.createRef();
 
   useEffect(() => {
     setImageLink(initialLink || '');
-    setValidImageLink(initialLink);
-  }, [index, initialLink]);
+    setValidImageLink(initialLink || null);
+  }, [ initialLink ]);
 
-  const handleFocus = (event) => {
+  let handleFocus = (event) => {
     if(selected) {
       return;
     }
@@ -20,10 +22,12 @@ function ImageBlock({ id, index, initialLink, handleBlockUpdate }) {
     handleBlockUpdate({
       disableSelectionChange: true
     });
+
+    blockRef.current.classList.add('Askd-te-IMAGE-focused');
     setSelected(true);
   };
 
-  const handleBlur = (event) => {
+  let handleBlur = (event) => {
     if(event.currentTarget.contains(event.relatedTarget)) {
       event.preventDefault();
       return;
@@ -32,8 +36,10 @@ function ImageBlock({ id, index, initialLink, handleBlockUpdate }) {
     handleBlockUpdate({
       disableSelectionChange: false
     });
+
+    blockRef.current.classList.remove('Askd-te-IMAGE-focused');
     setSelected(false);
-  }
+  };
 
   const handleLinkChange = async (event) => {
     const newLink = event.target.value;
@@ -54,12 +60,22 @@ function ImageBlock({ id, index, initialLink, handleBlockUpdate }) {
     lastValidImageLinkTime.current = Date.now();
   };
 
+  if(!editable) {
+    handleFocus = null;
+    handleBlur = null;
+  }
+
   return (
-    <div className="Askd-te-IMAGE" id={id} index={index} tabIndex="-1"
-         contentEditable={false} onFocus={handleFocus} onBlur={handleBlur}>
+    <div className="Askd-te-IMAGE" id={id} index={index} tabIndex="0"
+         contentEditable={false} onFocus={handleFocus} onBlur={handleBlur}
+         ref={blockRef}>
       <span className="Askd-te-IMAGE-ignore">
         !
       </span>
+      {
+        caretSelected &&
+        <div className="Askd-te-IMAGE-blue" />
+      }
       {
         validImageLink &&
         <img src={validImageLink} alt="Text editor block" />
@@ -72,7 +88,7 @@ function ImageBlock({ id, index, initialLink, handleBlockUpdate }) {
       }
       {
         selected &&
-        <div className="Askd-te-IMAGE-toolbar">
+        <div className="Askd-form Askd-te-IMAGE-toolbar">
           <label htmlFor="Askd-te-IMAGE-link">Link</label>
           <input type="text" name="Askd-te-IMAGE-link"
                  onChange={handleLinkChange} value={imageLink} />

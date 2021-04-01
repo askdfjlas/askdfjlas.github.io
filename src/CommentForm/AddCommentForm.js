@@ -29,8 +29,9 @@ function AddCommentForm({ addCallback }) {
   if(!editorActive) {
     return (
       <div className="Comment-section-add">
-        <input type="text" placeholder="Write a comment..."
-               onFocus={handleInactiveFocus} ref={inputRef} />
+        <input className="Comment-section-add-placeholder" type="text"
+               placeholder="Write a comment..." onFocus={handleInactiveFocus}
+               ref={inputRef} />
       </div>
     );
   }
