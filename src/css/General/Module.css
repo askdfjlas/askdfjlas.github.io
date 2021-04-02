@@ -45,6 +45,7 @@
 .Module-recent-notes .icon-long-arrow-right {
   font-size: 0.8em;
   color: var(--username-black);
+  margin: 0 0.2em;
 }
 
 .Module-recent-notes .icon-comments {

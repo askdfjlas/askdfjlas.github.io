@@ -29,7 +29,7 @@
   white-space: nowrap;
   border-collapse: collapse;
   box-sizing: border-box;
-  background-color: var(--main-content-color)
+  background-color: var(--main-content-color);
 }
 
 .Users-table-table-table th {
@@ -48,7 +48,7 @@
 
 .Users-table-table-table td, .Users-table-table-table th {
   padding: 0.4em;
-  border: 1px solid var(--darker-bg-color);
+  border: 1px solid var(--super-dark-bg-color);
   margin: 0;
   box-sizing: border-box;
 }

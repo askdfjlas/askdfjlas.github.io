@@ -23,7 +23,8 @@ class Block extends Component {
     else if(block.m === ContentType.IMAGE) {
       return (
         <ImageBlock id={blockId} index={index} caretSelected={selected}
-                    editable={editable}  initialLink={block.l}
+                    editable={editable} initialLink={block.l}
+                    initialSize={block.s}
                     handleBlockUpdate={this.props.handleBlockUpdate} />
       );
     }

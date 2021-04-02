@@ -6,6 +6,7 @@ class Toolbar extends Component {
     const boldSelected = (this.props.mask & ContentType.BOLD) > 0;
     const italicSelected = (this.props.mask & ContentType.ITALIC) > 0;
     const underlineSelected = (this.props.mask & ContentType.UNDERLINE) > 0;
+    const strikethroughSelected = (this.props.mask & ContentType.STRIKETHROUGH) > 0;
     const mathSelected = (this.props.mask & ContentType.MATH) > 0;
 
     const selectHandler = (type) => {
@@ -29,6 +30,10 @@ class Toolbar extends Component {
           <li className={`Askd-tb-selected-${underlineSelected}`}>
             <button type="button" className="Askd-tb-icon Askd-tb-UNDERLINE"
                     onPointerDown={selectHandler(ContentType.UNDERLINE)} />
+          </li>
+          <li className={`Askd-tb-selected-${strikethroughSelected}`}>
+            <button type="button" className="Askd-tb-icon Askd-tb-STRIKETHROUGH"
+                    onPointerDown={selectHandler(ContentType.STRIKETHROUGH)} />
           </li>
           <li className={`Askd-tb-selected-${mathSelected}`}>
             <button type="button" className="Askd-tb-icon Askd-tb-MATH"

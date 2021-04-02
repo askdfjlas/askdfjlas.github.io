@@ -15,6 +15,10 @@ class MaskManager {
   }
 
   static editorMergeBit(bit, on, originalMask) {
+    if(originalMask & ContentType.IMAGE) {
+      return originalMask;
+    }
+
     if(bit === ContentType.MATH) {
       if(on) return bit;
 

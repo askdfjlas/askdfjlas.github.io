@@ -21,9 +21,10 @@ class VirtualTextEditor {
       for(const block of initialContent) {
         const mask = block.m;
         const imageLink = block.l;
+        const imageSize = block.s;
         for(const char of block.c) {
           this.characters.push(this.createBlock(
-            char, mask, imageLink
+            char, mask, imageLink, imageSize
           ));
         }
       }
@@ -164,10 +165,15 @@ class VirtualTextEditor {
     return [ newLeftIndex, newLeftPosition, newRightIndex, newRightPosition ];
   }
 
-  updateImageLink(index, newLink) {
+  updateImage(index, newLink, newSize) {
     const imageGlobalIndex = this.getGlobalIndex(index, 0);
     if(this.characters[imageGlobalIndex].m & ContentType.IMAGE) {
-      this.characters[imageGlobalIndex].l = newLink;
+      if(newLink) {
+        this.characters[imageGlobalIndex].l = newLink;
+      }
+      if(newSize) {
+        this.characters[imageGlobalIndex].s = newSize;
+      }
     }
     this.updateBlocks();
   }
@@ -228,20 +234,21 @@ class VirtualTextEditor {
     return false;
   }
 
-  createBlock(content, mask, link) {
+  createBlock(content, mask, link, size) {
+    let block = {
+      m: mask,
+      c: content
+    };
+
     if(link) {
-      return {
-        m: mask,
-        c: content,
-        l: link
-      };
+      block.l = link;
     }
-    else {
-      return {
-        m: mask,
-        c: content
-      };
+
+    if(size) {
+      block.s = size;
     }
+
+    return block;
   }
 
   updateBlocks() {
@@ -250,6 +257,7 @@ class VirtualTextEditor {
 
     let currentMask = this.characters.length > 0 ? this.characters[0].m : 0;
     let currentLink = null;
+    let currentSize = null;
     let characterBuffer = [];
     let blockPosition = 0;
     this.characters.forEach((character, i) => {
@@ -265,24 +273,26 @@ class VirtualTextEditor {
       /* End of this block */
       if(character.m !== currentMask || caretBlockIncoming || isImageBlock) {
         this.blocks.push(this.createBlock(
-          characterBuffer.join(''), currentMask, currentLink
+          characterBuffer.join(''), currentMask, currentLink, currentSize
         ));
         this.blockStarts.push(i - characterBuffer.length);
 
         blockPosition = character.c.length;
         currentMask = character.m;
         currentLink = character.l;
+        currentSize = character.s;
         characterBuffer = [ character.c ];
       }
       else {
         characterBuffer.push(character.c);
         currentLink = character.l;
+        currentSize = character.s;
         blockPosition += character.c.length;
       }
     });
 
     this.blocks.push(this.createBlock(
-      characterBuffer.join(''), currentMask, currentLink
+      characterBuffer.join(''), currentMask, currentLink, currentSize
     ));
     this.blockStarts.push(this.characters.length - characterBuffer.length);
 

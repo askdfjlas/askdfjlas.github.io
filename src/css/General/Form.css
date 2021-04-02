@@ -42,7 +42,7 @@ input.Askd-not-fullwidth {
   background-position: right 0.5em bottom 50%;
 }
 
-.Askd-form input, .Askd-form textarea, .Askd-form select {
+.Askd-form input:not(input[type="range"]), .Askd-form textarea, .Askd-form select {
   box-sizing: border-box;
   padding: 0.5em;
   border: 1px solid var(--super-dark-bg-color);

@@ -27,6 +27,10 @@ const registerEventHandlers = (that) => {
   });
 
   that.textEditor.addEventListener('beforeinput', async (event) => {
+    if(event.inputType === 'insertFromDrop') {
+      event.preventDefault();
+    }
+
     if(event.isComposing || that.composing || !that.caretInfo.editorSelected) {
       return;
     }

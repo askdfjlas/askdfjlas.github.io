@@ -56,7 +56,7 @@
 }
 
 .Askd-text-editor-editable {
-  padding: 0.7em 0.7em 6em 0.7em;
+  padding: 0.7em 0.7em 8em 0.7em;
   border: 1px solid var(--super-dark-bg-color);
 }
 
@@ -109,6 +109,11 @@
   font-size: 0.96em;
 }
 
+.Askd-tb-STRIKETHROUGH:after {
+  content: "\ea65";
+  font-size: 0.96em;
+}
+
 .Askd-tb-UNDERLINE::after {
   position: relative;
   top: 1.1px;
@@ -147,12 +152,15 @@
   text-decoration: underline;
 }
 
+.Askd-te-STRIKETHROUGH {
+  text-decoration: line-through;
+}
+
 .Askd-text-editor-text .Askd-te-IMAGE {
   position: relative;
   display: flex;
   flex: 0 1 auto;
   flex-direction: column;
-  width: 70%;
   margin: auto;
   color: rgba(0, 0, 0, 0);
   user-select: none;
@@ -199,8 +207,9 @@
 .Askd-te-IMAGE-toolbar {
   position: absolute;
   width: 100%;
-  bottom: -5em;
-  left: 0;
+  min-width: 14em;
+  bottom: -8em;
+  left: calc((100% - max(100%, 14em))/2);
   box-sizing: border-box;
   padding: 0.6em 0.8em 0.8em 0.8em;
   color: var(--main-text-color);
@@ -213,4 +222,8 @@
 .Askd-te-IMAGE .Askd-te-IMAGE-toolbar label {
   font-family: var(--main-text-font);
   margin-top: 0;
+}
+
+.Askd-te-IMAGE .Askd-te-IMAGE-toolbar label[for="Askd-te-IMAGE-size"] {
+  margin-top: 0.3em;
 }

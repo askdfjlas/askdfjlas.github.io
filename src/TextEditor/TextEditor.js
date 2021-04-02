@@ -195,8 +195,9 @@ class TextEditor extends Component {
     }
 
     if(params.imageUpdate) {
-      this.virtualTextEditor.updateImageLink(
-        params.imageUpdate.index, params.imageUpdate.link
+      this.virtualTextEditor.updateImage(
+        params.imageUpdate.index, params.imageUpdate.link,
+        params.imageUpdate.size
       );
 
       if(this.props.onChange) {

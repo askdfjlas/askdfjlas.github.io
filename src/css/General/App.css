@@ -46,7 +46,7 @@ html, body {
   height: 100%;
 }
 
-.Askd-form :focus:not(button):not(.Askd-text-editor-text) {
+.Askd-form :focus:not(button):not(.Askd-text-editor-text):not(input[type="range"]) {
   box-shadow: var(--input-focused-shadow);
   outline: none;
   transition: box-shadow 0.3s;
