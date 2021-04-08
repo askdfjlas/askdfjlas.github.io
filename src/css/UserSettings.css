@@ -1,0 +1,30 @@
+.User-settings {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+}
+
+.User-settings-cf {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  margin-top: 0.1em;
+}
+
+.User-settings-cf label[for="cfUsername"] {
+  margin-top: 0.4em;
+}
+
+.User-settings-cf input[type="submit"] {
+  margin-top: 0.4em;
+  min-width: 5em;
+}
+
+.User-settings-cf-verify {
+  margin-top: 1.2em;
+}
+
+.User-settings-cf-verify .Module-paragraph {
+  margin-bottom: 0.2em;
+  white-space: pre;
+}

@@ -70,6 +70,15 @@ class UsersApi {
 
     return await Api.putJson('users', options);
   }
+
+  static async beginCfVerification(username, cfUsername) {
+    const options = {
+      username: username,
+      authCfUsername: cfUsername
+    };
+
+    return await Api.putJson('users/link', options);
+  }
 }
 
 export default UsersApi;

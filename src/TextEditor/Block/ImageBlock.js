@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react';
 import Utils from '../../Utils';
 
+const MIN_IMAGE_SIZE = 200;
+const MAX_IMAGE_SIZE = 1000;
+const START_IMAGE_SIZE = 836;
+const IMAGE_PRECISION = 10000;
+
 function ImageBlock({ id, index, caretSelected, editable, initialLink,
                       initialSize, handleBlockUpdate }) {
   const [ selected, setSelected ] = useState(false);
   const [ imageLink, setImageLink ] = useState(initialLink || '');
   const [ validImageLink, setValidImageLink ] = useState(initialLink || null);
-  const [ imageSize, setImageSize ] = useState(initialSize || 836);
+  const [ imageSize, setImageSize ] = useState(initialSize || START_IMAGE_SIZE);
   const lastValidImageLinkTime = useRef(0);
   const blockRef = React.createRef();
 
@@ -61,6 +66,11 @@ function ImageBlock({ id, index, caretSelected, editable, initialLink,
         link: newLink
       }
     });
+
+    if(!validImageLink) {
+      setImageSize(START_IMAGE_SIZE);
+    }
+
     setValidImageLink(newLink);
     lastValidImageLinkTime.current = Date.now();
   };
@@ -85,7 +95,8 @@ function ImageBlock({ id, index, caretSelected, editable, initialLink,
   return (
     <div className="Askd-te-IMAGE" id={id} index={index} tabIndex="0"
          contentEditable={false} onFocus={handleFocus} onBlur={handleBlur}
-         ref={blockRef} style={{width: imageSize * imageSize / 10000 + '%'}}>
+         ref={blockRef}
+         style={{width: imageSize * imageSize / IMAGE_PRECISION + '%'}}>
       <span className="Askd-te-IMAGE-ignore">
         !
       </span>
@@ -111,8 +122,8 @@ function ImageBlock({ id, index, caretSelected, editable, initialLink,
                  onChange={handleLinkChange} value={imageLink} />
           <label htmlFor="Askd-te-IMAGE-size">Size</label>
           <input type="range" name="Askd-te-IMAGE-size"
-                 min="200" max="1000" value={imageSize} onChange={handleSizeChange}
-                 disabled={!validImageLink} />
+                 min={MIN_IMAGE_SIZE} max={MAX_IMAGE_SIZE} value={imageSize}
+                 onChange={handleSizeChange} disabled={!validImageLink} />
         </div>
       }
     </div>

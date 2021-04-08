@@ -27,9 +27,10 @@ class UserMenu extends Component {
           </li>
           <div className="User-menu-divider"></div>
           <li className="User-menu-not-link">
-            <button className="Header-menu-button">
+            <Link className="Header-menu-button" onClick={this.props.closeCallback}
+                  to="/settings">
               Settings
-            </button>
+            </Link>
           </li>
           <li className="User-menu-not-link">
             <button className="Header-menu-button" onClick={this.logout}>

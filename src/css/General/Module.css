@@ -152,6 +152,10 @@
   color: var(--username-black);
 }
 
+.Module-paragraph {
+  margin: 0 0 0.6em 0;
+}
+
 .Module-description {
   margin: auto;
   width: 85%;
