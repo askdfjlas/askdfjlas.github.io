@@ -71,10 +71,20 @@ class UsersApi {
     return await Api.putJson('users', options);
   }
 
-  static async beginCfVerification(username, cfUsername) {
+  static async beginCfVerification(username, authCfUsername) {
     const options = {
       username: username,
-      authCfUsername: cfUsername
+      authCfUsername: authCfUsername
+    };
+
+    return await Api.putJson('users/link', options);
+  }
+
+  static async endCfVerification(username, authCfUsername, authId) {
+    const options = {
+      username: username,
+      authCfUsername: authCfUsername,
+      authId: authId
     };
 
     return await Api.putJson('users/link', options);

@@ -2,11 +2,13 @@ import React, { useState } from 'react';
 import ClipboardCopy from '../Misc/ClipboardCopy';
 import UsersApi from '../Api/UsersApi';
 
-function LinkCfAccountForm({ userInfo }) {
+const CF_DOWN_MESSAGE = 'Codeforces might be down. Please try again later.';
+
+function LinkCfAccountForm({ userInfo, history }) {
   const [ cfUsername, setCfUsername ] = useState('');
   const [ authCfUsername, setAuthCfUsername ] = useState('');
   const [ authId, setAuthId ] = useState(null);
-  const [ beginLoading, setBeginLoading ] = useState(false);
+  const [ loading, setLoading ] = useState(false);
   const [ error, setError ] = useState(null);
 
   const handleChange = (event) => {
@@ -15,13 +17,12 @@ function LinkCfAccountForm({ userInfo }) {
 
   const beginCfVerification = async (event) => {
     event.preventDefault();
-    setBeginLoading(true);
+    setLoading(true);
     setError(null);
 
     try {
-      const loggedInUsername = userInfo.username;
       const verificationCode = await UsersApi.beginCfVerification(
-        loggedInUsername, cfUsername
+        userInfo.username, cfUsername
       );
       setAuthId(verificationCode);
       setAuthCfUsername(cfUsername);
@@ -30,16 +31,46 @@ function LinkCfAccountForm({ userInfo }) {
       if(err.name === 'UserNotFound') {
         setError(`Account ${cfUsername} not found on Codeforces!`);
       }
-      else if(err.name === 'CodeForcesDown') {
-        setError('Codeforces might be down. Please try again later.')
+      else if(err.name === 'CodeforcesDown') {
+        setError(CF_DOWN_MESSAGE);
+      }
+      else if(err.name === 'AlreadyLinked') {
+        setError(err.message);
       }
       else {
         throw err;
       }
     }
 
-    setBeginLoading(false);
+    setLoading(false);
   };
+
+  const endCfVerification = async (event) => {
+    event.preventDefault();
+    setLoading(true);
+    setError(false);
+
+    try {
+      await UsersApi.endCfVerification(
+        userInfo.username, authCfUsername, authId
+      );
+      history.replace(history.location);
+    }
+    catch(err) {
+      if(err.name === 'VerificationFailed' ||
+         err.name === 'VerificationOverridden') {
+        setError(err.message);
+      }
+      else if(err.name === 'CodeforcesDown') {
+        setError(CF_DOWN_MESSAGE);
+      }
+      else {
+        throw err;
+      }
+    }
+
+    setLoading(false);
+  }
 
   const copyText = `I am authorizing cp-notes to use my identity: ${authId}`;
 
@@ -58,14 +89,14 @@ function LinkCfAccountForm({ userInfo }) {
         <input type="text" name="cfUsername" value={cfUsername}
                onChange={handleChange} />
         <input type="submit" className="Askd-button Askd-not-fullwidth"
-               value="Link your account" disabled={beginLoading} />
+               value="Link your account" disabled={loading} />
       </form>
       {
         authId &&
         <>
           <div className="User-settings-cf-verify">
             <p className="Module-paragraph">
-              Account {authCfUsername} found! Please change the last name
+              Account {authCfUsername} found! Please change the (English) last name
               on your Codeforces profile to be the following (you may do so
               {' '}
               <a href="https://codeforces.com/settings/social" target="_blank"
@@ -75,9 +106,9 @@ function LinkCfAccountForm({ userInfo }) {
             </p>
             <ClipboardCopy text={copyText} />
           </div>
-          <form className="Askd-form">
+          <form className="Askd-form" onSubmit={endCfVerification}>
             <input type="submit" className="Askd-button Askd-not-fullwidth"
-                   value="Verify!" disabled={beginLoading} />
+                   value="Verify!" disabled={loading} />
           </form>
         </>
       }

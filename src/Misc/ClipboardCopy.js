@@ -3,7 +3,6 @@ import copy from 'copy-to-clipboard';
 import '../css/Misc/ClipboardCopy.css';
 
 function ClipboardCopy({ text }) {
-  const outerDivRef = React.createRef();
   const innerDivRef = React.createRef();
 
   const handleClick = () => {
@@ -11,12 +10,12 @@ function ClipboardCopy({ text }) {
     window.setTimeout(() => {
       innerDivRef.current.classList.remove('Clipboard-copy-clicked');
     }, 500);
-    
+
     copy(text);
   }
 
   return (
-    <div className="Clipboard-copy" ref={outerDivRef} onClick={handleClick}>
+    <div className="Clipboard-copy" onClick={handleClick}>
       {text}
       <div ref={innerDivRef}>
         Copied!

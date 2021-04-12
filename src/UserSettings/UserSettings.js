@@ -29,7 +29,7 @@ function UserSettings({ otherProps, info, screen }) {
   }
   else if(info.userInfo) {
     innerContent = (
-      <LinkCfAccountForm userInfo={info.userInfo} />
+      <LinkCfAccountForm userInfo={info.userInfo} history={otherProps.history} />
     );
   }
   else {
