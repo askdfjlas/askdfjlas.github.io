@@ -1,7 +1,48 @@
 .Username {
-  color: var(--username-gray);
   font-family: var(--bold-text-font);
   text-decoration: none;
+}
+
+.Username-newbie {
+  color: var(--username-gray);
+}
+
+.Username-pupil {
+  color: var(--contributor-green);
+}
+
+.Username-specialist {
+  color: var(--username-cyan);
+}
+
+.Username-expert {
+  color: var(--username-blue);
+}
+
+.Username-candidate-master {
+  color: var(--upsolved-tag-color);
+}
+
+.Username-master {
+  color: var(--upsolved-help-tag-color);
+}
+
+.Username-international-master {
+  color: var(--username-dark-orange);
+}
+
+.Username-grandmaster {
+  color: var(--bright-heading-color);
+}
+
+.Username-international-grandmaster,
+.Username-legendary-grandmaster {
+  color: var(--unsolved-tag-color);
+}
+
+.Username-first-letter-legendary-grandmaster {
+  display: inline;
+  color: black;
 }
 
 .Username:not(h2):hover {

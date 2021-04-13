@@ -13,7 +13,6 @@ import UserSettings from './UserSettings/UserSettings';
 import './css/General/App.css';
 import './css/General/Module.css';
 import './css/General/Form.css';
-import './css/Misc/Username.css';
 
 function App() {
   return (

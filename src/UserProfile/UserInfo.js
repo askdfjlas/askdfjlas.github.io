@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import UsersApi from '../Api/UsersApi';
 import LoadingSpinner from '../Misc/LoadingSpinner';
+import Username from '../Misc/Username';
 import Utils from '../Utils';
 import '../css/UserInfo.css';
 
@@ -55,31 +56,39 @@ function UserInfo({ info }) {
     <div className="Module-outer-space">
       <h2 className="Module-heading Username">{info.username}</h2>
       <div className="User-info">
-        <div className="User-info-info">
+        <ol className="User-info-info">
           {
             info.email &&
-            <p>
+            <li>
               <span className="icon-envelope" />
               Email: {info.email} (only visible to you)
-            </p>
+            </li>
           }
-          <p className="User-info-info-contribution">
+          <li className="User-info-info-contribution">
             <span className="icon-thumb_up_alt" />
             Contribution:
             <span className={contributionClassName}>
               {info.contribution}
             </span>
-          </p>
-          <p>
+          </li>
+          <li>
             <span className="icon-note-text" />
             {`Total notes: ${info.totalNotes}`}
-          </p>
-          <p>
-            <span className="icon-account_box" />
-            Registered: ?
-          </p>
-          { error && <p className="User-info-info-error">{error}</p> }
-        </div>
+          </li>
+          {
+            info.cfUsername &&
+            <li>
+              <span className="icon-account_box" />
+              Codeforces handle:
+              {' '}
+              <Username username={info.cfUsername} rank={info.cfRank}
+                        linkToCf={true} />
+              {' '}
+              <b>({info.cfRating})</b>
+            </li>
+          }
+          { error && <li className="User-info-info-error">{error}</li> }
+        </ol>
         <div className="User-info-avatar-outer">
           <div className="User-info-avatar">
             <div className="User-info-avatar-box">

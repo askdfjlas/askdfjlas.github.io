@@ -32,6 +32,9 @@ class UsersApi {
     userInfoCache[username] = {
       username: username,
       avatarData: userInfo.avatarData,
+      cfUsername: userInfo.cfUsername,
+      cfRank: userInfo.cfRank,
+      cfRating: userInfo.cfRating,
       timestamp: Date.now()
     };
 

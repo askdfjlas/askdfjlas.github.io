@@ -18,6 +18,9 @@ html {
   --recent-actions-alpha: rgba(96, 143, 230, 0.6);
   --username-black: #2C2B43;
   --username-gray: #65686B;
+  --username-cyan: #03A89E;
+  --username-blue: blue;
+  --username-dark-orange: #F57545;
   --contributor-green: #35C585;
   --contributor-green-alpha: rgba(53, 197, 133, 0.6);
   --unsolved-tag-color: #E52540;

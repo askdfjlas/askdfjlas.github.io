@@ -48,7 +48,7 @@ function LinkCfAccountForm({ userInfo, history }) {
   const endCfVerification = async (event) => {
     event.preventDefault();
     setLoading(true);
-    setError(false);
+    setError(null);
 
     try {
       await UsersApi.endCfVerification(
@@ -75,10 +75,7 @@ function LinkCfAccountForm({ userInfo, history }) {
   const copyText = `I am authorizing cp-notes to use my identity: ${authId}`;
 
   return (
-    <div className="Module-outer-space User-settings-cf">
-      <h3 className="Module-heading">
-        Codeforces account
-      </h3>
+    <>
       <p className="Module-paragraph">
         <i>You haven't linked your Codeforces account yet!</i>
       </p>
@@ -116,7 +113,7 @@ function LinkCfAccountForm({ userInfo, history }) {
         error &&
         <p className="User-info-info-error">Error: {error}</p>
       }
-    </div>
+    </>
   );
 }
 

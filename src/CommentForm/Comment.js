@@ -1,25 +1,36 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link } from 'react-router-dom';
 import TextEditorContent from '../TextEditor/TextEditorContent';
 import DeleteMenu from '../Misc/DeleteMenu';
 import CommentForm from './CommentForm';
+import Username from '../Misc/Username';
 import Utils from '../Utils';
 
-function Comment({ info, replyUsername, subscribeToAvatar, replyCallback,
+function Comment({ info, replyUsername, subscribeToUserInfo,
+                   subscribeToReplyInfo, replyCallback,
                    editCallback, deleteCallback, loggedInUsername }) {
   const id = info.commentId;
   const content = info.content ? JSON.parse(info.content) : null;
 
   const [ avatarData, setAvatarData ] = useState(null);
+  const [ rank, setRank ] = useState(null);
+  const [ replyRank, setReplyRank ] = useState(null);
   const [ editFormOpen, setEditFormOpen ] = useState(false);
   const [ deleteMenuOpen, setDeleteMenuOpen ] = useState(false);
   const editedContent = useRef(content);
 
+  const setAvatarAndRank = (userInfo) => {
+    setAvatarData(userInfo.avatarData);
+    setRank(userInfo.cfRank);
+  };
+
   useEffect(() => {
-    if(subscribeToAvatar) {
-      subscribeToAvatar(setAvatarData);
+    if(subscribeToUserInfo) {
+      subscribeToUserInfo(setAvatarAndRank);
     }
-  }, [subscribeToAvatar]);
+    if(subscribeToReplyInfo) {
+      subscribeToReplyInfo((userInfo) => setReplyRank(userInfo.cfRank));
+    }
+  }, [subscribeToUserInfo, subscribeToReplyInfo]);
 
   const openEditForm = () => {
     setEditFormOpen(true);
@@ -82,9 +93,7 @@ function Comment({ info, replyUsername, subscribeToAvatar, replyCallback,
         {
           replyUsername &&
           <span className="Comment-section-reply-username">
-            <Link className="Username" to={`/users/${replyUsername}`}>
-              {replyUsername}
-            </Link>
+            <Username username={replyUsername} rank={replyRank} />
             <span className="icon-reply" />
           </span>
         }
@@ -93,9 +102,7 @@ function Comment({ info, replyUsername, subscribeToAvatar, replyCallback,
           <img className="Comment-section-avatar" src={avatarData} alt="avatar" />
         }
         <div className="Comment-section-comment-body">
-          <Link className="Username" to={`/users/${authorUsername}`}>
-            {authorUsername}
-          </Link>
+          <Username username={info.username} rank={rank} />
           <span className="Comment-section-timestamp">
             {timeAgoString}
           </span>

@@ -4,7 +4,7 @@ import Comment from './Comment';
 import CommentForm from './CommentForm';
 import UserAuthApi from '../Api/UserAuthApi';
 
-function RootComment({ info, addAvatarSubscriptions, replyCallback,
+function RootComment({ info, addInfoSubscriptions, replyCallback,
                        editCallback, deleteCallback, loggedInUsername }) {
   const [ editorActive, setEditorActive ] = useState(false);
   const [ replyUsername, setReplyUsername ] = useState(null);
@@ -52,12 +52,14 @@ function RootComment({ info, addAvatarSubscriptions, replyCallback,
     const reply = info.replies[i];
     const commentReplyUsername = replyIdToUsername[reply.replyId];
     const replyCallback = createReplyHandler(reply.commentId, reply.username);
-    const subscribeToAvatar = addAvatarSubscriptions[reply.username];
+    const subscribeToUserInfo = addInfoSubscriptions[reply.username];
+    const subscribeToReplyInfo = addInfoSubscriptions[commentReplyUsername];
 
     replyListItems.push(
       <li key={i} className="Comment-section-reply-comment">
         <Comment info={reply} replyUsername={commentReplyUsername}
-                 subscribeToAvatar={subscribeToAvatar}
+                 subscribeToUserInfo={subscribeToUserInfo}
+                 subscribeToReplyInfo={subscribeToReplyInfo}
                  replyCallback={replyCallback} editCallback={editCallback}
                  deleteCallback={deleteCallback}
                  loggedInUsername={loggedInUsername} />
@@ -86,11 +88,11 @@ function RootComment({ info, addAvatarSubscriptions, replyCallback,
   const rootCommentReplyCallback = createReplyHandler(
     info.commentId, info.username
   );
-  const rootCommentSubscribeToAvatar = addAvatarSubscriptions[info.username];
+  const rootCommentSubscribeToUserInfo = addInfoSubscriptions[info.username];
 
   return (
     <>
-      <Comment info={info} subscribeToAvatar={rootCommentSubscribeToAvatar}
+      <Comment info={info} subscribeToUserInfo={rootCommentSubscribeToUserInfo}
                replyCallback={rootCommentReplyCallback}
                editCallback={editCallback} deleteCallback={deleteCallback}
                loggedInUsername={loggedInUsername} />

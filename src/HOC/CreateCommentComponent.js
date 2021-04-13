@@ -12,9 +12,9 @@ import '../css/CommentSection.css';
 function CreateCommentComponent(getComments, addComment) {
   function CommentComponent({ otherProps, info, screen }) {
     let mounted = useRef(true);
-    let userAvatars = useRef({});
-    let userAvatarSubscriptions = useRef({});
-    let addAvatarSubscriptions = useRef({});
+    let userInfos = useRef({});
+    let userInfoSubscriptions = useRef({});
+    let addInfoSubscriptions = useRef({});
 
     useEffect(() => {
       mounted.current = true;
@@ -38,41 +38,41 @@ function CreateCommentComponent(getComments, addComment) {
         return;
       }
 
-      userAvatars.current = {};
-      userAvatarSubscriptions.current = {};
-      addAvatarSubscriptions.current = {};
+      userInfos.current = {};
+      userInfoSubscriptions.current = {};
+      addInfoSubscriptions.current = {};
 
-      const getUserAvatarData = async (username) => {
+      const getUserInfo = async (username) => {
         const userInfo = await UsersApi.getUserInfo(username, true);
-        userAvatars.current[username] = userInfo.avatarData;
-        for(const callback of userAvatarSubscriptions.current[username]) {
+        userInfos.current[username] = userInfo;
+        for(const callback of userInfoSubscriptions.current[username]) {
           if(mounted.current) {
-            callback(userInfo.avatarData);
+            callback(userInfo);
           }
         }
       };
 
-      const initializeAvatarSystem = (username) => {
-        userAvatars.current[username] = null;
-        userAvatarSubscriptions.current[username] = [];
-        addAvatarSubscriptions.current[username] = (callback) => {
-          if(userAvatars.current[username] && mounted.current) {
-            callback(userAvatars.current[username]);
+      const initializeInfoSystem = (username) => {
+        userInfos.current[username] = null;
+        userInfoSubscriptions.current[username] = [];
+        addInfoSubscriptions.current[username] = (callback) => {
+          if(userInfos.current[username] && mounted.current) {
+            callback(userInfos.current[username]);
           }
           else {
-            userAvatarSubscriptions.current[username].push(callback);
+            userInfoSubscriptions.current[username].push(callback);
           }
         };
-        getUserAvatarData(username);
+        getUserInfo(username);
       };
 
       for(const comment of info.comments) {
-        if(!(comment.username in userAvatars.current)) {
-          initializeAvatarSystem(comment.username);
+        if(!(comment.username in userInfos.current)) {
+          initializeInfoSystem(comment.username);
         }
         for(const reply of comment.replies) {
-          if(!(reply.username in userAvatars.current)) {
-            initializeAvatarSystem(reply.username);
+          if(!(reply.username in userInfos.current)) {
+            initializeInfoSystem(reply.username);
           }
         }
       }
@@ -148,7 +148,7 @@ function CreateCommentComponent(getComments, addComment) {
               <RootComment info={comment} replyCallback={replyCallback}
                            editCallback={editCallback} deleteCallback={deleteCallback}
                            loggedInUsername={info.loggedInUsername}
-                           addAvatarSubscriptions={addAvatarSubscriptions.current} />
+                           addInfoSubscriptions={addInfoSubscriptions.current} />
             </li>
           );
         }

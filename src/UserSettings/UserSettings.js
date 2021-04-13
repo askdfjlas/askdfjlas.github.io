@@ -5,6 +5,7 @@ import UsersApi from '../Api/UsersApi';
 import CreateLoadingComponent from '../HOC/CreateLoadingComponent';
 import LoadingSpinner from '../Misc/LoadingSpinner';
 import LoadState from '../Enum/LoadState';
+import Username from '../Misc/Username';
 import '../css/UserSettings.css';
 
 async function getUserInfo() {
@@ -28,8 +29,34 @@ function UserSettings({ otherProps, info, screen }) {
     );
   }
   else if(info.userInfo) {
+    const userInfo = info.userInfo;
+    let innerInnerContent;
+
+    if(info.userInfo.cfUsername) {
+      innerInnerContent = (
+        <p className="Module-paragraph">
+          You've linked the following account:
+          {' '}
+          <Username username={userInfo.cfUsername} rank={userInfo.cfRank}
+                    linkToCf={true} />
+          {' '}
+          <b>({userInfo.cfRating})</b>
+        </p>
+      );
+    }
+    else {
+      innerInnerContent = (
+        <LinkCfAccountForm userInfo={userInfo} history={otherProps.history} />
+      );
+    }
+
     innerContent = (
-      <LinkCfAccountForm userInfo={info.userInfo} history={otherProps.history} />
+      <div className="Module-outer-space User-settings-cf">
+        <h3 className="Module-heading">
+          Codeforces account
+        </h3>
+        { innerInnerContent }
+      </div>
     );
   }
   else {

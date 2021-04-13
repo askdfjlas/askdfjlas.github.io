@@ -70,22 +70,24 @@
 .User-info-info {
   flex: 1 1 auto;
   max-width: 70%;
+  margin: 0;
   padding: 0.5em 0.5em 0 0.25em;
   box-sizing: border-box;
   font-family: var(--bold-text-font);
   color: var(--username-black);
+  list-style-type: none;
 }
 
-.User-info-info p {
+.User-info-info li {
   margin: 0 0 0.8em 0;
   font-size: 1.2em;
 }
 
-.User-info-info p:last-child {
+.User-info-info li:last-child {
   margin: 0;
 }
 
-.User-info-info p span:first-child:not(.icon-envelope) {
+.User-info-info li span:first-child:not(.icon-envelope) {
   position: relative;
   top: 1.5px;
   margin-right: 0.3em;
