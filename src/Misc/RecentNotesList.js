@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import CreateLoadingComponent from '../HOC/CreateLoadingComponent';
 import LoadingSpinner from './LoadingSpinner';
 import NotesApi from '../Api/NotesApi';
+import Username from './Username';
 
 async function getMostRecentNotes(props, params) {
   return await NotesApi.getMostRecentNotes(1);
@@ -22,13 +23,11 @@ function RecentNotesList({ otherProps, loadInfo, info, screen }) {
       const noteLink = NotesApi.getNotePublishedLink(note);
       const displayName = NotesApi.getNoteDisplayName(note);
       const commentIcon = (note.editedTime !== note.activityTime);
+      const userRank = info.userRanks[note.username];
 
       noteListItems.push(
         <li key={i}>
-          <Link className="Username"
-                to={`/users/${note.username}`}>
-            {note.username}
-          </Link>
+          <Username username={note.username} rank={userRank} />
           {' '}
           <span className="icon-long-arrow-right" />
           {' '}

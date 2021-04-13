@@ -1,10 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import ProblemsApi from '../Api/ProblemsApi';
 import LikesApi from '../Api/LikesApi';
 import UserAuthApi from '../Api/UserAuthApi';
 import TextEditorContent from '../TextEditor/TextEditorContent';
 import LikeDislike from '../Misc/LikeDislike';
+import Username from '../Misc/Username';
 import '../css/PublicNoteInfo.css';
 
 function PublicNoteInfo({ info }) {
@@ -30,9 +30,7 @@ function PublicNoteInfo({ info }) {
         {info.title}
       </h3>
       <p className="Module-space-text">
-        Written by <Link className="Username" to={`/users/${info.username}`}>
-          {info.username}
-        </Link>
+        Written by <Username username={info.username} rank={info.authorCfRank} />
       </p>
       <div className="Askd-text-editor">
         <TextEditorContent content={content} id='Askd-public-note' editable={false} />

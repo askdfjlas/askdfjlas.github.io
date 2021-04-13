@@ -46,8 +46,13 @@ input.Askd-not-fullwidth {
   box-sizing: border-box;
   padding: 0.5em;
   border: 1px solid var(--super-dark-bg-color);
-  background-color: rgba(0, 0, 0, 0);
   appearance: none;
+}
+
+.Askd-form input:enabled,
+.Askd-form textarea:enabled,
+.Askd-form select:enabled {
+  background-color: rgba(0, 0, 0, 0);
 }
 
 .Askd-form :disabled {

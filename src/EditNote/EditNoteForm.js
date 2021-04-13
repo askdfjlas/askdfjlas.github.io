@@ -43,7 +43,7 @@ class EditNoteForm extends Component {
   async saveOrPublishNote(published) {
     const username = await UserAuthApi.getUsername();
     const platform = this.props.platform;
-    const problemId = this.props.problemInfo.problemId;
+    const problemId = this.props.noteInfo.problemInfo.problemId;
     const title = this.title;
     const solved = this.solved;
     const content = this.content;
@@ -75,7 +75,7 @@ class EditNoteForm extends Component {
   async deleteNote() {
     const username = await UserAuthApi.getUsername();
     const platform = this.props.platform;
-    const problemId = this.props.problemInfo.problemId;
+    const problemId = this.props.noteInfo.problemInfo.problemId;
 
     await NotesApi.deleteNote(username, platform, problemId);
     this.props.history.push(`/users/${username}`);

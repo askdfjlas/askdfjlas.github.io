@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import ProblemsApi from '../Api/ProblemsApi';
 import NotesApi from '../Api/NotesApi';
+import Username from '../Misc/Username';
 
 class UserNoteInfo extends Component {
   render() {
@@ -14,7 +15,6 @@ class UserNoteInfo extends Component {
     const problemDisplayName =  ProblemsApi.getProblemDisplayName(info);
     const timestamp = (new Date(info.editedTime)).toLocaleDateString();
     const authorUsername = info.username;
-    const profileLink = `/users/${authorUsername}`;
     const noteTitle = this.props.mostLikedMode ? ' - ' + info.title : info.title;
 
     return (
@@ -50,9 +50,7 @@ class UserNoteInfo extends Component {
         <h6 className="User-note-info-title">
           {
             this.props.mostLikedMode &&
-            <Link className="Username" to={profileLink}>
-              {authorUsername}
-            </Link>
+            <Username username={authorUsername} rank={this.props.authorRank} />
           }
           {noteTitle}
         </h6>

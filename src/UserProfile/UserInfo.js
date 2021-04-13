@@ -54,7 +54,9 @@ function UserInfo({ info }) {
 
   return (
     <div className="Module-outer-space">
-      <h2 className="Module-heading Username">{info.username}</h2>
+      <h2 className="Module-heading Username">
+        <Username username={info.username} rank={info.cfRank} />
+      </h2>
       <div className="User-info">
         <ol className="User-info-info">
           {

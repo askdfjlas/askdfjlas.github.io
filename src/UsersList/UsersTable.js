@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import Username from '../Misc/Username';
 import '../css/UsersTable.css';
 
 const PAGE_SIZE = 50;
@@ -18,9 +18,7 @@ function UsersTable({ currentPage, lastUpdated, users }) {
       <tr key={index}>
         <td>{index}</td>
         <td className="Users-table-username">
-          <Link className="Username" to={`/users/${user.username}`}>
-            {user.username}
-          </Link>
+          <Username username={user.username} rank={user.cfRank} />
         </td>
         <td className={contributionClassName}>{user.contribution}</td>
       </tr>

@@ -5,21 +5,17 @@ import LoadState from '../Enum/LoadState';
 import ProblemInfo from '../EditNote/ProblemInfo';
 import PublicNoteInfo from './PublicNoteInfo';
 import PublicNoteComments from './PublicNoteComments';
-import ProblemsApi from '../Api/ProblemsApi';
 import NotesApi from '../Api/NotesApi';
 
-async function getNoteAndProblemData(props, params) {
+async function getNoteData(props, params) {
   const ownerUsername = props.match.params.ownerUsername;
   const platform = props.match.params.platform;
   const contestId = props.match.params.contestId;
   const problemCode = props.match.params.problemCode;
   const problemId = `${contestId}#${problemCode}`;
 
-  const problemInfo = await ProblemsApi.getProblemInfo(platform, problemId);
   const noteInfo = await NotesApi.getNoteInfo(ownerUsername, platform, problemId, true);
-
   return {
-    problemInfo: problemInfo,
     noteInfo: noteInfo
   };
 }
@@ -50,7 +46,7 @@ function PublicNote({ otherProps, info, screen }) {
   else {
     return (
       <>
-        <ProblemInfo info={info.problemInfo} platform={platform} />
+        <ProblemInfo info={info.noteInfo.problemInfo} platform={platform} />
         <PublicNoteInfo info={info.noteInfo} />
         { commentsComponent }
       </>
@@ -59,5 +55,5 @@ function PublicNote({ otherProps, info, screen }) {
 }
 
 export default CreateLoadingComponent(
-  getNoteAndProblemData, null, 'NoteNotFound', PublicNote
+  getNoteData, null, 'NoteNotFound', PublicNote
 );

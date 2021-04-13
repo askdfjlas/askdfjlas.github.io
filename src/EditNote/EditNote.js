@@ -4,7 +4,6 @@ import LoadState from '../Enum/LoadState';
 import LoadingSpinner from '../Misc/LoadingSpinner';
 import EditNoteForm from './EditNoteForm';
 import ProblemInfo from './ProblemInfo';
-import ProblemsApi from '../Api/ProblemsApi'
 import NotesApi from '../Api/NotesApi';
 import UserAuthApi from '../Api/UserAuthApi';
 import '../css/EditNote.css';
@@ -16,11 +15,8 @@ async function getNoteAndProblemData(props, params) {
   const problemCode = props.match.params.problemCode;
   const problemId = `${contestId}#${problemCode}`;
 
-  const problemInfo = await ProblemsApi.getProblemInfo(platform, problemId);
   const noteInfo = await NotesApi.getNoteInfo(username, platform, problemId);
-  
   return {
-    problemInfo: problemInfo,
     noteInfo: noteInfo
   };
 }
@@ -43,9 +39,8 @@ function EditNote({ otherProps, info, screen }) {
   else {
     return (
       <>
-        <ProblemInfo info={info.problemInfo} platform={platform} />
-        <EditNoteForm problemInfo={info.problemInfo}
-                      noteInfo={info.noteInfo} platform={platform}
+        <ProblemInfo info={info.noteInfo.problemInfo} platform={platform} />
+        <EditNoteForm noteInfo={info.noteInfo} platform={platform}
                       history={otherProps.history} />
       </>
     );

@@ -54,9 +54,13 @@ function NotesList({ otherProps, info, screen }) {
 
     let noteInfoElements = [];
     for(let i = 0; i < info.notes.length; i++) {
+      const note = info.notes[i];
+      const authorRank = info.userRanks[note.username];
+
       noteInfoElements.push(
-        <UserNoteInfo key={i} info={info.notes[i]} mostLikedMode={true}
-                      loggedInUsername={info.loggedInUsername}  />
+        <UserNoteInfo key={i} info={note} mostLikedMode={true}
+                      authorRank={authorRank}
+                      loggedInUsername={info.loggedInUsername} />
       );
     }
 

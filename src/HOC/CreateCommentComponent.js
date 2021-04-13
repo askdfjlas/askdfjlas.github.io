@@ -67,11 +67,11 @@ function CreateCommentComponent(getComments, addComment) {
       };
 
       for(const comment of info.comments) {
-        if(!(comment.username in userInfos.current)) {
+        if(!userInfos.current.hasOwnProperty(comment.username)) {
           initializeInfoSystem(comment.username);
         }
         for(const reply of comment.replies) {
-          if(!(reply.username in userInfos.current)) {
+          if(!userInfos.current.hasOwnProperty(reply.username)) {
             initializeInfoSystem(reply.username);
           }
         }

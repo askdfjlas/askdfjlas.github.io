@@ -104,7 +104,12 @@ class NotesApi {
       forcePublished: forcePublished
     };
 
-    return await Api.getJson('notes', options);
+    let noteInfo = await Api.getJson('notes', options);
+
+    noteInfo.problemInfo.platform = platform;
+    noteInfo.problemInfo.problemId = problemId;
+
+    return noteInfo;
   }
 
   static async addNote(username, platform, problemId) {
