@@ -29,9 +29,9 @@ function PublicNoteInfo({ info }) {
         </span>
         {info.title}
       </h3>
-      <p className="Module-space-text">
+      <div className="Module-space-text">
         Written by <Username username={info.username} rank={info.authorCfRank} />
-      </p>
+      </div>
       <div className="Askd-text-editor">
         <TextEditorContent content={content} id='Askd-public-note' editable={false} />
       </div>

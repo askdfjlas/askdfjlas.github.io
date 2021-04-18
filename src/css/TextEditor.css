@@ -227,3 +227,15 @@
 .Askd-te-IMAGE .Askd-te-IMAGE-toolbar label[for="Askd-te-IMAGE-size"] {
   margin-top: 0.3em;
 }
+
+.Askd-text-editor-demo,
+.Askd-text-editor-demo .Askd-text-editor {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  margin: 0.2em 0;
+}
+
+.Askd-text-editor-demo .Askd-text-editor-text {
+  height: 100%;
+}

@@ -1,20 +1,23 @@
-import React, { Component } from 'react';
-import Utils from '../Utils';
+import React from 'react';
+import HomePost from './HomePost';
+import homeNews from './homeNews';
+import '../css/CpNotes.css';
 
-class CpNotes extends Component {
-  componentDidMount() {
-    Utils.renderMathJax();
+function CpNotes() {
+  let innerContent = [];
+  for(let i = 0; i < homeNews.length; i++) {
+    innerContent.push(
+      <li className="Module-outer-space Cp-notes-home-post" key={i}>
+        <HomePost info={homeNews[i]} />
+      </li>
+    )
   }
 
-  render() {
-    return (
-      <div className="Module-description Module-description-centered">
-        <p>A work-in-progress web application for storing publicly
-        accessible competitive programming notes! Poggers!
-        \[\LaTeX\]</p>
-      </div>
-    );
-  }
+  return (
+    <ol className="Cp-notes-home-list">
+      { innerContent }
+    </ol>
+  );
 }
 
 export default CpNotes;

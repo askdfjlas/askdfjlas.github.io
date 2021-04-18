@@ -9,6 +9,7 @@ import UsersList from './UsersList/UsersList';
 import NotesSearch from './NotesSearch/NotesSearch';
 import RecentNotesList from './Misc/RecentNotesList';
 import UserSettings from './UserSettings/UserSettings';
+import TextEditorDemo from './TextEditor/TextEditorDemo';
 
 import './css/General/App.css';
 import './css/General/Module.css';
@@ -32,6 +33,7 @@ function App() {
                      component={EditNote} />
               <Route exact path="/notes/:ownerUsername/:platform/:contestId/:problemCode"
                      component={PublicNote} />
+              <Route exact path="/demo" component={TextEditorDemo} />
             </Switch>
           </div>
           <RecentNotesList />
