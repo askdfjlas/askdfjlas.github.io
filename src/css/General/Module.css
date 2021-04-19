@@ -93,7 +93,8 @@
 
 .Module-recent-actions h4 {
   color: white;
-  font-family: var(--bold-text-font);
+  font-family: var(--main-text-font);
+  font-weight: bold;
   font-size: 1.1em;
   padding: 0;
   margin: 0;
@@ -159,7 +160,8 @@
 .Module-description {
   margin: auto;
   width: 85%;
-  font-family: var(--bold-text-font);
+  font-family: var(--main-text-font);
+  font-weight: bold;
 }
 
 .Module-description-centered {

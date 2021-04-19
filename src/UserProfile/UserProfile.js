@@ -10,14 +10,14 @@ import LoadState from '../Enum/LoadState';
 async function getUserData(props, params) {
   const username = props.match.params.username;
   const userInfo = await UsersApi.getUserInfo(username);
-  const notes = await NotesApi.getNotes(username);
+  const noteInfo = await NotesApi.getNotes(username);
 
-  userInfo.totalNotes = notes.length;
+  userInfo.totalNotes = noteInfo.notes.length;
   userInfo.username = username;
 
   return {
     userInfo: userInfo,
-    notes: notes
+    notes: noteInfo.notes
   };
 }
 

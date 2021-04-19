@@ -228,12 +228,19 @@
   margin-top: 0.3em;
 }
 
+.Askd-text-editor-demo {
+  margin: 0.2em 0;
+}
+
 .Askd-text-editor-demo,
 .Askd-text-editor-demo .Askd-text-editor {
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
-  margin: 0.2em 0;
+}
+
+.Askd-text-editor-demo .Askd-text-editor {
+  margin: 0;
 }
 
 .Askd-text-editor-demo .Askd-text-editor-text {

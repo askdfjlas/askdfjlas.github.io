@@ -10,6 +10,10 @@
   min-height: 15em;
 }
 
+.Comment-section .Module-heading:first-child {
+  font-size: 1.25em;
+}
+
 .Comment-section-add {
   margin-bottom: 1.4em;
 }

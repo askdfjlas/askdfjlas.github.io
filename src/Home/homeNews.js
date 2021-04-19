@@ -7,10 +7,10 @@ import notesSearch from '../img/notes_search.png';
 
 const homeNews = [
   {
-    'title': 'Welcome!',
-    'date': '04-16-21',
-    'betaOnly': true,
-    'content': (
+    title: 'Welcome!',
+    date: '04-16-21',
+    betaOnly: true,
+    content: (
       <>
         <p className="Module-paragraph">
           Hello there, and welcome to the beta site of

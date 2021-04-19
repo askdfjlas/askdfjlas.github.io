@@ -33,11 +33,11 @@ class NotesApi {
 
   static async getMostLikedNotes(username, platform, contestId, problemId, page) {
     if(username) {
-      let notes = await NotesApi.getNotes(username);
-      notes.sort((note1, note2) => note2.likeCount - note1.likeCount);
+      let noteInfo = await NotesApi.getNotes(username);
+      noteInfo.notes.sort((note1, note2) => note2.likeCount - note1.likeCount);
 
       let publishedNotes = [];
-      for(const note of notes) {
+      for(const note of noteInfo.notes) {
         if(!note.published) continue;
         if(platform && note.platform !== platform) continue;
         if(contestId && note.contestCode !== contestId) continue;
@@ -61,6 +61,7 @@ class NotesApi {
 
       return {
         notes: visibleNotes,
+        userRanks: noteInfo.userRanks,
         totalPages: Math.max(totalPages, 1)
       };
     }

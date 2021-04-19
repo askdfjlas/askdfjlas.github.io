@@ -29,7 +29,8 @@ html {
   --upsolved-tag-alpha: rgba(133, 69, 229, 0.6);
   --upsolved-help-tag-color: #E5A575;
   --upsolved-help-tag-alpha: rgba(229, 165, 117, 0.6);
-  --main-text-font: 'Mosk Medium 500';
+  --main-text-font: 'PT Sans Regular';
+  --header-text-font: 'Mosk Medium 500';
   --bold-text-font: 'Mosk Bold 700';
   --main-content-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.2);
   --highlighted-content-shadow: 0 0 2px 0px rgba(255, 90, 95, 0.8);
