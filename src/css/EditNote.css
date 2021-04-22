@@ -23,6 +23,11 @@
   height: 100%;
 }
 
+.Edit-note-published-link {
+  margin-top: -1em;
+  margin-bottom: 1em;
+}
+
 .Edit-note-saved-text {
   font-size: 0.8em;
   font-style: italic;

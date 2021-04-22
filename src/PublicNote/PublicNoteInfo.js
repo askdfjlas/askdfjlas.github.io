@@ -1,24 +1,27 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import ProblemsApi from '../Api/ProblemsApi';
 import LikesApi from '../Api/LikesApi';
-import UserAuthApi from '../Api/UserAuthApi';
 import TextEditorContent from '../TextEditor/TextEditorContent';
 import LikeDislike from '../Misc/LikeDislike';
 import Username from '../Misc/Username';
 import '../css/PublicNoteInfo.css';
 
-function PublicNoteInfo({ info }) {
+function PublicNoteInfo({ loggedInUsername, info }) {
   const content = JSON.parse(info.content);
   const editedTimestamp = (new Date(info.editedTime)).toLocaleString();
   const solvedClass = ProblemsApi.getSolvedStateCssClass(info.solved);
 
-  let likeCallback = async (likedStatus) => {
-    const username = await UserAuthApi.getUsername();
-    const noteAuthor = info.username;
-    const platform = info.platform;
-    const problemId = info.problemSk;
+  const noteAuthor = info.username;
+  const platform = info.platform;
+  const problemId = info.problemSk;
+  const problemUrl = problemId.split('#').join('/');
+  const editLink = `/notes/edit/${platform}/${problemUrl}`;
 
-    await LikesApi.sendLike(username, noteAuthor, platform, problemId, likedStatus);
+  let likeCallback = async (likedStatus) => {
+    await LikesApi.sendLike(
+      loggedInUsername, noteAuthor, platform, problemId, likedStatus
+    );
   };
 
   return (
@@ -29,6 +32,12 @@ function PublicNoteInfo({ info }) {
         </span>
         {info.title}
       </h3>
+      {
+        loggedInUsername === noteAuthor &&
+        <Link className="Public-note-info-edit Askd-form-link" to={editLink}>
+          Edit
+        </Link>
+      }
       <div className="Module-space-text">
         Written by <Username username={info.username} rank={info.authorCfRank} />
       </div>

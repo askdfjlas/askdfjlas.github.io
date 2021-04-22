@@ -5,7 +5,7 @@ import Utils from '../Utils';
 import '../css/Header.css';
 
 function Header() {
-  let title = 'cp-notes';
+  let title = 'cp-notes!';
   if(Utils.whatStageIsThis() === 'beta') {
     title += ' beta';
   }

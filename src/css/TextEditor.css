@@ -38,6 +38,7 @@
   box-sizing: border-box;
   color: black;
   font-family: Arial;
+  overflow: hidden;
 }
 
 .Askd-text-editor .Askd-text-editor-text {
@@ -47,6 +48,8 @@
 .Askd-text-editor-text div {
   display: inline;
   white-space: pre-wrap;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .Askd-text-editor .Askd-text-editor-uneditable {

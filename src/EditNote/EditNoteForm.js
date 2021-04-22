@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Prompt } from 'react-router';
+import { Link } from 'react-router-dom';
 import TextEditor from '../TextEditor/TextEditor';
 import DeleteMenu from '../Misc/DeleteMenu';
 import SolvedState from '../Enum/SolvedState';
-import UserAuthApi from '../Api/UserAuthApi';
 import NotesApi from '../Api/NotesApi';
 import Utils from '../Utils';
 
@@ -21,6 +21,12 @@ class EditNoteForm extends Component {
     this.solved = noteInfo.solved;
     this.content = JSON.parse(noteInfo.content);
     this.lastSaved = new Date(noteInfo.editedTime);
+
+    const username = noteInfo.username
+    const platform = this.props.platform;
+    const problemId = noteInfo.problemInfo.problemId;
+    const problemUrl = problemId.split('#').join('/');
+    this.publishedUrl = `/notes/${username}/${platform}/${problemUrl}`;
 
     this.state = {
       published: noteInfo.published,
@@ -41,7 +47,7 @@ class EditNoteForm extends Component {
   }
 
   async saveOrPublishNote(published) {
-    const username = await UserAuthApi.getUsername();
+    const username = this.props.noteInfo.username;
     const platform = this.props.platform;
     const problemId = this.props.noteInfo.problemInfo.problemId;
     const title = this.title;
@@ -61,6 +67,10 @@ class EditNoteForm extends Component {
       loadingSave: false,
       loadingPublish: false
     });
+
+    if(published) {
+      this.props.history.push(this.publishedUrl);
+    }
   }
 
   async saveNote(event) {
@@ -73,7 +83,7 @@ class EditNoteForm extends Component {
   }
 
   async deleteNote() {
-    const username = await UserAuthApi.getUsername();
+    const username = this.props.noteInfo.username;
     const platform = this.props.platform;
     const problemId = this.props.noteInfo.problemInfo.problemId;
 
@@ -155,6 +165,13 @@ class EditNoteForm extends Component {
 
           <TextEditor initialContent={this.content}
                       onChange={this.handleContentChange} />
+          {
+            this.state.published &&
+            <Link className="Edit-note-published-link Askd-form-link"
+                  to={this.publishedUrl}>
+              See published page
+            </Link>
+          }
           <p className="Edit-note-saved-text">{savedText}</p>
           <div className="Edit-note-bottom-buttons">
             <input className={saveButtonClass} type="button" value="Save"

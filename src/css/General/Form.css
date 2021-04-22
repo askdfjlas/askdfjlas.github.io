@@ -48,6 +48,8 @@ input.Askd-not-fullwidth {
   padding: 0.5em;
   border: 1px solid var(--super-dark-bg-color);
   appearance: none;
+  line-height: 1.2;
+  height: 2.4em;
 }
 
 .Askd-form input:enabled,

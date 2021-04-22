@@ -6,6 +6,7 @@ import ProblemInfo from '../EditNote/ProblemInfo';
 import PublicNoteInfo from './PublicNoteInfo';
 import PublicNoteComments from './PublicNoteComments';
 import NotesApi from '../Api/NotesApi';
+import UserAuthApi from '../Api/UserAuthApi';
 
 async function getNoteData(props, params) {
   const ownerUsername = props.match.params.ownerUsername;
@@ -15,8 +16,11 @@ async function getNoteData(props, params) {
   const problemId = `${contestId}#${problemCode}`;
 
   const noteInfo = await NotesApi.getNoteInfo(ownerUsername, platform, problemId, true);
+  const loggedInUsername = await UserAuthApi.getUsername();
+
   return {
-    noteInfo: noteInfo
+    noteInfo: noteInfo,
+    loggedInUsername: loggedInUsername
   };
 }
 
@@ -47,7 +51,7 @@ function PublicNote({ otherProps, info, screen }) {
     return (
       <>
         <ProblemInfo info={info.noteInfo.problemInfo} platform={platform} />
-        <PublicNoteInfo info={info.noteInfo} />
+        <PublicNoteInfo loggedInUsername={info.loggedInUsername} info={info.noteInfo} />
         { commentsComponent }
       </>
     );

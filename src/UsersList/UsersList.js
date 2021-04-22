@@ -54,6 +54,7 @@ function UsersList({ otherProps, info, loadInfo, screen, currentParams }) {
         </h2>
         <SearchUserSelect callback={loadUserProfile} />
         <div className="Module-space">
+          { paginator }
           <UsersTable currentPage={currentParams} users={usersInfo.users}
                       lastUpdated={usersInfo.lastUpdated} />
           { paginator }

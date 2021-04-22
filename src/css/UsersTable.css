@@ -8,6 +8,10 @@
   margin-bottom: 0.5em;
 }
 
+.Users-table-search .Search-select {
+  background-color: var(--main-content-color);
+}
+
 .Users-table-last-updated {
   font-style: italic;
   font-size: 0.8em;

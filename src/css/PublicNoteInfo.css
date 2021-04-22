@@ -5,10 +5,18 @@
 }
 
 .Public-note-info {
+  position: relative;
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
   margin-top: 0.7em;
+}
+
+.Public-note-info-edit {
+  position: absolute;
+  font-size: 0.9em;
+  right: 0.8em;
+  top: 0.3em;
 }
 
 .Public-note-info .Like-button {
