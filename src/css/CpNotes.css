@@ -13,6 +13,11 @@
   flex: 1 1 auto;
   position: relative;
   box-shadow: var(--main-content-shadow);
+  margin-bottom: 0.7em;
+}
+
+.Cp-notes-home-post:last-child {
+  margin-bottom: 0;
 }
 
 .Cp-notes-home-post .Module-paragraph,

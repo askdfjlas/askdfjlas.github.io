@@ -9,6 +9,65 @@ const homeNews = [
   {
     title: 'Welcome!',
     date: '04-16-21',
+    prodOnly: true,
+    content: (
+      <>
+        <p className="Module-paragraph">
+          Hello there, and welcome to cp-notes.com! I'm currently making some
+          finishing touches to the site. How did you find this though :p? If
+          you wouldn't mind, please let me know by messaging me on Codeforces
+          (my username is askd).
+        </p>
+        <p className="Module-paragraph">
+          Thanks for taking the time to visit! This site is intended
+          to be a place for competitive programmers to share notes about their
+          most interesting problems! Here's a list of some of the things you
+          can do:
+        </p>
+        <div className="Cp-notes-home-post-image">
+          <div className="Cp-notes-home-post-image-area">
+            <div>
+              <img src={userNotesUnorganized} alt="User profile, no organization" />
+            </div>
+            <div>
+              <img src={userNotesOrganized} alt="User profile, organized by solved" />
+            </div>
+          </div>
+          <p>
+            Maintain an organizable profile of solved and unsolved problems
+            from 6 different platforms
+          </p>
+        </div>
+        <div className="Cp-notes-home-post-image">
+          <div className="Cp-notes-home-post-image-area">
+            <div>
+              <img src={publicNote} alt="Published note page" />
+            </div>
+          </div>
+          <p>Share notes with others and receive feedback</p>
+        </div>
+        <div className="Cp-notes-home-post-image">
+          <div className="Cp-notes-home-post-image-area">
+            <div>
+              <img src={notesSearch} alt="Notes search page" />
+            </div>
+          </div>
+          <p>Search and find notes written by other users</p>
+        </div>
+        <p className="Module-paragraph">
+          As a side-effect of this project, I've also produced a rich
+          text editor written in React, using HTML's <i>lovely</i> contenteditable.
+          Definitely a little rough around the edges, but the inline math mode
+          is quite unique from what I've seen - you can demo it
+          {' '}
+          <Link className="Askd-form-link" to="/demo">here</Link>!
+        </p>
+      </>
+    )
+  },
+  {
+    title: 'Welcome!',
+    date: '04-16-21',
     betaOnly: true,
     content: (
       <>

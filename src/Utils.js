@@ -88,6 +88,13 @@ class Utils {
       window.MathJax.typeset(selectors);
     }
   }
+
+  static whatStageIsThis() {
+    if(window.location.hostname === 'cp-notes.com') {
+      return 'prod';
+    }
+    return 'beta';
+  }
 }
 
 export default Utils;
