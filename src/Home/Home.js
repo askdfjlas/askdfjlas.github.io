@@ -3,14 +3,13 @@ import CpNotes from '../Home/CpNotes';
 
 function Home({ history }) {
   if(window.location.href.includes('?')) {
-    const correctPath = window.location.href.split('?')[1].replaceAll('#', '/');
+    const urlSegments = window.location.href.split('?').splice(1);
+    const correctPath = urlSegments.split('#').join('/');
     history.replace(correctPath);
   }
 
   return (
-    <>
-      <CpNotes />
-    </>
+    <CpNotes />
   );
 }
 

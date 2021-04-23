@@ -2,12 +2,10 @@
 <html lang="en">
   <body>
     <script>
-      const targetString = 'https://askdfjlas.github.io/';
-      if(window.location.href.substring(0, targetString.length) === targetString) {
-        let path = window.location.href.split(targetString)[1];
-        path = path.replaceAll('/', '#');
-        window.location.replace(targetString + '?' + path);
-      }
+      const hostName = location.hostname;
+      let path = location.pathname + location.search;
+      path = path.split('/').join('#');
+      window.location.replace(hostName + '/?' + path);
     </script>
   </body>
 </html>

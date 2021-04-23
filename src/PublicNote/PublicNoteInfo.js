@@ -18,7 +18,7 @@ function PublicNoteInfo({ loggedInUsername, info }) {
   const problemUrl = problemId.split('#').join('/');
   const editLink = `/notes/edit/${platform}/${problemUrl}`;
 
-  let likeCallback = async (likedStatus) => {
+  const likeCallback = async (likedStatus) => {
     await LikesApi.sendLike(
       loggedInUsername, noteAuthor, platform, problemId, likedStatus
     );
