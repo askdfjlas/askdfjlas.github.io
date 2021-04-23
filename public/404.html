@@ -5,7 +5,7 @@
       const hostName = location.hostname;
       let path = location.pathname + location.search;
       path = path.split('/').join('#');
-      window.location.replace(hostName + '/?' + path);
+      window.location.replace('https://' + hostName + '/?' + path);
     </script>
   </body>
 </html>
