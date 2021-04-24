@@ -4,6 +4,7 @@ import LoadState from '../Enum/LoadState';
 import LoadingSpinner from '../Misc/LoadingSpinner';
 import EditNoteForm from './EditNoteForm';
 import ProblemInfo from './ProblemInfo';
+import SeeOtherNotes from '../Misc/SeeOtherNotes';
 import NotesApi from '../Api/NotesApi';
 import UserAuthApi from '../Api/UserAuthApi';
 import '../css/EditNote.css';
@@ -39,6 +40,7 @@ function EditNote({ otherProps, info, screen }) {
   else {
     return (
       <>
+        <SeeOtherNotes platform={platform} problemId={info.noteInfo.problemSk} />
         <ProblemInfo info={info.noteInfo.problemInfo} platform={platform} />
         <EditNoteForm noteInfo={info.noteInfo} platform={platform}
                       history={otherProps.history} />

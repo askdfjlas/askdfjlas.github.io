@@ -86,33 +86,29 @@ class SearchSelect extends Component {
     }
   }
 
+  async setInitialSearchSortKey() {
+    await Utils.setStatePromise(this, {
+      searchTerm: ''
+    });
+
+    for(const option of this.state.options) {
+      if(option[GLOBAL_SORT_KEY] === this.props.initialSearchSortKey) {
+        const searchTerm = this.getOptionString(option);
+        await Utils.setStatePromise(this, {
+          searchTerm: searchTerm,
+          previousValidSearchTerm: searchTerm,
+          loading: false
+        });
+        break;
+      }
+    }
+
+    await this.filterOptions();
+  }
+
   async componentDidMount() {
     if(!this.props.network && this.props.search) {
-      if(this.props.initialSearchSortKey) {
-        await Utils.setStatePromise(this, {
-          searchTerm: '',
-          loading: true
-        });
-
-        const options = await this.props.search();
-        for(const option of options) {
-          if(option[GLOBAL_SORT_KEY] === this.props.initialSearchSortKey) {
-            const searchTerm = this.getOptionString(option);
-            await Utils.setStatePromise(this, {
-              searchTerm: searchTerm,
-              previousValidSearchTerm: searchTerm,
-              loading: false,
-              options: options
-            });
-            break;
-          }
-        }
-
-        await this.filterOptions();
-      }
-      else {
-        await this.componentDidUpdate({});
-      }
+      await this.componentDidUpdate({});
     }
     else if(this.props.initialSearchTerm) {
       await Utils.setStatePromise(this, {
@@ -136,23 +132,33 @@ class SearchSelect extends Component {
        });
     }
 
-    if(this.props.staticKey === prevProps.staticKey)
-      return;
+    if(this.props.staticKey !== prevProps.staticKey) {
+      await Utils.setStatePromise(this, {
+        searchTerm: '',
+        loading: true
+      });
 
-    await Utils.setStatePromise(this, {
-      searchTerm: '',
-      loading: true
-    });
-    const options = await this.props.search();
+      if(!this.props.search) {
+        await Utils.setStatePromise(this, {
+          loading: false
+        });
+        return;
+      }
+      const options = await this.props.search();
 
-    await Utils.setStatePromise(this, {
-      loading: false,
-      previousValidSearchTerm: '',
-      options: options,
-      showOptions: false
-    });
+      await Utils.setStatePromise(this, {
+        loading: false,
+        previousValidSearchTerm: '',
+        options: options,
+        showOptions: false
+      });
 
-    await this.filterOptions();
+      await this.filterOptions();
+    }
+
+    if(this.props.initialSearchSortKey !== prevProps.initialSearchSortKey) {
+      await this.setInitialSearchSortKey();
+    }
   }
 
   async handleChange(event) {

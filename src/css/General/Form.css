@@ -5,7 +5,8 @@
 .Askd-form input,
 .Askd-form textarea,
 .Askd-form label,
-.Askd-form select {
+.Askd-form select,
+.Askd-form-button {
   display: block;
   border-radius: 3px;
   border: none;
@@ -43,12 +44,13 @@ input.Askd-not-fullwidth {
   background-position: right 0.5em bottom 50%;
 }
 
-.Askd-form input:not(input[type="range"]), .Askd-form textarea, .Askd-form select {
+.Askd-form input:not(input[type="range"]), .Askd-form textarea, .Askd-form select,
+.Askd-form-button {
   box-sizing: border-box;
   padding: 0.5em;
   border: 1px solid var(--super-dark-bg-color);
   appearance: none;
-  line-height: 1.2;
+  line-height: 1.3;
   height: 2.4em;
 }
 
@@ -64,16 +66,22 @@ input.Askd-not-fullwidth {
 }
 
 .Askd-form input[type="submit"]:enabled,
-.Askd-form input[type="button"]:enabled {
+.Askd-form input[type="button"]:enabled,
+.Askd-form-button {
   background-color: var(--recent-actions-color);
   color: var(--main-bg-color);
   transition: background-color 0.15s ease-out;
 }
 
 .Askd-form input[type="submit"]:hover:enabled,
-.Askd-form input[type="button"]:hover:enabled {
+.Askd-form input[type="button"]:hover:enabled,
+.Askd-form-button:hover {
   background-color: var(--recent-actions-color-light);
   transition: background-color 0.15s ease-out;
+}
+
+a.Askd-form-button {
+  text-decoration: none;
 }
 
 .Askd-form .Search-select {
@@ -131,7 +139,7 @@ button.Askd-form-link {
 
 .Askd-button {
   border: none;
-  transition: background-color, opacity 0.5s;
+  transition: background-color 0.15s ease-out, opacity 0.2s;
 }
 
 .Askd-button-circular {

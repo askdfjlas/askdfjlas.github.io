@@ -5,6 +5,7 @@ import LoadState from '../Enum/LoadState';
 import ProblemInfo from '../EditNote/ProblemInfo';
 import PublicNoteInfo from './PublicNoteInfo';
 import PublicNoteComments from './PublicNoteComments';
+import SeeOtherNotes from '../Misc/SeeOtherNotes';
 import NotesApi from '../Api/NotesApi';
 import UserAuthApi from '../Api/UserAuthApi';
 
@@ -50,6 +51,7 @@ function PublicNote({ otherProps, info, screen }) {
   else {
     return (
       <>
+        <SeeOtherNotes platform={platform} problemId={info.noteInfo.problemSk} />
         <ProblemInfo info={info.noteInfo.problemInfo} platform={platform} />
         <PublicNoteInfo loggedInUsername={info.loggedInUsername} info={info.noteInfo} />
         { commentsComponent }

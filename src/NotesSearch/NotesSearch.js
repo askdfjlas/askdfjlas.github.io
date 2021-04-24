@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import NotesList from './NotesList';
 import SearchUserSelect from '../SearchSelect/SearchUserSelect';
 import SearchProblemSelect from '../SearchSelect/SearchProblemSelect';
+import SeeOtherNotes from '../Misc/SeeOtherNotes';
 import queryString from 'query-string';
 import '../css/NotesSearch.css';
 
@@ -104,11 +105,18 @@ function NotesSearch({ history }) {
 
   const skipContestSearch = !!problemId && !contestId;
 
+  const showSeeOtherNotes = !!platform || !!username;
+
   return (
     <div className="Notes-search">
       <h2 className="Module-heading">
         {headingText}
       </h2>
+      {
+        showSeeOtherNotes &&
+        <SeeOtherNotes platform={platform} contestId={contestId}
+                       problemId={problemId} goDownOneLevel={!username} />
+      }
       <button onClick={toggleFilterForm} disabled={sortByRecent}
               className="Notes-search-filter Askd-form-link">
         {toggleFilterFormText}

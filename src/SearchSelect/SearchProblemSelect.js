@@ -58,8 +58,12 @@ function SearchProblemSelect({ initialPlatform, initialContestId,
                                              'Want to skip filtering by contest?';
 
   useEffect(() => {
-    if(initialPlatform !== null) setPlatform(initialPlatform);
-    if(initialContestId !== null) setContestSk(initialContestId);
+    if(initialContestId) {
+      setSkipContestSearch(false);
+    }
+    
+    setPlatform(initialPlatform);
+    setContestSk(initialContestId);
   }, [initialPlatform, initialContestId]);
 
   return (
