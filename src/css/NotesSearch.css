@@ -10,10 +10,6 @@
   margin-top: 0.3em;
 }
 
-.Notes-search-filter {
-  max-width: calc(100% - 12em);
-}
-
 .Notes-search-sort {
   position: absolute;
   right: 0;

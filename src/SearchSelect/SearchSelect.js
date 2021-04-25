@@ -138,14 +138,7 @@ class SearchSelect extends Component {
         loading: true
       });
 
-      if(!this.props.search) {
-        await Utils.setStatePromise(this, {
-          loading: false
-        });
-        return;
-      }
       const options = await this.props.search();
-
       await Utils.setStatePromise(this, {
         loading: false,
         previousValidSearchTerm: '',

@@ -47,7 +47,7 @@ function SeeOtherNotes({ platform, contestId, problemId, goDownOneLevel }) {
   }
 
   return (
-    <Link className="See-other-notes Askd-button Askd-form-button Askd-not-fullwidth"
+    <Link className="See-other-notes Askd-button Askd-form-button"
           to={otherNotesUrl}>
       <span className="See-other-notes-arrow">&#10094;</span>
       {otherNotesText}

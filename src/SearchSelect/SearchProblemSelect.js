@@ -61,10 +61,13 @@ function SearchProblemSelect({ initialPlatform, initialContestId,
     if(initialContestId) {
       setSkipContestSearch(false);
     }
-    
+    if(initialProblemId && !initialContestId) {
+      setSkipContestSearch(true);
+    }
+
     setPlatform(initialPlatform);
     setContestSk(initialContestId);
-  }, [initialPlatform, initialContestId]);
+  }, [initialPlatform, initialContestId, initialProblemId]);
 
   return (
     <div className="Search-problem-select">
@@ -84,7 +87,7 @@ function SearchProblemSelect({ initialPlatform, initialContestId,
       <SearchSelect name='contest' id='cp-contest' search={searchContestFunction}
                     keys={searchContestKeys} callback={updateContestSortKey}
                     displayKey='name' staticKey={searchContestStaticKey}
-                    initialSearchSortKey={initialContestId} />
+                    initialSearchSortKey={searchContestStaticKey && initialContestId} />
 
       <button onClick={toggleSkipContestSearch}
               type="button" className="Askd-form-link Askd-form-link-separator">
@@ -95,7 +98,7 @@ function SearchProblemSelect({ initialPlatform, initialContestId,
       <SearchSelect name='title' id='cp-title' search={searchProblemFunction}
                     keys={searchProblemKeys} callback={updateProblemSortKey}
                     displayKey='name' staticKey={searchProblemStaticKey}
-                    initialSearchSortKey={initialProblemId} />
+                    initialSearchSortKey={searchProblemStaticKey && initialProblemId} />
     </div>
   );
 }
