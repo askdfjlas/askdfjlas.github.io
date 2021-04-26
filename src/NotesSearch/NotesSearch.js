@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import NotesList from './NotesList';
 import SearchUserSelect from '../SearchSelect/SearchUserSelect';
 import SearchProblemSelect from '../SearchSelect/SearchProblemSelect';
@@ -79,6 +79,13 @@ function NotesSearch({ history }) {
     setShowFilterForm(false);
   }
 
+  useEffect(() => {
+    const anySearchSet = (username || platform || contestId || problemId);
+    if(anySearchSet) {
+      setShowFilterForm(true);
+    }
+  }, [username, platform, contestId, problemId]);
+
   const changeSort = (event) => {
     const newSort = event.target.value;
     if(newSort === 'Recent') {
@@ -104,7 +111,6 @@ function NotesSearch({ history }) {
     'Want to filter by username, platform, contest, or problem?';
 
   const skipContestSearch = !!problemId && !contestId;
-
   const showSeeOtherNotes = !!platform || !!username;
 
   return (

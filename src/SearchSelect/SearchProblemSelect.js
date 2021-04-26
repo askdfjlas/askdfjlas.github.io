@@ -87,7 +87,8 @@ function SearchProblemSelect({ initialPlatform, initialContestId,
       <SearchSelect name='contest' id='cp-contest' search={searchContestFunction}
                     keys={searchContestKeys} callback={updateContestSortKey}
                     displayKey='name' staticKey={searchContestStaticKey}
-                    initialSearchSortKey={searchContestStaticKey && initialContestId} />
+                    initialSearchSortKey={searchContestStaticKey && initialContestId}
+                    reverseSearch={true} />
 
       <button onClick={toggleSkipContestSearch}
               type="button" className="Askd-form-link Askd-form-link-separator">

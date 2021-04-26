@@ -10,20 +10,20 @@ const registerEventHandlers = (that) => {
     const mathSelected = (that.state.editorMask & ContentType.MATH) > 0;
 
     /* TBD, bro who even uses that button lol */
-    if(event.key === 'Delete') {
-      event.preventDefault();
-    }
-    else if(event.key === 'Backspace' && !that.composing) {
+    if(event.key === 'Backspace' && !that.composing) {
       await that.delete();
-      event.preventDefault();
+    }
+    else if(event.key === '$' && !that.composing) {
+      await that.toolbarUpdate(ContentType.MATH);
     }
     else if(event.key === 'Enter' && !that.composing && !mathSelected) {
       await that.insert(String.fromCharCode(10));
-      event.preventDefault();
     }
-    else if(event.key === 'Enter') {
-      event.preventDefault();
+    else if(event.key !== 'Enter' && event.key !== 'Delete') {
+      return;
     }
+
+    event.preventDefault();
   });
 
   that.textEditor.addEventListener('beforeinput', async (event) => {

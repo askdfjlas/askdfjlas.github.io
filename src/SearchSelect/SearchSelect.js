@@ -3,6 +3,7 @@ import Utils from '../Utils';
 import '../css/SearchSelect.css';
 
 const MAX_OPTIONS = 15;
+const MAX_SEARCH_TERMS = 4;
 const GLOBAL_SORT_KEY = 'sk';
 const NETWORK_LOAD_DELAY = 250;
 
@@ -35,26 +36,55 @@ class SearchSelect extends Component {
     return optionStringArray.join(' - ');
   }
 
+  checkSearchTermsMatch(searchTerms, option) {
+    let searchTermsMatch = true;
+    const optionString = this.getOptionString(option).toLowerCase();
+
+    for(let i = 0; i < Math.min(MAX_SEARCH_TERMS, searchTerms.length); i++) {
+      const searchTerm = searchTerms[i];
+      let searchTermMatch = false;
+
+      if(optionString.includes(searchTerm)) {
+        searchTermMatch = true;
+      }
+
+      for(const key of this.props.keys) {
+        if(option[key].toLowerCase().includes(searchTerm)) {
+          searchTermMatch = true;
+          break;
+        }
+      }
+
+      if(!searchTermMatch) {
+        searchTermsMatch = false;
+        break;
+      }
+    }
+
+    return searchTermsMatch;
+  }
+
   async filterOptions() {
-    var filteredOptions = [];
-    const searchTerm = this.state.searchTerm.toLowerCase();
+    let filteredOptions = [];
+    const searchText = this.state.searchTerm.toLowerCase();
+    const searchTextContainsNumber = /\d/.test(searchText);
+    const searchTerms = searchText.split(' ');
+
+    if(searchTextContainsNumber && this.props.reverseSearch) {
+      this.state.options.reverse();
+    }
 
     for(const option of this.state.options) {
       if(filteredOptions.length === MAX_OPTIONS)
         break;
 
-      const optionString = this.getOptionString(option);
-      if(optionString.toLowerCase().includes(searchTerm)) {
+      if(this.checkSearchTermsMatch(searchTerms, option)) {
         filteredOptions.push(option);
-        continue;
       }
+    }
 
-      for(const key of this.props.keys) {
-        if(option[key].toLowerCase().includes(searchTerm)) {
-          filteredOptions.push(option);
-          break;
-        }
-      }
+    if(searchTextContainsNumber && this.props.reverseSearch) {
+      this.state.options.reverse();
     }
 
     await Utils.setStatePromise(this, {

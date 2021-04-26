@@ -57,13 +57,10 @@ class EditNoteForm extends Component {
     await NotesApi.editNote(username, platform, problemId, title, solved,
                             content, published);
 
-    this.lastSaved = new Date();
-    window.onbeforeunload = null;
-
+    await this.setSaved(true);
     await Utils.setStatePromise(this, {
       published: published,
       disableEditButtons: false,
-      saved: true,
       loadingSave: false,
       loadingPublish: false
     });
@@ -88,6 +85,7 @@ class EditNoteForm extends Component {
     const problemId = this.props.noteInfo.problemInfo.problemId;
 
     await NotesApi.deleteNote(username, platform, problemId);
+    await this.setSaved(true);
     this.props.history.push(`/users/${username}`);
   }
 
@@ -106,24 +104,35 @@ class EditNoteForm extends Component {
     });
   }
 
+  async setSaved(saved) {
+    if(!saved && this.state.saved) {
+      await Utils.setStatePromise(this, {
+        saved: false
+      });
+      window.onbeforeunload = remindUserToSave;
+    }
+    else if(saved && !this.state.saved) {
+      this.lastSaved = new Date();
+      await Utils.setStatePromise(this, {
+        saved: true
+      });
+      window.onbeforeunload = null;
+    }
+  }
+
   handleTitleChange(event) {
     this.title = event.target.value;
+    this.setSaved(false);
   }
 
   handleSolvedChange(event) {
     this.solved = event.target.value;
+    this.setSaved(false);
   }
 
-  async handleContentChange(newContent) {
+  handleContentChange(newContent) {
     this.content = newContent;
-
-    if(this.state.saved) {
-      await Utils.setStatePromise(this, {
-        saved: false
-      });
-
-      window.onbeforeunload = remindUserToSave;
-    }
+    this.setSaved(false);
   }
 
   componentWillUnmount() {
