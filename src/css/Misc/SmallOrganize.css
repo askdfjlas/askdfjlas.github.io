@@ -1,0 +1,35 @@
+.Small-organize label {
+  font-weight: bold;
+}
+
+.Small-organize select {
+  background-color: var(--recent-actions-color);
+  color: var(--lighter-content-color);
+  border: none;
+  border-radius: 2px;
+  padding: 0.1em;
+}
+
+.Small-organize input[type="checkbox"] {
+  position: relative;
+  top: 1.4px;
+  padding: 0.55em;
+  background-color: var(--recent-actions-color);
+  border-radius: 1px;
+  border: none;
+  appearance: none;
+}
+
+.Small-organize input[type="checkbox"]:hover {
+  background-color: var(--recent-actions-color-light);
+  cursor: pointer;
+}
+
+.Small-organize input[type="checkbox"]:checked {
+  background-color: var(--contributor-green);
+}
+
+.Small-organize input[type="checkbox"],
+.Small-organize select {
+  box-shadow: 1px 1px 1px rgba(0, 0, 0, 0.1);
+}

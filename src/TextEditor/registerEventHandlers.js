@@ -9,7 +9,6 @@ const registerEventHandlers = (that) => {
 
     const mathSelected = (that.state.editorMask & ContentType.MATH) > 0;
 
-    /* TBD, bro who even uses that button lol */
     if(event.key === 'Backspace' && !that.composing) {
       await that.delete();
     }

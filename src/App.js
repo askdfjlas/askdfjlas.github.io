@@ -14,6 +14,7 @@ import TextEditorDemo from './TextEditor/TextEditorDemo';
 import './css/General/App.css';
 import './css/General/Module.css';
 import './css/General/Form.css';
+import './css/Misc/SmallOrganize.css';
 
 function App() {
   return (

@@ -55,6 +55,7 @@
 
 .Cp-notes-home-post-image-area div {
   display: flex;
+  flex-direction: column;
   flex: 1 1 auto;
   padding: 0 1em;
 }

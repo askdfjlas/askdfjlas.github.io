@@ -116,6 +116,7 @@ function NotesSearch({ history }) {
   return (
     <div className="Notes-search">
       <h2 className="Module-heading">
+        <span className="icon-note-text" />
         {headingText}
       </h2>
       {
@@ -127,12 +128,12 @@ function NotesSearch({ history }) {
               className="Notes-search-filter Askd-form-link">
         {toggleFilterFormText}
       </button>
-      <div className="Notes-search-sort">
+      <div className="Small-organize Notes-search-sort">
         <label htmlFor="search-sort">Sort by</label>
         <select value={sortByRecent ? 'Recent' : 'Likes'} name="search-sort"
                 onChange={changeSort}>
-          <option value="Likes">Most Liked</option>
-          <option value="Recent">Recent</option>
+          <option value="Likes">Most liked</option>
+          <option value="Recent">Most recent</option>
         </select>
       </div>
       {

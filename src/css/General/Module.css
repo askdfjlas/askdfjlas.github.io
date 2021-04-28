@@ -64,6 +64,10 @@
   top: 1px;
 }
 
+.Module-recent-notes .Loading-spinner {
+  max-height: 100vh;
+}
+
 @media screen and (max-width: 1000px) {
   .Module-content-left {
     width: 75%;
@@ -147,6 +151,13 @@
   margin: 0 0 0.3em 0;
   padding-bottom: 0.2em;
   border-bottom: 2px solid var(--darker-bg-color);
+}
+
+.Module-heading [class^="icon-"]:first-child,
+.Module-heading [class*=" icon-"]:first-child {
+  position: relative;
+  top: 1.2px;
+  margin-right: 0.28em;
 }
 
 .Module-heading:not(.Username) {

@@ -42,18 +42,22 @@
   color: var(--username-black);
 }
 
+.User-notes-organize:first-child {
+  margin-top: -0.2em;
+}
+
 .User-notes-organize:last-child {
   margin: 0 0 0.5em 0;
-  padding-bottom: 0.9em;
+  padding-bottom: 0.8em;
   border-bottom: 2px solid var(--darker-bg-color);
 }
 
 .User-notes-organize label {
-  margin-right: 0.5em;
+  margin-right: 0.4em;
 }
 
 .User-notes-organize input[type="checkbox"] {
-  margin: 0 0.2em 0 0;
+  margin: 0 0.25em 0 0.1em;
 }
 
 .User-notes-list {

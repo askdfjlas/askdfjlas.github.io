@@ -70,6 +70,7 @@ function UserSettings({ otherProps, info, screen }) {
   return (
     <div className="User-settings">
       <h2 className="Module-heading">
+        <span className="icon-gear" />
         Settings
       </h2>
       { innerContent }

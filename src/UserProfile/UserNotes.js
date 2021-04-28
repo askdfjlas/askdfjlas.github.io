@@ -14,7 +14,7 @@ class UserNotes extends Component {
       organizeBySolved: false,
       organizeByPlatform: false,
       organizeByContest: false,
-      sortByRecent: false
+      sortByRecent: true
     };
 
     this.toggleAddProblemForm = this.toggleAddProblemForm.bind(this);
@@ -84,9 +84,9 @@ class UserNotes extends Component {
         <div className="User-notes-outer Module-outer-space">
           <h2 className="Module-heading">Notes</h2>
           <form>
-            <div className="User-notes-organize">
+            <div className="Small-organize User-notes-organize">
               <label>
-                <b>Organize by</b>
+                Organize by
               </label>
               <input type="checkbox" name="solved" value="solved"
                      onChange={this.toggleOrganizeBySolved} />
@@ -98,14 +98,14 @@ class UserNotes extends Component {
                      onChange={this.toggleOrganizeByContest} />
               <label htmlFor="contest">Contest</label>
             </div>
-            <div className="User-notes-organize">
+            <div className="Small-organize User-notes-organize">
               <label htmlFor="sort">
-                <b>Sort by</b>
+                Sort by
               </label>
-              <select defaultValue="default" name="sort"
+              <select defaultValue="recent" name="sort"
                       onChange={this.toggleSortByRecent}>
-                <option value="default">Default</option>
                 <option value="recent">Recent</option>
+                <option value="default">Alphabetical</option>
               </select>
             </div>
           </form>

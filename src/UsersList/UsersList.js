@@ -20,6 +20,12 @@ function UsersList({ otherProps, info, loadInfo, screen, currentParams }) {
   };
 
   const usersInfo = info ? info.usersInfo : null;
+  const listHeading = (
+    <h2 className="Module-heading">
+      <span className="icon-account_box" />
+      Top contributors
+    </h2>
+  );
 
   if(screen === LoadState.NOT_FOUND) {
     return (
@@ -31,9 +37,7 @@ function UsersList({ otherProps, info, loadInfo, screen, currentParams }) {
   else if(screen === LoadState.LOADING) {
     return (
       <>
-        <h2 className="Module-heading">
-          Top contributors
-        </h2>
+        { listHeading }
         <SearchUserSelect callback={loadUserProfile} />
         <div className="Module-space">
           <LoadingSpinner />
@@ -49,9 +53,7 @@ function UsersList({ otherProps, info, loadInfo, screen, currentParams }) {
 
     return (
       <>
-        <h2 className="Module-heading">
-          Top contributors
-        </h2>
+        { listHeading }
         <SearchUserSelect callback={loadUserProfile} />
         <div className="Module-space">
           { paginator }
