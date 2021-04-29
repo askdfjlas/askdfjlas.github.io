@@ -9,7 +9,7 @@ import UserAuthApi from '../Api/UserAuthApi';
 import queryString from 'query-string';
 import '../css/CommentSection.css';
 
-function CreateCommentComponent(getComments, addComment) {
+function CreateCommentComponent(getComments, addComment, notFoundErrorName) {
   function CommentComponent({ otherProps, info, screen }) {
     let mounted = useRef(true);
     let userInfos = useRef({});
@@ -172,7 +172,9 @@ function CreateCommentComponent(getComments, addComment) {
     }
   }
 
-  return CreateLoadingComponent(getComments, null, null, CommentComponent);
+  return CreateLoadingComponent(
+    getComments, null, notFoundErrorName, CommentComponent
+  );
 }
 
 export default CreateCommentComponent;

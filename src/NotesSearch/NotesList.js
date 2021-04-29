@@ -36,9 +36,9 @@ function NotesList({ otherProps, info, screen }) {
   let innerContent;
   if(screen === LoadState.NOT_FOUND) {
     innerContent = (
-      <p className="User-notes-nothing">
+      <h3 className="Not-found-text">
         Page not found!
-      </p>
+      </h3>
     );
   }
   else if(screen === LoadState.LOADING) {

@@ -24,9 +24,9 @@ async function getUserData(props, params) {
 function UserProfile({ otherProps, info, screen }) {
   if(screen === LoadState.NOT_FOUND) {
     return (
-      <div className="Module-description">
-        <h2>User not found!</h2>
-      </div>
+      <h2 className="Not-found-text">
+        User not found!
+      </h2>
     );
   }
   else if(screen === LoadState.LOADING) {

@@ -35,4 +35,6 @@ async function addNoteComment(props, newCommentContent, rootReplyId, replyId) {
   );
 }
 
-export default CreateCommentComponent(getNoteComments, addNoteComment);
+export default CreateCommentComponent(
+  getNoteComments, addNoteComment, 'NoteNotFound'
+);

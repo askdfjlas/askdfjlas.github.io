@@ -35,9 +35,9 @@ function PublicNote({ otherProps, info, screen }) {
 
   if(screen === LoadState.NOT_FOUND) {
     return (
-      <div className="Module-description">
-        <h2>Note is either unpublished or does not exist!</h2>
-      </div>
+      <h2 className="Not-found-text">
+        Note is either unpublished or does not exist!
+      </h2>
     );
   }
   else if(screen === LoadState.LOADING) {

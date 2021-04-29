@@ -27,9 +27,9 @@ function EditNote({ otherProps, info, screen }) {
 
   if(screen === LoadState.NOT_FOUND) {
     return (
-      <div className="Module-description">
-        <h2>Note not found!</h2>
-      </div>
+      <h2 className="Not-found-text">
+        Note not found!
+      </h2>
     );
   }
   else if(screen === LoadState.LOADING) {

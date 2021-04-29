@@ -10,6 +10,7 @@ import NotesSearch from './NotesSearch/NotesSearch';
 import RecentNotesList from './Misc/RecentNotesList';
 import UserSettings from './UserSettings/UserSettings';
 import TextEditorDemo from './TextEditor/TextEditorDemo';
+import NotFound from './Misc/NotFound';
 
 import './css/General/App.css';
 import './css/General/Module.css';
@@ -35,6 +36,7 @@ function App() {
               <Route exact path="/notes/:ownerUsername/:platform/:contestId/:problemCode"
                      component={PublicNote} />
               <Route exact path="/demo" component={TextEditorDemo} />
+              <Route component={NotFound} />
             </Switch>
           </div>
           <RecentNotesList />
