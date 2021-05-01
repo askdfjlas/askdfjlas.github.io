@@ -34,14 +34,14 @@ function UserSettings({ otherProps, info, screen }) {
 
     if(info.userInfo.cfUsername) {
       innerInnerContent = (
-        <p className="Module-paragraph">
+        <div className="Module-paragraph">
           You've linked the following account:
           {' '}
           <Username username={userInfo.cfUsername} rank={userInfo.cfRank}
                     linkToCf={true} />
           {' '}
           <b>({userInfo.cfRating})</b>
-        </p>
+        </div>
       );
     }
     else {

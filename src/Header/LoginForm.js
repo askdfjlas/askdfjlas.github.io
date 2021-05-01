@@ -52,6 +52,9 @@ class LoginForm extends Component {
         await this.props.emailVerificationCallback(username, destination);
       }
       else {
+        if(err.code === 'InvalidParameterException') {
+          err.message = 'User does not exist.';
+        }
         await Utils.componentSetError(this, err.message);
       }
     }
@@ -86,6 +89,9 @@ class LoginForm extends Component {
       });
     }
     catch(err) {
+      if(err.code === 'InvalidParameterException') {
+        err.message = 'Your username or email address isn\'t valid!';
+      }
       await Utils.componentSetError(this, err.message);
     }
     await this.setLoading(false);
@@ -119,6 +125,9 @@ class LoginForm extends Component {
       });
     }
     catch(err) {
+      if(err.code === 'InvalidParameterException') {
+        err.message = 'Invalid verification code provided, please try again.';
+      }
       await Utils.componentSetError(this, err.message);
     }
     await this.setLoading(false);
@@ -128,6 +137,9 @@ class LoginForm extends Component {
     try {
       await UserAuthApi.forgotPassword(this.state.username);
       await Utils.componentSetSuccess(this, 'Another email has been sent!');
+      await Utils.setStatePromise(this, {
+        error: ''
+      });
     }
     catch(err) {
       await Utils.componentSetError(this, err.message);
@@ -150,9 +162,17 @@ class LoginForm extends Component {
       submitButtonClassName += ' Askd-form-loading';
     }
 
+    const errorText = this.state.error && (
+      <p className="Module-popup-error">{this.state.error}</p>
+    );
+
+    const successText = this.state.success && (
+      <p className="Module-popup-success">{this.state.success}</p>
+    );
+
     const loginForm = (
       <div className="Register-form Module-popup">
-        { this.state.error && <h2>{this.state.error}</h2> }
+        { errorText }
         <h2>Login to your account!</h2>
         <form className="Askd-form" onSubmit={this.login}>
           <label htmlFor="login-username">Username or email</label>
@@ -176,7 +196,7 @@ class LoginForm extends Component {
 
     const recoveryUsernameForm = (
       <div className="Register-form Module-popup">
-        { this.state.error && <h2>{this.state.error}</h2> }
+        { errorText }
         <h2>Reset your password</h2>
         <p>
           Please provide your username or email, so that you can reset your
@@ -195,8 +215,8 @@ class LoginForm extends Component {
 
     const recoveryPasswordForm = (
       <div className="Register-form Module-popup">
-        { this.state.error && <h2>{this.state.error}</h2> }
-        { this.state.success && <h2>{this.state.success}</h2> }
+        { errorText }
+        { successText }
         <h2>Reset your password</h2>
         <p>
           You should've received an email at { this.state.destination } with a

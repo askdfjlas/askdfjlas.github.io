@@ -261,6 +261,23 @@
   margin-top: 2em;
 }
 
+.Module-popup .Module-popup-error,
+.Module-popup .Module-popup-success {
+  margin: -0.8em 0 1.2em 0;
+  padding: 0.6em;
+  color: white;
+  border-radius: 2px;
+  font-family: var(--main-text-font);
+}
+
+.Module-popup .Module-popup-error {
+  background-color: var(--unsolved-tag-alpha);
+}
+
+.Module-popup .Module-popup-success {
+  background-color: var(--contributor-green-alpha);
+}
+
 .Module-blocker {
   display: flex;
   align-items: center;

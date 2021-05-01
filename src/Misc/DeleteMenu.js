@@ -68,12 +68,16 @@ class DeleteMenu extends Component {
       submitButtonClassName += ' Askd-form-loading';
     }
 
+    const errorText = this.state.error && (
+      <p className="Module-popup-error">{this.state.error}</p>
+    );
+
     return (
       <div className="Module-blocker">
         <button onClick={this.close}
                 className="Askd-form-close Askd-button Askd-button-circular" />
         <div className="Edit-note-delete-menu Module-popup">
-          { this.state.error && <h2>{this.state.error}</h2> }
+          { errorText }
           <h2>Are you sure you want to permanently delete this
               {' ' + this.props.entityName}?
           </h2>

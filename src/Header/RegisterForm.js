@@ -104,6 +104,9 @@ class RegisterForm extends Component {
       });
     }
     catch(err) {
+      if(err.code === 'InvalidParameterException') {
+        err.message = 'Invalid verification code provided, please try again.';
+      }
       await this.setError(err.message);
     }
     await this.setLoading(false);
@@ -135,9 +138,17 @@ class RegisterForm extends Component {
       submitButtonClassName += ' Askd-form-loading';
     }
 
+    const errorText = this.state.error && (
+      <p className="Module-popup-error">{this.state.error}</p>
+    );
+
+    const successText = this.state.success && (
+      <p className="Module-popup-success">{this.state.success}</p>
+    );
+
     const createAccountForm = (
       <div className="Register-form Module-popup">
-        { this.state.error && <h2>{this.state.error}</h2> }
+        { errorText }
         <h2>Create an account!</h2>
         <form className="Askd-form" onSubmit={this.register}>
           <label htmlFor="register-username">Username</label>
@@ -164,8 +175,8 @@ class RegisterForm extends Component {
 
     const verifyEmailForm = (
       <div className="Register-form Module-popup">
-        { this.state.error && <h2>{this.state.error}</h2> }
-        { this.state.success && <h2>{this.state.success}</h2> }
+        { errorText }
+        { successText }
         <h2>Verify your email!</h2>
         <p>
           You should've received an email at {this.state.destination} with a

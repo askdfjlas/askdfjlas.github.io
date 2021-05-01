@@ -56,12 +56,16 @@ class AddProblemForm extends Component {
       submitButtonClassName += ' Askd-form-loading';
     }
 
+    const errorText = this.state.error && (
+      <p className="Module-popup-error">{this.state.error}</p>
+    );
+
     return (
       <div className="Module-blocker">
         <button onClick={this.close}
                 className="Askd-form-close Askd-button Askd-button-circular" />
         <div className="Add-problem-form Module-popup">
-          { this.state.error && <h2>{this.state.error}</h2> }
+          { errorText }
           <h2>Add a problem!</h2>
           <form className="Askd-form" onSubmit={this.addProblem}>
             <SearchProblemSelect changeCallback={this.problemChangeCallback} />
