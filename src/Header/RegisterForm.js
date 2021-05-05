@@ -85,6 +85,10 @@ class RegisterForm extends Component {
       });
     }
     catch(err) {
+      if(err.code === 'InvalidParameterException') {
+        err.message = 'Username can only contain alphanumeric characters, ' +
+          'dashes, and underscores.';
+      }
       await this.setError(err.message);
     }
     await this.setLoading(false);

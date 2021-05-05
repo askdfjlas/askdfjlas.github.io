@@ -9,9 +9,9 @@ function MathBlock({ id, index, content, rendered }) {
   /* MathJax must be re-rendered when one of the following attributes change */
   let changeKey = useMemo(() => {
     return {
-      id: id, rendered: rendered, blockLength: content.length
+      id: id, rendered: rendered, content: content
     };
-  }, [ id, rendered, content.length ]);
+  }, [ id, rendered, content ]);
 
   /* Render MathJax and put a zero-width space before and after,
   in order to help caret selection; also disable tabIndex */
