@@ -11,6 +11,6 @@ websitedeploy() {
     git commit -m "$message"
     git push
   else
-    echo DEPLOYENT STOPPED
+    echo DEPLOYMENT STOPPED
   fi
 }
