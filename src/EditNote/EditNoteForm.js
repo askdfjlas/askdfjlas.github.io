@@ -136,6 +136,7 @@ class EditNoteForm extends Component {
   }
 
   componentWillUnmount() {
+    window.onbeforeunload = null;
     this.mounted = false;
   }
 

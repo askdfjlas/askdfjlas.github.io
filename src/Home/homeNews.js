@@ -8,21 +8,15 @@ import notesSearch from '../img/notes_search.png';
 const homeNews = [
   {
     title: 'Welcome!',
-    date: '04-16-21',
+    date: '05-06-21',
     prodOnly: true,
     content: (
       <>
         <p className="Module-paragraph">
-          Hello there, and welcome to cp-notes.com! I'm currently making some
-          finishing touches to the site. How did you find this though :p? If
-          you wouldn't mind, please let me know by messaging me on Codeforces
-          (my username is askd).
-        </p>
-        <p className="Module-paragraph">
-          Thanks for taking the time to visit! This site is intended
-          to be a place for competitive programmers to share notes about their
-          most interesting problems! Here's a list of some of the things you
-          can do:
+          Hello there, and welcome to cp-notes.com! Thanks for taking the time
+          to visit! This site is intended to be a place for competitive
+          programmers to share notes about their most interesting problems!
+          Here's a list of some of the things you can do:
         </p>
         <div className="Cp-notes-home-post-image">
           <div className="Cp-notes-home-post-image-area">

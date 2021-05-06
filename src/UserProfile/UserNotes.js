@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import AddProblemForm from './AddProblemForm';
 import NotesApi from '../Api/NotesApi';
+import LocalStorageApi from '../Api/LocalStorageApi';
 import UserNotesList from './UserNotesList';
 import Utils from '../Utils';
 import '../css/UserNotes.css';
@@ -9,12 +10,11 @@ class UserNotes extends Component {
   constructor(props) {
     super(props);
 
+    this.viewPreferences = LocalStorageApi.getNoteViewPreferences();
+
     this.state = {
       showAddProblemForm: false,
-      organizeBySolved: false,
-      organizeByPlatform: false,
-      organizeByContest: false,
-      sortByRecent: true
+      ...this.viewPreferences
     };
 
     this.toggleAddProblemForm = this.toggleAddProblemForm.bind(this);
@@ -23,6 +23,15 @@ class UserNotes extends Component {
     this.toggleOrganizeByContest = this.toggleOrganizeByContest.bind(this);
     this.toggleSortByRecent = this.toggleSortByRecent.bind(this);
     this.addProblem = this.addProblem.bind(this);
+  }
+
+  updateViewPreferences() {
+    LocalStorageApi.setNoteViewPreferences({
+      sortByRecent: this.state.sortByRecent,
+      organizeBySolved: this.state.organizeBySolved,
+      organizeByPlatform: this.state.organizeByPlatform,
+      organizeByContest: this.state.organizeByContest
+    });
   }
 
   async toggleAddProblemForm() {
@@ -35,24 +44,28 @@ class UserNotes extends Component {
     await Utils.setStatePromise(this, {
       organizeBySolved: !this.state.organizeBySolved
     });
+    this.updateViewPreferences();
   }
 
   async toggleOrganizeByPlatform() {
     await Utils.setStatePromise(this, {
       organizeByPlatform: !this.state.organizeByPlatform
     });
+    this.updateViewPreferences();
   }
 
   async toggleOrganizeByContest() {
     await Utils.setStatePromise(this, {
       organizeByContest: !this.state.organizeByContest
     });
+    this.updateViewPreferences();
   }
 
   async toggleSortByRecent() {
     await Utils.setStatePromise(this, {
       sortByRecent: !this.state.sortByRecent
     });
+    this.updateViewPreferences();
   }
 
   async addProblem(problemSortKey, platform, formComponent) {
@@ -75,6 +88,8 @@ class UserNotes extends Component {
   }
 
   render() {
+    const sortDefault = this.viewPreferences.sortByRecent ? 'recent' : 'default';
+
     return (
       <>
         {
@@ -89,12 +104,15 @@ class UserNotes extends Component {
                 Organize by
               </label>
               <input type="checkbox" name="solved" value="solved"
+                     checked={this.state.organizeBySolved}
                      onChange={this.toggleOrganizeBySolved} />
               <label htmlFor="solved">Solved</label>
               <input type="checkbox" name="platform" value="platform"
+                     checked={this.state.organizeByPlatform}
                      onChange={this.toggleOrganizeByPlatform} />
               <label htmlFor="platform">Platform</label>
               <input type="checkbox" name="contest" value="contest"
+                     checked={this.state.organizeByContest}
                      onChange={this.toggleOrganizeByContest} />
               <label htmlFor="contest">Contest</label>
             </div>
@@ -102,7 +120,7 @@ class UserNotes extends Component {
               <label htmlFor="sort">
                 Sort by
               </label>
-              <select defaultValue="recent" name="sort"
+              <select defaultValue={sortDefault} name="sort"
                       onChange={this.toggleSortByRecent}>
                 <option value="recent">Recent</option>
                 <option value="default">Alphabetical</option>
