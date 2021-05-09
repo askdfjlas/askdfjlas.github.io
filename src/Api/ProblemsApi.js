@@ -13,6 +13,9 @@ class ProblemsApi {
       const divisionString = `Division ${divisionLevel} Level ${problemLevel}`;
       return `${divisionString} - ${info.problemName}`;
     }
+    if(info.platform === 'Kattis') {
+      return `- ${info.problemName}`;
+    }
     return `${info.problemCode} - ${info.problemName}`;
   }
 
@@ -31,7 +34,7 @@ class ProblemsApi {
   }
 
   static getProblemLetter(info) {
-    if(info.platform === 'Project Euler') {
+    if(info.platform === 'Project Euler' || info.platform === 'Kattis') {
       const inflatedProblemLetter = info.problemSk.split('#')[1];
       return Utils.removePrefixZeroes(inflatedProblemLetter);
     }

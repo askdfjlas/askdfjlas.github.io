@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import ProblemsApi from '../Api/ProblemsApi';
 import SearchSelect from './SearchSelect';
 
+const NO_SEARCH_CODE_CONTEST_PLATFORMS = ['Project Euler', 'Kattis'];
+const NO_SEARCH_CODE_PROBLEM_PLATFORMS = ['TopCoder', 'Kattis'];
+
 function SearchProblemSelect({ initialPlatform, initialContestId,
                                initialProblemId, initialSkipContestSearch,
                                changeCallback }) {
@@ -48,10 +51,20 @@ function SearchProblemSelect({ initialPlatform, initialContestId,
     searchProblemStaticKey = platform;
   }
 
-  const searchContestKeys = (platform === 'Project Euler') ?
-                            ['name'] : ['contestCode', 'name'];
-  const searchProblemKeys = (platform === 'TopCoder') ?
-                            ['name'] : ['problemCode', 'name'];
+  let searchContestKeys, searchProblemKeys;
+  if(NO_SEARCH_CODE_CONTEST_PLATFORMS.includes(platform)) {
+    searchContestKeys = ['name'];
+  }
+  else {
+    searchContestKeys = ['contestCode', 'name'];
+  }
+
+  if(NO_SEARCH_CODE_PROBLEM_PLATFORMS.includes(platform)) {
+    searchProblemKeys = ['name'];
+  }
+  else {
+    searchProblemKeys = ['problemCode', 'name'];
+  }
 
   const selectPlatformValue = platform ? platform : '';
   const skipButtonText = skipContestSearch ? 'Want to filter by contest?' :
@@ -80,7 +93,8 @@ function SearchProblemSelect({ initialPlatform, initialContestId,
         <option value="AtCoder">AtCoder</option>
         <option value="TopCoder">TopCoder</option>
         <option value="Project Euler">Project Euler</option>
-        <option value="ICPC">ICPC (Kattis)</option>
+        <option value="ICPC">ICPC World Finals</option>
+        <option value="Kattis">Kattis</option>
       </select>
 
       <label htmlFor="cp-contest">Contest</label>

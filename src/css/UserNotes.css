@@ -87,6 +87,15 @@
   margin: 0;
 }
 
+.User-note-info-display-link {
+  color: var(--recent-actions-color-dark);
+  text-decoration: none;
+}
+
+.User-note-info-display-link:hover {
+  text-decoration: underline;
+}
+
 .User-note-info-title {
   color: gray;
   margin: 0.15em 0;
