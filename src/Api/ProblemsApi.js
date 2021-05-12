@@ -2,6 +2,8 @@ import Api from './Api';
 import Utils from '../Utils';
 import SolvedState from '../Enum/SolvedState';
 
+const MANY_PROBLEM_PLATFORMS = ['Project Euler', 'Kattis', 'yukicoder'];
+
 class ProblemsApi {
   static getProblemDisplayNameWithoutPlatform(info) {
     if(info.platform === 'CodeChef') {
@@ -34,7 +36,7 @@ class ProblemsApi {
   }
 
   static getProblemLetter(info) {
-    if(info.platform === 'Project Euler' || info.platform === 'Kattis') {
+    if(MANY_PROBLEM_PLATFORMS.includes(info.platform)) {
       const inflatedProblemLetter = info.problemSk.split('#')[1];
       return Utils.removePrefixZeroes(inflatedProblemLetter);
     }
