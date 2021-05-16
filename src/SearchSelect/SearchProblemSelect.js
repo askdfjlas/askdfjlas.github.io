@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react';
 import ProblemsApi from '../Api/ProblemsApi';
 import SearchSelect from './SearchSelect';
 
-const NO_SEARCH_CODE_CONTEST_PLATFORMS = ['Project Euler', 'Kattis', 'yukicoder'];
-const NO_SEARCH_CODE_PROBLEM_PLATFORMS = ['TopCoder', 'Kattis'];
+const NO_SEARCH_CODE_CONTEST_PLATFORMS = [
+  'Project Euler', 'Kattis', 'yukicoder', 'DMOJ'
+];
+const NO_SEARCH_CODE_PROBLEM_PLATFORMS = ['TopCoder', 'Kattis', 'DMOJ'];
 
 function SearchProblemSelect({ initialPlatform, initialContestId,
                                initialProblemId, initialSkipContestSearch,
@@ -96,6 +98,7 @@ function SearchProblemSelect({ initialPlatform, initialContestId,
         <option value="ICPC">ICPC World Finals</option>
         <option value="Kattis">Kattis</option>
         <option value="yukicoder">yukicoder</option>
+        <option value="DMOJ">DMOJ</option>
       </select>
 
       <label htmlFor="cp-contest">Contest</label>

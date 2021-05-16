@@ -2,7 +2,7 @@ import Api from './Api';
 import Utils from '../Utils';
 import SolvedState from '../Enum/SolvedState';
 
-const MANY_PROBLEM_PLATFORMS = ['Project Euler', 'Kattis', 'yukicoder'];
+const MANY_PROBLEM_PLATFORMS = ['Project Euler', 'Kattis', 'yukicoder', 'DMOJ'];
 
 class ProblemsApi {
   static getProblemDisplayNameWithoutPlatform(info) {
@@ -15,7 +15,7 @@ class ProblemsApi {
       const divisionString = `Division ${divisionLevel} Level ${problemLevel}`;
       return `${divisionString} - ${info.problemName}`;
     }
-    if(info.platform === 'Kattis') {
+    if(info.platform === 'Kattis' || info.platform === 'DMOJ') {
       return `- ${info.problemName}`;
     }
     return `${info.problemCode} - ${info.problemName}`;
