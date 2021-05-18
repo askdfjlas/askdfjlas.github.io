@@ -119,7 +119,9 @@ class RegisterForm extends Component {
   async resendVerificationEmail(event) {
     try {
       await UserAuthApi.resendVerificationEmail(this.state.username);
-      await Utils.componentSetSuccess(this, 'Another email has been sent!');
+      await Utils.componentSetSuccess(
+        this, 'Another email has been sent! Remember to check your spam folder.'
+      );
     }
     catch(err) {
       await this.setError(err.message);
