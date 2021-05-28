@@ -7,6 +7,49 @@ import notesSearch from '../img/notes_search.png';
 
 const homeNews = [
   {
+    title: 'A small update',
+    date: '05-28-21',
+    loggedInOnly: true,
+    content: (
+      <>
+        <p className="Module-paragraph">
+          This site now has a discord server {' '}
+          <a className="Askd-form-link" href="https://discord.gg/R66xRwH7N5"
+             target="_blank" rel="noopener noreferrer">here</a>.
+        </p>
+        <p className="Module-paragraph">
+          Hello again! I've been pretty lazy recently to be honest, feel kind of
+          burned out. There haven't been very many changes to the site recently,
+          but I guess I'll list a few.
+        </p>
+        <ol className="Cp-notes-home-post-list">
+          <li>Added problems from Kattis, Yukicoder, and DMOJ</li>
+          <li>Fixed the Codechef scraper</li>
+          <li>Codeforces ratings will update automatically now</li>
+          <li>Removed self from top contributors list</li>
+          <li>This post will only show if you're logged in, which is cool I guess?</li>
+        </ol>
+        <p className="Module-paragraph">
+          Here's a little life update though, if anyone cares :p The past few
+          weeks have been a blur. After I stopped putting in as much time into
+          this website, I've wasted a lot more time playing League and stuff like
+          that. On the bright side though, that also means I've been finally
+          spending some more time on Codeforces. I've been virtualing most days
+          for the past few weeks, and might have felt a bit of improvement? idk.
+        </p>
+        <p className="Module-paragraph">
+          I'm going to be interning in Seattle this summer, going to fly out in
+          2 days... Didn't realize it was so soon until I wrote that sentence lol.
+          I'm pretty excited to say the least. It'll be my first time living by
+          myself in my own apartment, which is kind of sick. Gonna try to get
+          super good at cooking :D I also will be going to my first ping pong
+          tournament the day before I fly out. Hopefully I can achieve at least
+          pupil rating. I'm really tired now, good night!
+        </p>
+      </>
+    )
+  },
+  {
     title: 'Welcome!',
     date: '05-06-21',
     prodOnly: true,

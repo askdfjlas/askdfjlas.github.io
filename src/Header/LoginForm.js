@@ -45,6 +45,12 @@ class LoginForm extends Component {
     try {
       await UserAuthApi.login(username, password);
       this.props.exitCallback(true);
+
+      if(window.loginTasks) {
+        for(const task of window.loginTasks) {
+          task();
+        }
+      }
     }
     catch(err) {
       if(err.code === 'UserNotConfirmedException') {

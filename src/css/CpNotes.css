@@ -73,3 +73,11 @@
   font-size: 0.9em;
   color: var(--username-black);
 }
+
+.Cp-notes-home-post-list {
+  padding-left: 2em;
+}
+
+.Cp-notes-home-post-list li {
+  padding-left: 0.3em;
+}
