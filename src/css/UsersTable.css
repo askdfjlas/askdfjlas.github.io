@@ -30,6 +30,7 @@
 }
 
 .Users-table-table-table table {
+  width: 100%;
   white-space: nowrap;
   border-collapse: collapse;
   box-sizing: border-box;
@@ -77,7 +78,7 @@
 
 .Users-table-username {
   width: 100%;
-  max-width: 75%;
+  max-width: 80%;
 }
 
 .Users-table-contribution {
